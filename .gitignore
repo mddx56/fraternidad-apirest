@@ -8,6 +8,7 @@ db.sqlite3
 
 # Ignorar el archivo de secretos generado automáticamente
 .secrets/
+.env
 
 # Ignorar el archivo de registro
 *.log
