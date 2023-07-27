@@ -26,7 +26,7 @@ SECRET_KEY = config("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config("DEBUG")
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["fraternidad.onrender.com", "localhost", "127.0.0.1"]
 
 
 # Application definition
@@ -127,6 +127,7 @@ USE_TZ = True
 STATIC_URL = "static/"
 
 STATIC_ROOT = BASE_DIR / "static"
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
