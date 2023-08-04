@@ -25,4 +25,9 @@ from django.conf.urls.static import static
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/agenda", include("agendas.urls")),
+    path("api/frater/", include("frater.urls")),
+    path("api/auth/", include("authapi.urls")),
+    path("auth/", include("djoser.urls")),
+    #path("auth/", include("djoser.urls.authtoken")),
+    path("auth/", include("djoser.urls.jwt")),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

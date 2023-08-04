@@ -10,7 +10,11 @@ from .models import (
     DetalleDeuda,
     Qr,
 )
- 
+
+admin.site.site_header = "Sistema de Gestión para Fraternidad ⛺"
+admin.site.site_title = "Fraternidad "
+admin.site.index_title = "Bienvenidos al portal de administración"
+
 admin.site.register(EstadoReserva)
 admin.site.register(TipoEvento)
 admin.site.register(EstadoDeuda)
