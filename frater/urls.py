@@ -3,7 +3,7 @@ from rest_framework import routers
 from frater import views
 
 router = routers.DefaultRouter()
-router.register("cumple", views.CumpleanioSerializerView)
+router.register("cumple", views.CumpleanioView)
 router.register("fraternidad", views.FraternidadView)
 
 urlpatterns = [
