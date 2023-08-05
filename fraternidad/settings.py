@@ -42,8 +42,8 @@ INSTALLED_APPS = [
     "rest_framework",
     # "rest_framework.authtoken",
     "rest_framework_simplejwt",
-    "rest_framework_simplejwt.token_blacklist",
-    "djoser",
+    #"rest_framework_simplejwt.token_blacklist",
+    "drf_yasg",
     "agendas",
     "authapi",
     "frater",
@@ -143,7 +143,7 @@ REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ),
-   # "DEFAULT_PERMISSION_CLASSES": ["rest_framework.permissions.IsAuthenticated"],
+    # "DEFAULT_PERMISSION_CLASSES": ["rest_framework.permissions.IsAuthenticated"],
 }
 
 # JWT Settings
@@ -162,27 +162,5 @@ EMAIL_HOST = "sandbox.smtp.mailtrap.io"
 EMAIL_HOST_USER = config("EMAIL_USER")
 EMAIL_HOST_PASSWORD = config("EMAIL_PASSWORD")
 EMAIL_PORT = "2525"
-
-# Djoser Settings
-DJOSER = {
-    "LOGIN_FIELD": "username",
-    # "USER_CREATE_PASSWORD_RETYPE": True,
-    # "USERNAME_CHANGED_EMAIL_CONFIRMATION": True,
-    # "PASSWORD_CHANGED_EMAIL_CONFIRMATION": True,
-    # "SEND_CONFIRMATION_EMAIL": True,
-    # "SET_USERNAME_RETYPE": True,
-    # "PASSWORD_RESET_CONFIRM_URL": "password/reset/confirm/{uid}/{token}",
-    # "SET_PASSWORD_RETYPE": True,
-    # "PASSWORD_RESET_CONFIRM_RETYPE": True,
-    # "USERNAME_RESET_CONFIRM_URL": "email/reset/confirm/{uid}/{token}",
-    # "ACTIVATION_URL": "activate/{uid}/{token}",
-    # "SEND_ACTIVATION_EMAIL": True,
-    "SERIALIZERS": {
-        "user_create": "authapi.serializers.UserCreateSerializer",
-        "user": "authapi.serializers.UserCreateSerializer",
-        "current_user": "apps.user.serializers.UserCreateSerializer",
-        "user_delete": "djoser.serializers.UserDeleteSerializer",
-    },
-}
 
 CORS_ALLOW_ALL_ORIGINS: True
