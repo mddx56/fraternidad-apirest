@@ -11,7 +11,7 @@ class Fraternidad(models.Model):
 
 class Cumpleanio(models.Model):
     disponible = models.BooleanField(default=False)
-    fecha = models.DateTimeField(auto_now_add=True)
+    fecha = models.DateTimeField(null=False)
     hora_inicio = models.TimeField()
     hora_fin = models.TimeField()
     user = models.ForeignKey(User, on_delete=models.CASCADE)

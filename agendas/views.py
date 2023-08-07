@@ -30,15 +30,15 @@ class TipoEventoSerializerView(viewsets.ModelViewSet):
     queryset = TipoEvento.objects.all()
 
 class EstadoReservaView(viewsets.ModelViewSet):
-    serializer_class = EstadoDeudaSerializer
+    serializer_class = EstadoReservaSerializer
     queryset = EstadoReserva.objects.all()
 
 class AgendaView(viewsets.ModelViewSet):
-    serializer_class = EstadoDeudaSerializer
+    serializer_class = AgendaSerializer
     queryset = Agenda.objects.all()
 
 class DeudaView(viewsets.ModelViewSet):
-    serializer_class = EstadoDeudaSerializer
+    serializer_class = DeudaSerializer
     queryset = Deuda.objects.all()
 
 class DetalleDeudaView(viewsets.ModelViewSet):
