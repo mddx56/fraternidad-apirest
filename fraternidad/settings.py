@@ -32,17 +32,15 @@ ALLOWED_HOSTS = ["fraternidad.onrender.com", "localhost", "127.0.0.1"]
 # Application definition
 
 INSTALLED_APPS = [
+    "corsheaders",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "corsheaders",
     "rest_framework",
-    # "rest_framework.authtoken",
     "rest_framework_simplejwt",
-    #"rest_framework_simplejwt.token_blacklist",
     "drf_yasg",
     "agendas",
     "authapi",
@@ -50,15 +48,19 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
-    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
+
+CORS_ALLOW_ALL_ORIGINS = True
+
+CORS_ALLOW_CREDENTIALS = True
 
 ROOT_URLCONF = "fraternidad.urls"
 
@@ -151,8 +153,8 @@ SIMPLE_JWT = {
     "AUTH_HEADER_TYPES": ("JWT",),
     "ACCESS_TOKEN_LIFETIME": timedelta(days=2),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=3),
-    "AUTH_TOKEN_CLASSES": ("rest_framework_simplejwt.tokens.AccessToken",),
-    "AUTH_HEADER_NAME": "HTTP_AUTHORIZATION",
+    # "AUTH_TOKEN_CLASSES": ("rest_framework_simplejwt.tokens.AccessToken",),
+    # "AUTH_HEADER_NAME": "HTTP_AUTHORIZATION",
 }
 
 # AUTH_USER_MODEL = "authapi.User"
@@ -162,5 +164,3 @@ EMAIL_HOST = "sandbox.smtp.mailtrap.io"
 EMAIL_HOST_USER = config("EMAIL_USER")
 EMAIL_HOST_PASSWORD = config("EMAIL_PASSWORD")
 EMAIL_PORT = "2525"
-
-CORS_ALLOW_ALL_ORIGINS: True  
