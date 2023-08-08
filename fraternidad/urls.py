@@ -22,12 +22,19 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
+from rest_framework_simplejwt.views import (
+    TokenRefreshView,
+    TokenObtainPairView,
+    TokenVerifyView
+)
+
 urlpatterns = [
     path("admin/", admin.site.urls),
+        path('login/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path("api/agenda", include("agendas.urls")),
     path("api/frater", include("frater.urls")),
     path("api/auth", include("authapi.urls")),
     #path("auth/", include("djoser.urls")),
-    #path("auth/", include("djoser.urls.authtoken")),
+    #path("auth/", include("djoser.urls.authtoken")),   
     #path("auth/", include("djoser.urls.jwt")),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
