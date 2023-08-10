@@ -64,6 +64,9 @@ class Qr(models.Model):
     deuda = models.ForeignKey(Deuda, on_delete=models.CASCADE)
     tipo_evento = models.ForeignKey(TipoEvento, on_delete=models.CASCADE)
 
+    def __str__(self) -> str:
+        return f"QR : {self.qr_valor}, {self.deuda.mes}"
+
 
 class Pago(models.Model):
     fecha_pago = models.DateField(auto_now_add=True)
@@ -71,3 +74,6 @@ class Pago(models.Model):
     deuda = models.ForeignKey(Deuda, on_delete=models.CASCADE)
     evento = models.ForeignKey(Agenda, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def __str__(self) -> str:
+        return f"Pago : {self.fecha_pago}, {self.monto_pagado} - user = {self.user.username}"
