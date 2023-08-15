@@ -93,4 +93,4 @@ class UserTurno(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     
     def __str__(self) -> str:
-        return f"UserTurno : {self.turno.id}, {self.user.username}"
+        return f"UserTurno : {self.turno.nro_semana}, {self.turno.dia_default}- {self.user.username} "

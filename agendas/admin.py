@@ -9,6 +9,8 @@ from .models import (
     TipoEvento,
     DetalleDeuda,
     Qr,
+    Turno,
+    UserTurno
 )
 
 admin.site.site_header = "Sistema de Gestión para Fraternidad ⛺"
@@ -23,3 +25,6 @@ admin.site.register(Deuda)
 admin.site.register(DetalleDeuda)
 admin.site.register(Pago)
 admin.site.register(Qr)
+admin.site.register(Turno)
+admin.site.register(UserTurno)
+
