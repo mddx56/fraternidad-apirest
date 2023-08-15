@@ -82,6 +82,7 @@ class Turno(models.Model):
     nro_semana = models.IntegerField(default=0)
     hora_inicio = models.TimeField()
     hora_fin = models.TimeField()
+    fecha = models.DateField(null=True)
     dia_default = models.IntegerField(default=0)
     dias = models.JSONField()
 
