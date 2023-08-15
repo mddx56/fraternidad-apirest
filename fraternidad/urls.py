@@ -33,7 +33,7 @@ from rest_framework_simplejwt.views import (
 )
 
 from fraternidad import views
-from authapi import views
+from authapi.views import CreateAPIView
 
 schema_view = get_schema_view(
     openapi.Info(
@@ -51,7 +51,7 @@ schema_view = get_schema_view(
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/login", TokenObtainPairView.as_view(), name="token_obtain_pair"),
-    path("api/signin", Create.as_view(), name="crear_usuario"),
+    path("api/signin", CreateAPIView.as_view(), name="crear_usuario"),
     path("api/agenda", include("agendas.urls")),
     path("api/frater", include("frater.urls")),
     path("api/auth", include("authapi.urls")),
