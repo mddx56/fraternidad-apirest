@@ -1,4 +1,6 @@
 from rest_framework import serializers
+
+
 from .models import (
     EstadoReserva,
     TipoEvento,
@@ -8,6 +10,8 @@ from .models import (
     DetalleDeuda,
     Pago,
     Qr,
+    Turno,
+    UserTurno
 )
 
 
@@ -56,4 +60,14 @@ class PagoSerializer(serializers.ModelSerializer):
 class QrSerializer(serializers.ModelSerializer):
     class Meta:
         model = Qr
+        fields = "__all__"
+        
+class TurnoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Turno
+        fields = "__all__"
+        
+class UserTurnoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserTurno
         fields = "__all__"

@@ -77,3 +77,20 @@ class Pago(models.Model):
 
     def __str__(self) -> str:
         return f"Pago : {self.fecha_pago}, {self.monto_pagado} - user = {self.user.username}"
+    
+class Turno(models.Model):
+    nro_semana = models.IntegerField(default=0)
+    hora_inicio = models.TimeField()
+    hora_fin = models.TimeField()
+    dia_default = models.IntegerField(default=0)
+    dias = models.JSONField()
+
+    def __str__(self) -> str:
+        return f"Turno : {self.nro_semana}, {self.hora_inicio} - {self.hora_fin}"
+
+class UserTurno(models.Model):
+    turno = models.ForeignKey(Turno,on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    
+    def __str__(self) -> str:
+        return f"UserTurno : {self.turno.id}, {self.user.username}"

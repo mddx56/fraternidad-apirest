@@ -1,10 +1,7 @@
+from django.contrib.auth.models import User
 from rest_framework import serializers
-#from djoser.serializers import UserCreateSerializer
-from django.contrib.auth import get_user_model
-from .models import (
-    Notificacion,
-    Token
-)
+from .models import Notificacion, Token
+
 
 class NotificacionSerializer(serializers.ModelSerializer):
     class Meta:
@@ -15,3 +12,13 @@ class TokenSerializer(serializers.ModelSerializer):
     class Meta:
         model = Token
         fields = "__all__"
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ["username", "password", "first_name", "last_name", "email"]
+        extra_kwargs = {"password": {"write_only": True}}
+
+    def create(self, validated_data):
+        user = User.objects.create_user(**validated_data)
+        return user

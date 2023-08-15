@@ -12,7 +12,10 @@ router.register("deudas", views.DeudaView)
 router.register("detallesdeuda", views.DetalleDeudaView)
 router.register("pagos", views.PagoView)
 router.register("qrs", views.QrView)
+router.register("turnos", views.TurnoView)
+router.register("userturnos", views.UserTurnoView)
 
 urlpatterns = [
     path("/", include(router.urls)),
+    #path('eventos', AgendaAllView.as_view(), name='eventos-all'),
 ]
