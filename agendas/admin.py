@@ -21,7 +21,15 @@ admin.site.site_title = "Fraternidad "
 admin.site.index_title = "Bienvenidos al portal de administración"
 
 admin.site.register(EstadoReserva)
-admin.site.register(TipoEvento)
+
+class TipoEventoAdmin(admin.ModelAdmin):
+    list_display = ("id", "nombre", "descripcion", "precio")
+    list_display_links = ("id", "nombre")
+    list_editable = ("precio", "nombre")
+    search_fields = ("id", "nombre")
+    list_per_page = 25
+
+admin.site.register(TipoEvento,TipoEventoAdmin)
 admin.site.register(EstadoDeuda)
 
 
@@ -55,9 +63,9 @@ class DeudaAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Deuda, DeudaAdmin)
-admin.site.register(DetalleDeuda)
+#admin.site.register(DetalleDeuda)
 admin.site.register(Pago)
-admin.site.register(Qr)
+#admin.site.register(Qr)
 
 
 class UserTurnoAdmin(admin.ModelAdmin):

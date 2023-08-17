@@ -5,5 +5,5 @@ from .models import (
     Token,
 )
 
-admin.site.register(Notificacion)
-admin.site.register(Token)
+#admin.site.register(Notificacion)
+#admin.site.register(Token)
