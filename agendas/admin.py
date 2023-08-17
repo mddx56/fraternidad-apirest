@@ -10,7 +10,11 @@ from .models import (
     DetalleDeuda,
     Qr,
     Turno,
-    UserTurno
+    UserTurno,
+    Mensualidad,
+    Extraordinaria,
+    DeudaExtraordinaria,
+    
 )
 
 admin.site.site_header = "Sistema de Gestión para Fraternidad ⛺"
@@ -20,11 +24,22 @@ admin.site.index_title = "Bienvenidos al portal de administración"
 admin.site.register(EstadoReserva)
 admin.site.register(TipoEvento)
 admin.site.register(EstadoDeuda)
-admin.site.register(Agenda)
+
+
+class AgendaAdmin(admin.ModelAdmin):
+    list_display = (
+        "fecha",
+        "descripcion",
+    )  # Ahora la interfaz mostrará nombre, apellido y email de cada autor.
+    #search_fields = ("fecha")
+
+admin.site.register(Agenda, AgendaAdmin)
+
 admin.site.register(Deuda)
 admin.site.register(DetalleDeuda)
 admin.site.register(Pago)
 admin.site.register(Qr)
 admin.site.register(Turno)
 admin.site.register(UserTurno)
+
 

@@ -21,9 +21,9 @@ class UserAccountManager(BaseUserManager):
 
 
 class UserAccount(AbstractBaseUser, PermissionsMixin):
-    FRATERNO = "Fraterno"
-    TESORERO = "Tesorero"
-    ADMIN = "Admin"
+    FRATERNO = "fraterno"
+    TESORERO = "tesorero"
+    ADMIN = "admin"
     USER_ROLE = [(FRATERNO, FRATERNO), (ADMIN, ADMIN), (TESORERO, TESORERO)]
     # username
     email = models.EmailField(max_length=255, unique=True)

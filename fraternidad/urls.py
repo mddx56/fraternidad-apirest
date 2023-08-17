@@ -17,7 +17,7 @@ Including another URLconf
 
 
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include, re_path
 
 from django.conf import settings
 from django.conf.urls.static import static
@@ -34,6 +34,7 @@ from rest_framework_simplejwt.views import (
 
 from fraternidad import views
 from authapi.views import CreateUserView
+from django.views.generic import TemplateView
 
 schema_view = get_schema_view(
     openapi.Info(
@@ -55,7 +56,6 @@ urlpatterns = [
     path("api/agenda", include("agendas.urls")),
     path("api/frater", include("frater.urls")),
     path("api/auth", include("authapi.urls")),
-    path("home/", views.mi_vista, name="home"),
     path(
         "swagger/",
         schema_view.with_ui("swagger", cache_timeout=0),
@@ -63,3 +63,4 @@ urlpatterns = [
     ),
     path("redoc/", schema_view.with_ui("redoc", cache_timeout=0), name="schema-redoc"),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
