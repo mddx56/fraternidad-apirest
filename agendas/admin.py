@@ -14,7 +14,6 @@ from .models import (
     Mensualidad,
     Extraordinaria,
     DeudaExtraordinaria,
-    
 )
 
 admin.site.site_header = "Sistema de Gestión para Fraternidad ⛺"
@@ -31,7 +30,8 @@ class AgendaAdmin(admin.ModelAdmin):
         "fecha",
         "descripcion",
     )  # Ahora la interfaz mostrará nombre, apellido y email de cada autor.
-    #search_fields = ("fecha")
+    # search_fields = ("fecha")
+
 
 admin.site.register(Agenda, AgendaAdmin)
 
@@ -43,3 +43,26 @@ admin.site.register(Turno)
 admin.site.register(UserTurno)
 
 
+class MensualidadAdmin(admin.ModelAdmin):
+    list_display = ("fecha", "monto_fijo", "deuda")  # Ahora la interfaz mostrará
+
+admin.site.register(Mensualidad, MensualidadAdmin)
+
+class ExtraordinariaAdmin(admin.ModelAdmin):
+    list_display = (
+        "monto",
+        "concepto",
+        "created_date"
+    )  # Ahora la interfaz mostrará nombre, apellido y email de cada autor.
+    #search_fields = ("monto")
+admin.site.register(Extraordinaria,ExtraordinariaAdmin)
+
+class DeudaExtraordinariaAdmin(admin.ModelAdmin):
+    list_display = (
+        "deuda",
+        "extraordinaria",
+        "pagado",
+        "created_date"
+    )  # Ahora la interfaz mostrará nombre, apellido y email de cada autor.
+    search_fields = ("deuda")
+admin.site.register(DeudaExtraordinaria,DeudaExtraordinariaAdmin)

@@ -14,6 +14,9 @@ from .serializer import (
     QrSerializer,
     TurnoSerializer,
     UserTurnoSerializer,
+    MensualidadSerializer,
+    ExtraordinariaSerializer,
+    DeudaExtraordinariaSerializer,
 )
 
 from .models import (
@@ -27,6 +30,9 @@ from .models import (
     Qr,
     Turno,
     UserTurno,
+    Mensualidad,
+    Extraordinaria,
+    DeudaExtraordinaria,
 )
 
 
@@ -78,6 +84,21 @@ class TurnoView(viewsets.ModelViewSet):
 class UserTurnoView(viewsets.ModelViewSet):
     serializer_class = UserTurnoSerializer
     queryset = UserTurno.objects.all()
+
+
+class MensualidadView(viewsets.ModelViewSet):
+    serializer_class = MensualidadSerializer
+    queryset = Mensualidad.objects.all()
+
+
+class ExtraordinariaView(viewsets.ModelViewSet):
+    serializer_class = ExtraordinariaSerializer
+    queryset = Extraordinaria.objects.all()
+
+
+class DeudaExtraordinariaView(viewsets.ModelViewSet):
+    serializer_class = DeudaExtraordinariaSerializer
+    queryset = DeudaExtraordinaria.objects.all()
 
 
 """class AgendaAllView(APIView):

@@ -11,7 +11,10 @@ from .models import (
     Pago,
     Qr,
     Turno,
-    UserTurno
+    UserTurno,
+    Mensualidad,
+    Extraordinaria,
+    DeudaExtraordinaria,
 )
 
 
@@ -61,13 +64,33 @@ class QrSerializer(serializers.ModelSerializer):
     class Meta:
         model = Qr
         fields = "__all__"
-        
+
+
 class TurnoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Turno
         fields = "__all__"
-        
+
+
 class UserTurnoSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserTurno
+        fields = "__all__"
+
+
+class MensualidadSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Mensualidad
+        fields = "__all__"
+
+
+class ExtraordinariaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Extraordinaria
+        fields = "__all__"
+
+
+class DeudaExtraordinariaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DeudaExtraordinaria
         fields = "__all__"
