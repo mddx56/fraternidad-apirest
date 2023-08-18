@@ -22,15 +22,26 @@ admin.site.index_title = "Bienvenidos al portal de administración"
 
 admin.site.register(EstadoReserva)
 
+
 class TipoEventoAdmin(admin.ModelAdmin):
     list_display = ("id", "nombre", "descripcion", "precio")
-    list_display_links = ("id", "nombre")
+    list_display_links = ("id",)
     list_editable = ("precio", "nombre")
     search_fields = ("id", "nombre")
     list_per_page = 25
 
-admin.site.register(TipoEvento,TipoEventoAdmin)
-admin.site.register(EstadoDeuda)
+
+admin.site.register(TipoEvento, TipoEventoAdmin)
+
+
+class EstadoDeudaAdmin(admin.ModelAdmin):
+    list_display = ("id", "nombre")
+    list_display_links = ("id", "nombre")
+    search_fields = ("id", "nombre")
+    list_per_page = 25
+
+
+admin.site.register(EstadoDeuda, EstadoDeudaAdmin)
 
 
 class AgendaAdmin(admin.ModelAdmin):
@@ -63,9 +74,19 @@ class DeudaAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Deuda, DeudaAdmin)
-#admin.site.register(DetalleDeuda)
-admin.site.register(Pago)
-#admin.site.register(Qr)
+# admin.site.register(DetalleDeuda)
+
+
+class PagoAdmin(admin.ModelAdmin):
+    list_display = ("id", "fecha_pago", "monto_pagado", "deuda", "evento", "user")
+    list_display_links = ("id","deuda", "evento","user")
+    list_filter = ("evento",)
+    search_fields = ("id", "user")
+    list_per_page = 25
+
+
+admin.site.register(Pago, PagoAdmin)
+# admin.site.register(Qr)
 
 
 class UserTurnoAdmin(admin.ModelAdmin):
@@ -127,7 +148,7 @@ class DeudaExtraordinariaAdmin(admin.ModelAdmin):
         "pagado",
         "created_date",
     )  # Ahora la interfaz mostrará nombre, apellido y email de cada autor.
-    search_fields = "deuda"
+    # search_fields = "deuda"
 
 
 admin.site.register(DeudaExtraordinaria, DeudaExtraordinariaAdmin)

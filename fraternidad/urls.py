@@ -33,7 +33,7 @@ from rest_framework_simplejwt.views import (
 )
 
 from fraternidad import views
-from authapi.views import CreateUserView
+from accounts.views import CreateUserView
 from django.views.generic import TemplateView
 
 schema_view = get_schema_view(
@@ -54,8 +54,8 @@ urlpatterns = [
     path("api/login", TokenObtainPairView.as_view(), name="token_obtain_pair"),
     path("api/signup", CreateUserView.as_view(), name="crear_usuario"),
     path("api/agenda", include("agendas.urls")),
-    path("api/frater", include("frater.urls")),
-    path("api/auth", include("authapi.urls")),
+    path("api/frater", include("configuracion.urls")),
+    path("api/auth", include("accounts.urls")),
     path(
         "swagger/",
         schema_view.with_ui("swagger", cache_timeout=0),
@@ -63,4 +63,3 @@ urlpatterns = [
     ),
     path("redoc/", schema_view.with_ui("redoc", cache_timeout=0), name="schema-redoc"),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-

@@ -66,5 +66,14 @@ class Token(models.Model):
     update_at = models.DateTimeField(auto_now=True)
 
 
+class Cumpleanio(models.Model):
+    disponible = models.BooleanField(default=False)
+    fecha = models.DateTimeField(null=False)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def __str__(self) -> str:
+        return f"Cumpleanio : {self.user.username}"
+
+
 #class User(AbstractBaseUser):
     

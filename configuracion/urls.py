@@ -1,10 +1,11 @@
 from django.urls import include, path
 from rest_framework import routers
-from authapi import views
+from configuracion import views
 
 router = routers.DefaultRouter()
-router.register("notificacion", views.NotificacionView)
-router.register("token", views.TokenView)
+router.register("fraternidad", views.FraternidadView)
+router.register("medios", views.MedioView)
+
 
 urlpatterns = [
     path("/", include(router.urls)),

@@ -1,8 +1,5 @@
 from rest_framework import serializers
-from .models import (
-    Fraternidad,
-    Cumpleanio,
-)
+from .models import Fraternidad, Medio
 
 
 class FraternidadSerializer(serializers.ModelSerializer):
@@ -10,7 +7,8 @@ class FraternidadSerializer(serializers.ModelSerializer):
         model = Fraternidad
         fields = "__all__"
 
-class CumpleanioSerializer(serializers.ModelSerializer):
+
+class MedioSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Cumpleanio
+        model = Medio
         fields = "__all__"
