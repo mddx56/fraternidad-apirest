@@ -1,24 +1,7 @@
-from django.contrib.auth.models import User
+from django.conf import settings
 from rest_framework import serializers
-from .models import Notificacion, Token, Cumpleanio
 
-
-class CumpleanioSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Cumpleanio
-        fields = "__all__"
-
-
-class NotificacionSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Notificacion
-        fields = "__all__"
-
-
-class TokenSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Token
-        fields = "__all__"
+User = settings.AUTH_USER_MODEL
 
 
 class UserSerializer(serializers.ModelSerializer):

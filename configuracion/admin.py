@@ -15,7 +15,7 @@ admin.site.register(Fraternidad, FraternidadAdmin)
 
 
 class MedioAdmin(admin.ModelAdmin):
-    list_display = ("id", "tipo", "fraternidad", "upload_date")
+    list_display = ("id", "image_tag", "tipo", "fraternidad", "upload_date")
     list_display_links = ("id", "fraternidad")
     search_fields = ("id", "descripcion")
     list_filter = ("tipo",)

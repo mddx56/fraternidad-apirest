@@ -1,45 +1,77 @@
+import uuid
 from django.db import models
-
+from django.contrib.auth.validators import UnicodeUsernameValidator
 from django.contrib.auth.models import (
-    User,
     AbstractBaseUser,
     PermissionsMixin,
     BaseUserManager,
 )
-"""
 
-class UserAccountManager(BaseUserManager):
-    def create_user(self,username, email, password=None, **extra_fields):
-        
+
+class CustomUserManager(BaseUserManager):
+    def _create_user(self, username, email, password, **extra_fields):
+        if not username:
+            raise ValueError("falta el username..")
+        if not email:
+            raise ValueError("falta el email..")
         email = self.normalize_email(email)
-        
-        user = self.model(email=email, **extra_fields)
+        username = self.model.normalize_username(username)
+        user = self.model(username=username, email=email, **extra_fields)
         user.set_password(password)
+        user.save()
+
+        return user
+
+    def create_user(self, username, email, password=None, **extra_fields):
+        extra_fields.setdefault("is_staff", False)
+        extra_fields.setdefault("is_superuser", False)
+        return self._create_user(username, email, password, **extra_fields)
+
+    def create_superuser(self, username, email, password=None, **extra_fields):
+        user = self._create_user(username, email, password, **extra_fields)
+        user.admin = True
+        user.staff = True
+        user.role = "admin"
+        user.verified = True
         user.save()
 
         return user
 
 
 class UserAccount(AbstractBaseUser, PermissionsMixin):
-    FRATERNO = "fraterno"
-    TESORERO = "tesorero"
-    ADMIN = "admin"
-    USER_ROLE = [(FRATERNO, FRATERNO), (ADMIN, ADMIN), (TESORERO, TESORERO)]
-    # username
-    email = models.EmailField(max_length=255, unique=True)
-    first_name = models.CharField(max_length=255)
-    last_name = models.CharField(max_length=255)
-    role = models.CharField(max_length=10, choices=USER_ROLE, default=FRATERNO)
-    is_active = models.BooleanField(default=True)
-    is_staff = models.BooleanField(default=False)
+    FRATERNO = "Fraterno"
+    TESORERO = "Tesorero"
+    ADMIN = "Admin"
+    username_validator = UnicodeUsernameValidator()
+    USER_ROLE = [(FRATERNO, "fraterno"), (ADMIN, "admin"), (TESORERO, "tesorero")]
+    username = models.CharField(
+        max_length=255,
+        validators=[username_validator],
+        unique=True,
+        error_messages={
+            "unique": "Un usuario con es nombre ya existe.",
+        },
+    )
+    id = models.UUIDField(default=uuid.uuid4, unique=True, primary_key=True)
+    first_name = models.CharField(max_length=155)
+    last_name = models.CharField(max_length=155)
+    email = models.EmailField(max_length=150, unique=True)
+    phone = models.CharField(max_length=15)
+    avatar = models.CharField(max_length=100, null=True, default="")
+    role = models.CharField(max_length=15, choices=USER_ROLE, default=FRATERNO)
+    active = models.BooleanField(default=True)
+    staff = models.BooleanField(default=False)
+    admin = models.BooleanField(default=False)
+    verified = models.BooleanField(default=False)
 
-    objects = UserAccountManager()
+    objects = CustomUserManager()
 
-    USERNAME_FIELD = "email"
-    REQUIRED_FIELDS = ["first_name", "last_name", "role"]
+    EMAIL_FIELD = "email"
+    USERNAME_FIELD = "username"
+    REQUIRED_FIELDS = ["first_name", "last_name", "email", "role"]
 
     def get_full_name(self):
-        return "{fname} {lname}".format(fname=self.first_name, lname=self.last_name)
+        return f"nombres= {self.first_name}, apellidos= {self.last_name}"
 
     def get_short_name(self):
         return self.first_name
@@ -50,30 +82,17 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         return self.email
 
-"""
-class Notificacion(models.Model):
-    titulo = models.CharField(max_length=300, default="", null=False)
-    descripcion = models.TextField(default="", null=True)
-    fecha_creacion = models.DateTimeField(auto_now_add=True)
-    user_destino = models.IntegerField(default=-1)
-    user_remitente = models.ForeignKey(User, on_delete=models.CASCADE)
-    leido = models.BooleanField(default=False)
+    def has_module_perms(self, app_label):
+        return True
 
+    @property
+    def is_staff(self):
+        return self.staff
 
-class Token(models.Model):
-    token = models.TextField(default="", null=False)
-    create_at = models.DateTimeField(auto_now_add=True)
-    update_at = models.DateTimeField(auto_now=True)
+    @property
+    def is_admin(self):
+        return self.admin
 
-
-class Cumpleanio(models.Model):
-    disponible = models.BooleanField(default=False)
-    fecha = models.DateTimeField(null=False)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-
-    def __str__(self) -> str:
-        return f"Cumpleanio : {self.user.username}"
-
-
-#class User(AbstractBaseUser):
-    
+    @property
+    def is_active(self):
+        return self.active
