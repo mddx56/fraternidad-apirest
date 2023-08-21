@@ -23,12 +23,13 @@ class CustomUserManager(BaseUserManager):
         return user
 
     def create_user(self, username, email, password=None, **extra_fields):
-        extra_fields.setdefault("is_staff", False)
-        extra_fields.setdefault("is_superuser", False)
+        # extra_fields.setdefault("is_staff", False)
+        # extra_fields.setdefault("is_superuser", False)
         return self._create_user(username, email, password, **extra_fields)
 
     def create_superuser(self, username, email, password=None, **extra_fields):
         user = self._create_user(username, email, password, **extra_fields)
+        extra_fields.setdefault("is_superuser", True)
         user.admin = True
         user.staff = True
         user.role = "admin"
@@ -56,7 +57,7 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
     first_name = models.CharField(max_length=155)
     last_name = models.CharField(max_length=155)
     email = models.EmailField(max_length=150, unique=True)
-    phone = models.CharField(max_length=15)
+    phone = models.CharField(max_length=15, null=True, default="")
     avatar = models.CharField(max_length=100, null=True, default="")
     role = models.CharField(max_length=15, choices=USER_ROLE, default=FRATERNO)
     active = models.BooleanField(default=True)
@@ -71,7 +72,7 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
     REQUIRED_FIELDS = ["first_name", "last_name", "email", "role"]
 
     def get_full_name(self):
-        return f"nombres= {self.first_name}, apellidos= {self.last_name}"
+        return f"{self.first_name} {self.last_name}"
 
     def get_short_name(self):
         return self.first_name

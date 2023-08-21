@@ -1,0 +1,1 @@
+import{j as t,r as s,v as a}from"./index-7752c481.js";import{u as e}from"./Layout-11e1e5ea.js";function n(){return t.jsx(t.Fragment,{children:t.jsx("h1",{children:"Dashboard"})})}function c(){const r=e();return s.useEffect(()=>{r(a({title:"Dashboard"}))}),t.jsx(n,{})}export{c as default};
