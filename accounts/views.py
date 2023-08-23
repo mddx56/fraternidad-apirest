@@ -4,8 +4,12 @@ from rest_framework.decorators import permission_classes
 from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny
 from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework.permissions import IsAuthenticated
+from rest_framework import generics
 from .serializers import (
+    ChangePasswordSerializer,
     MyTokenObtainPairSerializer,
+    UpdateUserSerializer,
     UserSerializer,
 )
 import rest_framework.status as status
@@ -57,3 +61,15 @@ class ObtainTokenPairView(TokenObtainPairView):
     )
 
     serializer_class = MyTokenObtainPairSerializer
+
+
+class ChangePasswordView(generics.UpdateAPIView):
+    queryset = User.objects.all()
+    permission_classes = (IsAuthenticated,)
+    serializer_class = ChangePasswordSerializer
+
+
+class UpdateProfileView(generics.UpdateAPIView):
+    queryset = User.objects.all()
+    permission_classes = (IsAuthenticated,)
+    serializer_class = UpdateUserSerializer

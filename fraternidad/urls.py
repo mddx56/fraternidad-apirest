@@ -14,7 +14,7 @@ from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenVerifyView,
 )
-from accounts.views import ObtainTokenPairView
+from accounts.views import ChangePasswordView, ObtainTokenPairView, UpdateProfileView
 from fraternidad import views
 from accounts.views import CreateUserView
 
@@ -37,6 +37,16 @@ urlpatterns = [
     path("api/login", ObtainTokenPairView.as_view(), name="token_obtain_pair"),
     path("api/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
     path("api/signup", CreateUserView.as_view(), name="crear_usuario"),
+    path(
+        "api/change_password/<str:pk>/",
+        ChangePasswordView.as_view(),
+        name="auth_change_password",
+    ),
+    path(
+        "api/update_profile/<str:pk>/",
+        UpdateProfileView.as_view(),
+        name="auth_update_profile",
+    ),
     path("api/agenda", include("agendas.urls")),
     path("api/frater", include("configuracion.urls")),
     path("api/auth", include("accounts.urls")),
