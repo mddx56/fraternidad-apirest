@@ -101,6 +101,17 @@ class DeudaExtraordinariaView(viewsets.ModelViewSet):
     queryset = DeudaExtraordinaria.objects.all()
 
 
+from rest_framework import generics
+
+
+class DeudasPorClienteListView(generics.ListAPIView):
+    serializer_class = DeudaSerializer
+
+    def get_queryset(self):
+        user_id = self.kwargs["id"]
+        return Deuda.objects.filter(user=user_id).order_by("estado_deuda")
+
+
 """class AgendaAllView(APIView):
     def get(self, request):
         queryset = Agenda.objects.all()
