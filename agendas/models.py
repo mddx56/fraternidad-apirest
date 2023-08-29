@@ -76,7 +76,7 @@ class DeudaExtraordinaria(models.Model):
     pagado = models.BooleanField(default=False)
     created_date = models.DateTimeField(auto_now_add=True)
 
-
+"""
 class DetalleDeuda(models.Model):
     monto_cargo = models.DecimalField(max_digits=10, decimal_places=2, null=False)
     monto_abono = models.DecimalField(max_digits=10, decimal_places=2, null=False)
@@ -86,7 +86,7 @@ class DetalleDeuda(models.Model):
 
     def __str__(self) -> str:
         return f"Deuda : {self.fecha_detalle}, {self.concepto}"
-
+"""
 
 class Qr(models.Model):
     qr_valor = models.DecimalField(max_digits=10, decimal_places=2, null=False)

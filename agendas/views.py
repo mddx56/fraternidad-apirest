@@ -9,7 +9,7 @@ from .serializer import (
     EstadoReservaSerializer,
     AgendaSerializer,
     DeudaSerializer,
-    DetalleDeudaSerializer,
+#    DetalleDeudaSerializer,
     PagoSerializer,
     QrSerializer,
     TurnoSerializer,
@@ -25,7 +25,7 @@ from .models import (
     EstadoReserva,
     Agenda,
     Deuda,
-    DetalleDeuda,
+    #DetalleDeuda,
     Pago,
     Qr,
     Turno,
@@ -60,11 +60,11 @@ class DeudaView(viewsets.ModelViewSet):
     serializer_class = DeudaSerializer
     queryset = Deuda.objects.all()
 
-
+"""
 class DetalleDeudaView(viewsets.ModelViewSet):
     serializer_class = DetalleDeudaSerializer
     queryset = DetalleDeuda.objects.all()
-
+"""
 
 class PagoView(viewsets.ModelViewSet):
     serializer_class = PagoSerializer

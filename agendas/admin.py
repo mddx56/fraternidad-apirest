@@ -7,7 +7,7 @@ from .models import (
     EstadoDeuda,
     EstadoReserva,
     TipoEvento,
-    DetalleDeuda,
+    #DetalleDeuda,
     Qr,
     Turno,
     UserTurno,

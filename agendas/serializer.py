@@ -7,7 +7,7 @@ from .models import (
     EstadoDeuda,
     Agenda,
     Deuda,
-    DetalleDeuda,
+    #DetalleDeuda,
     Pago,
     Qr,
     Turno,
@@ -47,12 +47,12 @@ class DeudaSerializer(serializers.ModelSerializer):
         model = Deuda
         fields = "__all__"
 
-
+"""
 class DetalleDeudaSerializer(serializers.ModelSerializer):
     class Meta:
         model = DetalleDeuda
         fields = "__all__"
-
+"""
 
 class PagoSerializer(serializers.ModelSerializer):
     class Meta:
