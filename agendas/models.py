@@ -24,7 +24,7 @@ class TipoEvento(models.Model):
     precio = models.DecimalField(max_digits=10, decimal_places=2, null=False, default=0)
 
     def __str__(self) -> str:
-        return f"TipoEvento : {self.nombre}, {self.descripcion}"
+        return f"TipoEvento : {self.nombre}"
 
 
 class Agenda(models.Model):

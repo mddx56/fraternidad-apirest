@@ -50,7 +50,7 @@ class AgendaAdmin(admin.ModelAdmin):
         "fecha",
         "hora_inicio",
         "hora_fin",
-        "descripcion",
+        #"descripcion",
         "tipo_evento",
         "user",
     )

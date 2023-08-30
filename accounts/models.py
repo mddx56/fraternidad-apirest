@@ -80,9 +80,6 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
     def get_role(self):
         return self.role
 
-    def __str__(self):
-        return self.email
-
     def has_module_perms(self, app_label):
         return True
 
@@ -97,3 +94,6 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
     @property
     def is_active(self):
         return self.active
+    
+    def __str__(self) -> str:
+        return f"User : {self.get_full_name()}"
