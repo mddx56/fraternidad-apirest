@@ -1,6 +1,17 @@
 from django.contrib import admin
 
-from .models import Fraternidad, Medio
+from .models import Fraternidad, Medio, Cumpleanio
+
+
+class CumpleanioAdmin(admin.ModelAdmin):
+    list_display = ("id", "fecha", "disponible", "user")
+    list_display_links = ("id", "fecha")
+    # list_editable = ("precio", "nombre")
+    search_fields = ("id", "fecha")
+    list_per_page = 25
+
+
+admin.site.register(Cumpleanio, CumpleanioAdmin)
 
 
 class FraternidadAdmin(admin.ModelAdmin):

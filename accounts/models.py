@@ -29,7 +29,8 @@ class CustomUserManager(BaseUserManager):
 
     def create_superuser(self, username, email, password=None, **extra_fields):
         user = self._create_user(username, email, password, **extra_fields)
-        extra_fields.setdefault("is_superuser", True)
+        #extra_fields.setdefault("is_superuser", True)
+        user.is_superuser = True
         user.admin = True
         user.staff = True
         user.role = "admin"
@@ -50,17 +51,19 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
         validators=[username_validator],
         unique=True,
         error_messages={
-            "unique": "Un usuario con es nombre ya existe.",
+            "unique": "Nombre de usuario o CI ya existe.",
         },
     )
+
     id = models.UUIDField(default=uuid.uuid4, unique=True, primary_key=True)
-    first_name = models.CharField(max_length=155)
-    last_name = models.CharField(max_length=155)
+    ci = models.BooleanField(default=False)
+    full_name = models.CharField(max_length=355,null=False, default="")
     email = models.EmailField(max_length=150, unique=True)
-    phone = models.CharField(max_length=15, null=True, default="")
-    avatar = models.CharField(max_length=100, null=True, default="")
+    phone = models.CharField(max_length=15, blank=True, null=True, default="")
     role = models.CharField(max_length=15, choices=USER_ROLE, default=FRATERNO)
+    avatar = models.BooleanField(default=False)
     active = models.BooleanField(default=True)
+    suspend = models.BooleanField(default=False)
     staff = models.BooleanField(default=False)
     admin = models.BooleanField(default=False)
     verified = models.BooleanField(default=False)
@@ -69,13 +72,7 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
 
     EMAIL_FIELD = "email"
     USERNAME_FIELD = "username"
-    REQUIRED_FIELDS = ["first_name", "last_name", "email", "role"]
-
-    def get_full_name(self):
-        return f"{self.first_name} {self.last_name}"
-
-    def get_short_name(self):
-        return self.first_name
+    REQUIRED_FIELDS = ["full_name", "email"]
 
     def get_role(self):
         return self.role
@@ -94,6 +91,6 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
     @property
     def is_active(self):
         return self.active
-    
+
     def __str__(self) -> str:
-        return f"User : {self.get_full_name()}"
+        return f"User : {self.full_name}"

@@ -20,5 +20,5 @@ router.register("deudaextraordinarias", views.DeudaExtraordinariaView)
 
 urlpatterns = [
     path("/", include(router.urls)),
-    path('/fraterno/<str:id>/deudas/', views.DeudasPorClienteListView.as_view(), name='eventos-all'),
+    path('fraterno/<str:id>/deudas/', views.DeudasPorClienteListView.as_view(), name='eventos-all'),
 ]

@@ -2,14 +2,17 @@ from django.conf import settings
 from django.db import models
 from django.utils.html import mark_safe
 
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
+
+"""
 class Notificacion(models.Model):
     titulo = models.CharField(max_length=300, default="", null=False)
     descripcion = models.TextField(default="", null=True)
     fecha_creacion = models.DateTimeField(auto_now_add=True)
     user_destino = models.IntegerField(default=-1)
-    user_remitente = models.ForeignKey(
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE
-    )
+    user_remitente = models.ForeignKey(User, on_delete=models.CASCADE)
     leido = models.BooleanField(default=False)
 
 
@@ -17,12 +20,13 @@ class Token(models.Model):
     token = models.TextField(default="", null=False)
     create_at = models.DateTimeField(auto_now_add=True)
     update_at = models.DateTimeField(auto_now=True)
+"""
 
 
 class Cumpleanio(models.Model):
     disponible = models.BooleanField(default=False)
     fecha = models.DateTimeField(null=False)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self) -> str:
         return f"Cumpleanio : {self.user.username}"

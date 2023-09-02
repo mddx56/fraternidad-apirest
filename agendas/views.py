@@ -112,8 +112,9 @@ class DeudasPorClienteListView(generics.ListAPIView):
         return Deuda.objects.filter(user=user_id).order_by("estado_deuda")
 
 
-"""class AgendaAllView(APIView):
-    def get(self, request):
+class CalcularDeudaView(APIView):
+    
+    def get(self, request, pk):
         queryset = Agenda.objects.all()
         serializer = AgendaSerializer(queryset, many=True)
-        return Response(serializer.data)"""
+        return Response(serializer.data)

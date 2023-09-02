@@ -101,7 +101,7 @@ DATABASES = {
         "PASSWORD": config("DB_PASSWORD"),
         "HOST": config("DB_HOST"),
         "PORT": config("DB_PORT"),
-        "OPTIONS": {"sslmode": "require"},
+        #"OPTIONS": {"sslmode": "require"},
     }
 }
 
@@ -142,7 +142,7 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 
-STATICFILES_DIRS = [os.path.join(BASE_DIR, "frontend/assets")]
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "templates")]
 
 STATIC_ROOT = os.path.join(BASE_DIR, "static-cdn")
 

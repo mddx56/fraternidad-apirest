@@ -68,10 +68,9 @@ class UpdateUserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ("username", "first_name", "last_name", "email", "phone")
+        fields = ("username", "full_name", "email", "phone")
         extra_kwargs = {
-            "first_name": {"required": True},
-            "last_name": {"required": True},
+            "full_name": {"required": True},
         }
 
     def validate_email(self, value):
