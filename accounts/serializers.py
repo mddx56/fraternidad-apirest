@@ -26,8 +26,12 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     def get_token(cls, user):
         token = super().get_token(user)
         token["username"] = user.username
-        token["name"] = user.get_full_name()
+        token["name"] = user.full_name
         token["role"] = user.role
+        token["email"] = user.email
+        token["phone"] = user.phone
+        token["avatar"] = user.avatar
+        token["suspend"] = user.suspend
         token["active"] = user.active
         # token['name'] = user.id
         return token
@@ -35,7 +39,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
 
 class ChangePasswordSerializer(serializers.ModelSerializer):
     password = serializers.CharField(
-        write_only=True, required=True#, validators=[password_validation]
+        write_only=True, required=True  # , validators=[password_validation]
     )
     password2 = serializers.CharField(write_only=True, required=True)
     old_password = serializers.CharField(write_only=True, required=True)
