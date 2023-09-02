@@ -17,6 +17,7 @@ from rest_framework_simplejwt.views import (
 from accounts.views import ChangePasswordView, ObtainTokenPairView, UpdateProfileView
 from fraternidad import views
 from accounts.views import CreateUserView
+from graphene_django.views import GraphQLView
 
 schema_view = get_schema_view(
     openapi.Info(
@@ -56,4 +57,5 @@ urlpatterns = [
         name="schema-swagger-ui",
     ),
     path("redoc/", schema_view.with_ui("redoc", cache_timeout=0), name="schema-redoc"),
+    path("graphql", GraphQLView.as_view(graphiql=True)),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

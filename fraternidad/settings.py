@@ -176,3 +176,8 @@ EMAIL_HOST = "sandbox.smtp.mailtrap.io"
 EMAIL_HOST_USER = config("EMAIL_USER")
 EMAIL_HOST_PASSWORD = config("EMAIL_PASSWORD")
 EMAIL_PORT = "2525"
+
+
+GRAPHENE = {
+    "SCHEMA": "agendas.schemas.schema"
+}

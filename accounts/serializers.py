@@ -88,8 +88,7 @@ class UpdateUserSerializer(serializers.ModelSerializer):
         return value
 
     def update(self, instance, validated_data):
-        instance.first_name = validated_data["first_name"]
-        instance.last_name = validated_data["last_name"]
+        instance.first_name = validated_data["full_name"]
         instance.email = validated_data["email"]
         instance.username = validated_data["username"]
         instance.phone = validated_data["phone"]
