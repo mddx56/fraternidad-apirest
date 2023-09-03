@@ -1,4 +1,3 @@
-from django.conf import settings
 from django.db import models
 from django.utils.html import mark_safe
 
@@ -60,7 +59,7 @@ class Medio(models.Model):
     )
 
     tipo = models.CharField(max_length=10, choices=MEDIA_TYPES)
-    url = models.URLField(max_length=500)
+    url = models.URLField(max_length=700)
     descripcion = models.TextField(blank=True, null=True)
     upload_date = models.DateTimeField(auto_now_add=True)
     fraternidad = models.ForeignKey(Fraternidad, on_delete=models.CASCADE)

@@ -4,7 +4,7 @@ from rest_framework import serializers
 from .models import (
     EstadoReserva,
     TipoEvento,
-    EstadoDeuda,
+    #EstadoDeuda,
     Agenda,
     Deuda,
     #DetalleDeuda,
@@ -29,12 +29,12 @@ class TipoEventoSerializer(serializers.ModelSerializer):
         model = TipoEvento
         fields = "__all__"
 
-
+"""
 class EstadoDeudaSerializer(serializers.ModelSerializer):
     class Meta:
         model = EstadoDeuda
         fields = "__all__"
-
+"""
 
 class AgendaSerializer(serializers.ModelSerializer):
     class Meta:

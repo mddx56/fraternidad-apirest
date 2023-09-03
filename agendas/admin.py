@@ -4,10 +4,10 @@ from .models import (
     Agenda,
     Deuda,
     Pago,
-    EstadoDeuda,
+    # EstadoDeuda,
     EstadoReserva,
     TipoEvento,
-    #DetalleDeuda,
+    # DetalleDeuda,
     Qr,
     Turno,
     UserTurno,
@@ -24,24 +24,30 @@ admin.site.register(EstadoReserva)
 
 
 class TipoEventoAdmin(admin.ModelAdmin):
-    list_display = ("id", "nombre", "descripcion", "precio")
+    list_display = (
+        "id",
+        "nombre",
+        "descripcion",
+        "costo_entresemana",
+        "costo_finsemana",
+    )
     list_display_links = ("id",)
-    list_editable = ("precio", "nombre")
+    # list_editable = ("precio", "nombre")
     search_fields = ("id", "nombre")
     list_per_page = 25
 
 
 admin.site.register(TipoEvento, TipoEventoAdmin)
 
-
+"""
 class EstadoDeudaAdmin(admin.ModelAdmin):
     list_display = ("id", "nombre")
     list_display_links = ("id", "nombre")
     search_fields = ("id", "nombre")
     list_per_page = 25
 
-
 admin.site.register(EstadoDeuda, EstadoDeudaAdmin)
+"""
 
 
 class AgendaAdmin(admin.ModelAdmin):
@@ -50,7 +56,7 @@ class AgendaAdmin(admin.ModelAdmin):
         "fecha",
         "hora_inicio",
         "hora_fin",
-        #"descripcion",
+        # "descripcion",
         "tipo_evento",
         "user",
     )
@@ -79,7 +85,7 @@ admin.site.register(Deuda, DeudaAdmin)
 
 class PagoAdmin(admin.ModelAdmin):
     list_display = ("id", "fecha_pago", "monto_pagado", "deuda", "evento", "user")
-    list_display_links = ("id","deuda", "evento","user")
+    list_display_links = ("id", "deuda", "evento", "user")
     list_filter = ("evento",)
     search_fields = ("id", "user")
     list_per_page = 25
@@ -116,7 +122,7 @@ class MensualidadAdmin(admin.ModelAdmin):
     list_display = (
         "id",
         "fecha",
-        "monto_fijo",
+        "costo",
         "pagado",
         "deuda",
     )

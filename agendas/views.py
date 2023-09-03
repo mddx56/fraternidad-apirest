@@ -4,12 +4,12 @@ from rest_framework.response import Response
 from rest_framework import status
 
 from .serializer import (
-    EstadoDeudaSerializer,
+    #EstadoDeudaSerializer,
     TipoEventoSerializer,
     EstadoReservaSerializer,
     AgendaSerializer,
     DeudaSerializer,
-#    DetalleDeudaSerializer,
+    #    DetalleDeudaSerializer,
     PagoSerializer,
     QrSerializer,
     TurnoSerializer,
@@ -20,12 +20,12 @@ from .serializer import (
 )
 
 from .models import (
-    EstadoDeuda,
+    # EstadoDeuda,
     TipoEvento,
     EstadoReserva,
     Agenda,
     Deuda,
-    #DetalleDeuda,
+    # DetalleDeuda,
     Pago,
     Qr,
     Turno,
@@ -35,10 +35,11 @@ from .models import (
     DeudaExtraordinaria,
 )
 
-
+"""
 class EstadoDeudaView(viewsets.ModelViewSet):
     serializer_class = EstadoDeudaSerializer
     queryset = EstadoDeuda.objects.all()
+"""
 
 
 class TipoEventoSerializerView(viewsets.ModelViewSet):
@@ -60,11 +61,13 @@ class DeudaView(viewsets.ModelViewSet):
     serializer_class = DeudaSerializer
     queryset = Deuda.objects.all()
 
+
 """
 class DetalleDeudaView(viewsets.ModelViewSet):
     serializer_class = DetalleDeudaSerializer
     queryset = DetalleDeuda.objects.all()
 """
+
 
 class PagoView(viewsets.ModelViewSet):
     serializer_class = PagoSerializer
@@ -115,6 +118,6 @@ class DeudasPorClienteListView(generics.ListAPIView):
 class CalcularDeudaView(APIView):
     
     def get(self, request, pk):
-        queryset = Agenda.objects.all()
+        queryset = Mensualidad.objects.all()
         serializer = AgendaSerializer(queryset, many=True)
         return Response(serializer.data)

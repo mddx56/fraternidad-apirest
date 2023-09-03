@@ -29,7 +29,7 @@ class CustomUserManager(BaseUserManager):
 
     def create_superuser(self, username, email, password=None, **extra_fields):
         user = self._create_user(username, email, password, **extra_fields)
-        #extra_fields.setdefault("is_superuser", True)
+        # extra_fields.setdefault("is_superuser", True)
         user.is_superuser = True
         user.admin = True
         user.staff = True
@@ -57,7 +57,7 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
 
     id = models.UUIDField(default=uuid.uuid4, unique=True, primary_key=True)
     ci = models.BooleanField(default=False)
-    full_name = models.CharField(max_length=355,null=False, default="")
+    full_name = models.CharField(max_length=355, null=False, default="")
     email = models.EmailField(max_length=150, unique=True)
     phone = models.CharField(max_length=15, blank=True, null=True, default="")
     role = models.CharField(max_length=15, choices=USER_ROLE, default=FRATERNO)
@@ -94,3 +94,5 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self) -> str:
         return f"User : {self.full_name}"
+
+

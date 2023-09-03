@@ -1,8 +1,8 @@
 from django.db import models
-from django.conf import settings
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
+
 
 # Create your models here.
 class EstadoReserva(models.Model):
@@ -12,17 +12,22 @@ class EstadoReserva(models.Model):
         return f"EstadoReserva : {self.nombre}"
 
 
-class EstadoDeuda(models.Model):
-    nombre = models.CharField(max_length=100, default="", null=False)
+# class EstadoDeuda(models.Model):
+#    nombre = models.CharField(max_length=100, default="", null=False)
 
-    def __str__(self) -> str:
-        return f"EstadoDeuda : {self.nombre}"
+#    def __str__(self) -> str:
+#        return f"EstadoDeuda : {self.nombre}"
 
 
 class TipoEvento(models.Model):
     nombre = models.CharField(max_length=100, default="", null=False)
     descripcion = models.TextField(default="", null=True)
-    precio = models.DecimalField(max_digits=10, decimal_places=2, null=False, default=0)
+    costo_entresemana = models.DecimalField(
+        max_digits=10, decimal_places=2, null=False, default=0
+    )
+    costo_finsemana = models.DecimalField(
+        max_digits=10, decimal_places=2, null=False, default=0
+    )
 
     def __str__(self) -> str:
         return f"TipoEvento : {self.nombre}"
@@ -43,8 +48,11 @@ class Agenda(models.Model):
 
 
 class Deuda(models.Model):
+    PENDIENTE = "pendiente"
+    PAGADA = "pagada"
+    ESTADOS = [(PENDIENTE, "Pendiente"), (PAGADA, "Pagada")]
     deuda_total = models.DecimalField(max_digits=10, decimal_places=2, default=0)
-    estado_deuda = models.ForeignKey(EstadoDeuda, on_delete=models.DO_NOTHING)
+    estado_deuda = models.CharField(max_length=15, choices=ESTADOS, default=PENDIENTE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     created_date = models.DateTimeField(auto_now_add=True, null=True)
 
@@ -53,13 +61,14 @@ class Deuda(models.Model):
 
 
 class Mensualidad(models.Model):
-    monto_fijo = models.DecimalField(max_digits=10, decimal_places=2, null=False)
+    costo = models.DecimalField(max_digits=10, decimal_places=2, null=False)
     pagado = models.BooleanField(default=False)
     fecha = models.DateField(null=False)
     deuda = models.ForeignKey(Deuda, on_delete=models.CASCADE)
+    created_date = models.DateTimeField(auto_now_add=True, null=True)
 
     def __str__(self) -> str:
-        return f"Deuda : {self.monto_fijo}, {self.fecha}"
+        return f"Deuda : {self.costo}, {self.fecha}"
 
 
 class Extraordinaria(models.Model):
@@ -77,6 +86,7 @@ class DeudaExtraordinaria(models.Model):
     pagado = models.BooleanField(default=False)
     created_date = models.DateTimeField(auto_now_add=True)
 
+
 """
 class DetalleDeuda(models.Model):
     monto_cargo = models.DecimalField(max_digits=10, decimal_places=2, null=False)
@@ -89,9 +99,11 @@ class DetalleDeuda(models.Model):
         return f"Deuda : {self.fecha_detalle}, {self.concepto}"
 """
 
+
 class Qr(models.Model):
     qr_valor = models.DecimalField(max_digits=10, decimal_places=2, null=False)
-    deuda = models.ForeignKey(Deuda, on_delete=models.CASCADE)
+    url = models.URLField(max_length=700, null=False, default="")
+    descripcion = models.TextField(blank=True, null=True)
     tipo_evento = models.ForeignKey(TipoEvento, on_delete=models.CASCADE)
 
     def __str__(self) -> str:
@@ -111,8 +123,9 @@ class Pago(models.Model):
 
 
 class Turno(models.Model):
-    nro_semana = models.IntegerField(default=0)
-    fecha = models.DateField(null=True)
+    nro_semana = models.IntegerField(default=0, blank=True)
+    fecha_nueva = models.DateField(null=True, blank=True)
+    fecha_antigua = models.DateField(null=True, blank=True)
 
     def __str__(self) -> str:
         return f"Turno : {self.nro_semana}, {self.fecha}"

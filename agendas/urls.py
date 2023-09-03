@@ -6,7 +6,7 @@ from agendas import views
 router = routers.DefaultRouter()
 router.register("estadosreserva", views.EstadoReservaView)
 router.register("tiposevent", views.TipoEventoSerializerView)
-router.register("estadosdeuda", views.EstadoDeudaView)
+#router.register("estadosdeuda", views.EstadoDeudaView)
 router.register("agendas", views.AgendaView)
 router.register("deudas", views.DeudaView)
 #router.register("detallesdeuda", views.DetalleDeudaView)
@@ -20,5 +20,5 @@ router.register("deudaextraordinarias", views.DeudaExtraordinariaView)
 
 urlpatterns = [
     path("/", include(router.urls)),
-    path('fraterno/<str:id>/deudas/', views.DeudasPorClienteListView.as_view(), name='eventos-all'),
+    path('/fraterno/<str:id>/deudas/', views.DeudasPorClienteListView.as_view(), name='deuda fraterno'),
 ]
