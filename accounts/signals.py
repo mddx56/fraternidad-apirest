@@ -15,4 +15,4 @@ def user_post_save_receiver(sender, instance, created, *args, **kwargs):
         deuda.save()
         print(f"user {instance.username}")
     else:
-        print("algo salio mal..")
+        print("SIGNAL ACCOUNT :","algo salio mal..")

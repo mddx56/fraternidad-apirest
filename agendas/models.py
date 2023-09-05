@@ -111,7 +111,7 @@ class Qr(models.Model):
 
 
 class Pago(models.Model):
-    fecha_pago = models.DateField(auto_now_add=True)
+    fecha_pago = models.DateField(null=True, blank=True)
     monto_pagado = models.DecimalField(max_digits=10, decimal_places=2, null=False)
     deuda = models.ForeignKey(Deuda, on_delete=models.CASCADE)
     evento = models.ForeignKey(Agenda, on_delete=models.CASCADE)
@@ -123,9 +123,9 @@ class Pago(models.Model):
 
 
 class Turno(models.Model):
-    nro_semana = models.IntegerField(default=0, blank=True)
-    fecha_nueva = models.DateField(null=True, blank=True)
-    fecha_antigua = models.DateField(null=True, blank=True)
+    dia = models.IntegerField(default=0, blank=True)
+    semana = models.IntegerField(default=0, blank=True)
+    fecha = models.DateField(null=True, blank=True)
 
     def __str__(self) -> str:
         return f"Turno : {self.nro_semana}, {self.fecha}"

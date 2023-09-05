@@ -12,7 +12,9 @@ User = get_user_model()
 def user_post_save_receiver(sender, instance, created, *args, **kwargs):
     if created:
         #users = User.objects.all()
+        extraord = instance
         deudas = Deuda.objects.all()
+        
         #deuda.save()
         print(f"user {instance.username}")
     else:
