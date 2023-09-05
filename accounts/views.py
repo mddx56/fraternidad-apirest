@@ -6,6 +6,7 @@ from rest_framework.permissions import AllowAny
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import generics
+from rest_framework import viewsets
 from .serializers import (
     ChangePasswordSerializer,
     MyTokenObtainPairSerializer,
@@ -17,6 +18,10 @@ import rest_framework.status as status
 
 User = get_user_model()
 
+
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
 
 class CreateUserView(APIView):
     permission_classes(
