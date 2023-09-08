@@ -16,7 +16,7 @@ class CustomUserManager(BaseUserManager):
             raise ValueError("falta el email..")
         email = self.normalize_email(email)
         username = self.model.normalize_username(username)
-        user = self.model(username=username, email=email, **extra_fields)
+        user = self.model(username=username, email=email, **extra_fields)        
         user.set_password(password)
         user.save()
 
@@ -30,6 +30,7 @@ class CustomUserManager(BaseUserManager):
     def create_superuser(self, username, email, password=None, **extra_fields):
         user = self._create_user(username, email, password, **extra_fields)
         # extra_fields.setdefault("is_superuser", True)
+        
         user.is_superuser = True
         user.admin = True
         user.staff = True
@@ -45,6 +46,10 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
     TESORERO = "Tesorero"
     ADMIN = "Admin"
     username_validator = UnicodeUsernameValidator()
+
+    NORMAL = "normal"
+    PLANPAGOS = "plan"
+    FINANCIAL = [(NORMAL, "Normal"), (PLANPAGOS, "Plan de Pagos")]
     USER_ROLE = [(FRATERNO, "fraterno"), (ADMIN, "admin"), (TESORERO, "tesorero")]
     username = models.CharField(
         max_length=255,
@@ -60,7 +65,11 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
     full_name = models.CharField(max_length=355, null=False, default="")
     email = models.EmailField(max_length=150, unique=True)
     phone = models.CharField(max_length=15, blank=True, null=True, default="")
+    financial_condition = models.CharField(
+        max_length=17, choices=FINANCIAL, default=NORMAL
+    )
     role = models.CharField(max_length=15, choices=USER_ROLE, default=FRATERNO)
+    copy_ci = models.BooleanField(default=False)
     avatar = models.BooleanField(default=False)
     active = models.BooleanField(default=True)
     suspend = models.BooleanField(default=False)
@@ -94,5 +103,3 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self) -> str:
         return f"User : {self.full_name}"
-
-

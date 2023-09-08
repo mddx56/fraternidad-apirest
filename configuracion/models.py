@@ -25,10 +25,14 @@ class Token(models.Model):
 class Cumpleanio(models.Model):
     disponible = models.BooleanField(default=False)
     fecha = models.DateTimeField(null=False)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(
+        User,
+        on_delete=models.CASCADE,
+        primary_key=True,
+    )
 
     def __str__(self) -> str:
-        return f"Cumpleanio : {self.user.username}"
+        return f"Cumpleanio : {self.fecha}"
 
 
 class Fraternidad(models.Model):

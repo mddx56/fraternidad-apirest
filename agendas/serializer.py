@@ -2,12 +2,8 @@ from rest_framework import serializers
 
 
 from .models import (
-    EstadoReserva,
     TipoEvento,
-    #EstadoDeuda,
     Agenda,
-    Deuda,
-    #DetalleDeuda,
     Pago,
     Qr,
     Turno,
@@ -15,12 +11,41 @@ from .models import (
     Mensualidad,
     Extraordinaria,
     DeudaExtraordinaria,
+    GrupoTurno,
+    Gestion,
+    DetallePagoEvento,
+    DetallePagoExtraordianria,
+    DetallePagoMensualidad,
 )
 
 
-class EstadoReservaSerializer(serializers.ModelSerializer):
+class GrupoTurnoSerializer(serializers.ModelSerializer):
     class Meta:
-        model = EstadoReserva
+        model = GrupoTurno
+        fields = "__all__"
+
+
+class GestionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Gestion
+        fields = "__all__"
+
+
+class DetallePagoEventoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DetallePagoEvento
+        fields = "__all__"
+
+
+class DetallePagoExtraordianriaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DetallePagoExtraordianria
+        fields = "__all__"
+
+
+class DetallePagoMensualidadSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DetallePagoMensualidad
         fields = "__all__"
 
 
@@ -29,30 +54,12 @@ class TipoEventoSerializer(serializers.ModelSerializer):
         model = TipoEvento
         fields = "__all__"
 
-"""
-class EstadoDeudaSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = EstadoDeuda
-        fields = "__all__"
-"""
 
 class AgendaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Agenda
         fields = "__all__"
 
-
-class DeudaSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Deuda
-        fields = "__all__"
-
-"""
-class DetalleDeudaSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = DetalleDeuda
-        fields = "__all__"
-"""
 
 class PagoSerializer(serializers.ModelSerializer):
     class Meta:

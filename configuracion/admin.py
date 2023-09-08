@@ -4,10 +4,10 @@ from .models import Fraternidad, Medio, Cumpleanio
 
 
 class CumpleanioAdmin(admin.ModelAdmin):
-    list_display = ("id", "fecha", "disponible", "user")
-    list_display_links = ("id", "fecha")
+    list_display = ("fecha", "disponible", "user")
+    list_display_links = ("fecha", "disponible")
     # list_editable = ("precio", "nombre")
-    search_fields = ("id", "fecha")
+    #search_fields = "fecha"
     list_per_page = 25
 
 

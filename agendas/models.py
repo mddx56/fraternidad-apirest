@@ -4,19 +4,13 @@ from django.contrib.auth import get_user_model
 User = get_user_model()
 
 
-# Create your models here.
+"""# Create your models here.
 class EstadoReserva(models.Model):
     nombre = models.CharField(max_length=100, default="", null=False)
 
     def __str__(self) -> str:
         return f"EstadoReserva : {self.nombre}"
-
-
-# class EstadoDeuda(models.Model):
-#    nombre = models.CharField(max_length=100, default="", null=False)
-
-#    def __str__(self) -> str:
-#        return f"EstadoDeuda : {self.nombre}"
+"""
 
 
 class TipoEvento(models.Model):
@@ -34,12 +28,17 @@ class TipoEvento(models.Model):
 
 
 class Agenda(models.Model):
+    ACTIVA = "activa"
+    PENDIENTE = "pendiente"
+    RECHAZADA = "rechazada"
+    ESTADOS = [(PENDIENTE, "Pendiente"), (ACTIVA, "Activa"), (RECHAZADA, "Rechazada")]
     fecha = models.DateField(null=False)
-    hora_inicio = models.TimeField(null=False)
-    hora_fin = models.TimeField(null=False)
-    descripcion = models.TextField(default="", null=True)
+    hora_inicio = models.TimeField(null=True, blank=True)
+    hora_fin = models.TimeField(null=True, blank=True)
+    descripcion = models.TextField(default="", null=True, blank=True)
     tipo_evento = models.ForeignKey(TipoEvento, on_delete=models.DO_NOTHING)
-    estado_reserva = models.ForeignKey(EstadoReserva, on_delete=models.DO_NOTHING)
+    es_entresemana = models.BooleanField(default=False)
+    estado_reserva = models.CharField(max_length=15, choices=ESTADOS, default=PENDIENTE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     created_date = models.DateTimeField(auto_now_add=True)
 
@@ -47,6 +46,7 @@ class Agenda(models.Model):
         return f"Agenda : {self.fecha}, {self.descripcion}"
 
 
+"""
 class Deuda(models.Model):
     PENDIENTE = "pendiente"
     PAGADA = "pagada"
@@ -58,13 +58,20 @@ class Deuda(models.Model):
 
     def __str__(self) -> str:
         return f"Deuda : {self.user}, {self.estado_deuda}"
+"""
+
+
+class Gestion(models.Model):
+    anio = models.IntegerField(null=False, default=-1)
+    en_curso = models.BooleanField()
 
 
 class Mensualidad(models.Model):
     costo = models.DecimalField(max_digits=10, decimal_places=2, null=False)
     pagado = models.BooleanField(default=False)
     fecha = models.DateField(null=False)
-    deuda = models.ForeignKey(Deuda, on_delete=models.CASCADE)
+    gestion = models.ForeignKey(Gestion, on_delete=models.CASCADE)
+    # deuda = models.ForeignKey(Deuda, on_delete=models.CASCADE)
     created_date = models.DateTimeField(auto_now_add=True, null=True)
 
     def __str__(self) -> str:
@@ -81,10 +88,14 @@ class Extraordinaria(models.Model):
 
 
 class DeudaExtraordinaria(models.Model):
-    deuda = models.ForeignKey(Deuda, on_delete=models.CASCADE)
+    # deuda = models.ForeignKey(Deuda, on_delete=models.CASCADE)
     extraordinaria = models.ForeignKey(Extraordinaria, on_delete=models.CASCADE)
     pagado = models.BooleanField(default=False)
+    detalle = models.TextField(default="")
     created_date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self) -> str:
+        return f"DeudaExtraordinaria : {self.id}, {self.extraordinaria.concepto}"
 
 
 """
@@ -113,8 +124,8 @@ class Qr(models.Model):
 class Pago(models.Model):
     fecha_pago = models.DateField(null=True, blank=True)
     monto_pagado = models.DecimalField(max_digits=10, decimal_places=2, null=False)
-    deuda = models.ForeignKey(Deuda, on_delete=models.CASCADE)
-    evento = models.ForeignKey(Agenda, on_delete=models.CASCADE)
+    # deuda = models.ForeignKey(Deuda, on_delete=models.CASCADE)
+    # evento = models.ForeignKey(Agenda, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     created_date = models.DateTimeField(auto_now_add=True, null=True)
 
@@ -122,18 +133,48 @@ class Pago(models.Model):
         return f"Pago : {self.fecha_pago}, {self.monto_pagado} - user = {self.user.username}"
 
 
-class Turno(models.Model):
+class GrupoTurno(models.Model):
+    nombre = models.CharField(max_length=100, default="", null=False)
     dia = models.IntegerField(default=0, blank=True)
-    semana = models.IntegerField(default=0, blank=True)
-    fecha = models.DateField(null=True, blank=True)
 
     def __str__(self) -> str:
         return f"Turno : {self.nro_semana}, {self.fecha}"
 
 
+class Turno(models.Model):
+    fecha = models.DateField(null=True, blank=True)
+    grupo_turno = models.ForeignKey(GrupoTurno, on_delete=models.CASCADE)
+
+
 class UserTurno(models.Model):
-    turno = models.ForeignKey(Turno, on_delete=models.CASCADE)
+    grupo_turno = models.ForeignKey(GrupoTurno, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self) -> str:
-        return f"UserTurno : {self.turno.nro_semana}, {self.turno.dia_default}- {self.user.username} "
+        return f"UserTurno : {self.turno.nro_semana}, {self.turno.dia_default}- {self.user.username}"
+
+
+class DetallePagoMensualidad(models.Model):
+    pago = models.ForeignKey(Pago, on_delete=models.CASCADE)
+    mensualidad = models.ForeignKey(Mensualidad, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.pago.evento
+
+
+class DetallePagoExtraordianria(models.Model):
+    pago = models.ForeignKey(Pago, on_delete=models.CASCADE)
+    deuda_extraordinaria = models.ForeignKey(
+        DeudaExtraordinaria, on_delete=models.CASCADE
+    )
+
+    def __str__(self):
+        return self.pago.evento
+
+
+class DetallePagoEvento(models.Model):
+    pago = models.ForeignKey(Pago, on_delete=models.CASCADE)
+    evento = models.ForeignKey(Agenda, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.pago.evento
