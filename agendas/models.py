@@ -178,3 +178,12 @@ class DetallePagoEvento(models.Model):
 
     def __str__(self):
         return self.pago.evento
+
+
+class TurnoPl(models.Model):
+    fecha_antigua = models.DateField(null=True, blank=True)
+    fecha_nueva = models.DateField(null=True, blank=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def __str__(self) -> str:
+        return f"turno pl: {self.fecha_antiugua } to {self.fecha_antiugua}"

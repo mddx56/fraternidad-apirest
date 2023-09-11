@@ -7,6 +7,7 @@ from .models import (
     Pago,
     Qr,
     Turno,
+    TurnoPl,
     UserTurno,
     Mensualidad,
     Extraordinaria,
@@ -100,4 +101,10 @@ class ExtraordinariaSerializer(serializers.ModelSerializer):
 class DeudaExtraordinariaSerializer(serializers.ModelSerializer):
     class Meta:
         model = DeudaExtraordinaria
+        fields = "__all__"
+
+
+class TurnoPlSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TurnoPl
         fields = "__all__"
