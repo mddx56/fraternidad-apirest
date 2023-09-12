@@ -2,6 +2,7 @@
 *.pyc
 *.pyo
 *.pyd
+/migrations/
 __pycache__
 
 db.sqlite3

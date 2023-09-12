@@ -1,13 +1,11 @@
 from django.contrib import admin
 
-from .models import Fraternidad, Medio, Cumpleanio
+from .models import Fraternidad, MediaImage, MediaVideo, Articulo, Cumpleanio
 
 
 class CumpleanioAdmin(admin.ModelAdmin):
     list_display = ("fecha", "disponible", "user")
     list_display_links = ("fecha", "disponible")
-    # list_editable = ("precio", "nombre")
-    #search_fields = "fecha"
     list_per_page = 25
 
 
@@ -25,12 +23,37 @@ class FraternidadAdmin(admin.ModelAdmin):
 admin.site.register(Fraternidad, FraternidadAdmin)
 
 
-class MedioAdmin(admin.ModelAdmin):
-    list_display = ("id", "image_tag", "tipo", "fraternidad", "upload_date")
-    list_display_links = ("id", "fraternidad")
+class MediaImageAdmin(admin.ModelAdmin):
+    list_display = ("id", "image_tag", "descripcion", "upload_date")
+    list_display_links = ("id",)
     search_fields = ("id", "descripcion")
-    list_filter = ("tipo",)
+    list_filter = ("mostrar",)
+    ordering = ["secuencia"]
     list_per_page = 25
 
 
-admin.site.register(Medio, MedioAdmin)
+admin.site.register(MediaImage, MediaImageAdmin)
+
+
+class MediaVideoAdmin(admin.ModelAdmin):
+    list_display = ("id", "video_tag", "video_id", "descripcion", "upload_date")
+    list_display_links = ("id",)
+    search_fields = ("id", "video_id", "descripcion")
+    list_filter = ("mostrar",)
+    ordering = ["id"]
+    list_per_page = 25
+
+
+admin.site.register(MediaVideo, MediaVideoAdmin)
+
+
+class ArticuloAdmin(admin.ModelAdmin):
+    list_display = ("id", "titulo", "mostrar", "upload_date")
+    list_display_links = ("id", "titulo")
+    search_fields = ("id", "titulo")
+    list_filter = ("mostrar",)
+    ordering = ["id"]
+    list_per_page = 25
+
+
+admin.site.register(Articulo, ArticuloAdmin)

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Cumpleanio, Fraternidad, Medio
+from .models import Cumpleanio, Fraternidad, MediaImage, MediaVideo, Articulo
 
 
 class CumpleanioSerializer(serializers.ModelSerializer):
@@ -28,7 +28,19 @@ class FraternidadSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
-class MedioSerializer(serializers.ModelSerializer):
+class MediaImageSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Medio
+        model = MediaImage
+        fields = "__all__"
+
+
+class MediaVideoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MediaVideo
+        fields = "__all__"
+
+
+class ArticuloSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Articulo
         fields = "__all__"

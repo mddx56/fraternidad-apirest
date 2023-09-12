@@ -15,11 +15,108 @@ from .models import (
     DetallePagoExtraordianria,
     DetallePagoMensualidad,
     GrupoTurno,
+    TurnoPl,
 )
 
 admin.site.site_header = "Sistema de Gestión para Fraternidad ⛺"
 admin.site.site_title = "Flojonazos"
 admin.site.index_title = "Bienvenidos al portal de administración"
+
+
+class GestionAdmin(admin.ModelAdmin):
+    list_display = (
+        "id",
+        "anio",
+        "en_curso",
+    )
+    list_display_links = ("id",)
+    # list_editable = ("precio", "nombre")
+    search_fields = ("id", "anio")
+    list_per_page = 25
+
+
+admin.site.register(Gestion, GestionAdmin)
+
+
+class QrAdmin(admin.ModelAdmin):
+    list_display = (
+        "id",
+        "qr_valor",
+        "url",
+        "descripcion",
+        "tipo_evento",
+    )
+    list_display_links = ("id",)
+    # list_editable = ("precio", "nombre")
+    search_fields = ("id", "descripcion")
+    list_per_page = 25
+
+
+admin.site.register(Qr, QrAdmin)
+
+
+class TurnoAdmin(admin.ModelAdmin):
+    list_display = (
+        "id",
+        "fecha",
+        "grupo_turno",
+    )
+    list_display_links = ("id",)
+    list_filter = (
+        "grupo_turno",
+        "fecha",
+    )
+    # list_editable = ("precio", "nombre")
+    search_fields = ("id", "fecha")
+    list_per_page = 25
+
+
+admin.site.register(Turno, TurnoAdmin)
+
+
+class DetallePagoEventoAdmin(admin.ModelAdmin):
+    list_display = (
+        "id",
+        "pago",
+        "evento",
+    )
+    list_display_links = ("id",)
+    search_fields = ("id", "pago")
+    list_per_page = 25
+
+
+admin.site.register(DetallePagoEvento, DetallePagoEventoAdmin)
+
+class DetallePagoExtraordianriaAdmin(admin.ModelAdmin):
+    list_display = (
+        "id",
+        "pago",
+        "deuda_extraordinaria",
+    )
+    list_display_links = ("id",)
+ 
+    # list_editable = ("precio", "nombre")
+    search_fields = ("id", "pago")
+    list_per_page = 25
+
+
+admin.site.register(DetallePagoExtraordianria, DetallePagoExtraordianriaAdmin)
+
+class DetallePagoMensualidadAdmin(admin.ModelAdmin):
+    list_display = (
+        "id",
+        "pago",
+        "mensualidad",
+    )
+    list_display_links = ("id",)
+    
+    # list_editable = ("precio", "nombre")
+    search_fields = ("id", "pago")
+    list_per_page = 25
+
+
+admin.site.register(DetallePagoMensualidad, DetallePagoMensualidadAdmin)
+
 
 
 class TipoEventoAdmin(admin.ModelAdmin):
@@ -104,9 +201,9 @@ admin.site.register(UserTurno, UserTurnoAdmin)
 
 
 class MensualidadAdmin(admin.ModelAdmin):
-    list_display = ("id", "fecha", "costo", "pagado", "gestion")
+    list_display = ("id", "fecha", "costo",  "gestion")
     list_display_links = ("id", "fecha")
-    list_filter = ("pagado", "gestion")
+    #list_filter = ( "gestion")
     search_fields = ("fecha",)
     list_per_page = 25
 

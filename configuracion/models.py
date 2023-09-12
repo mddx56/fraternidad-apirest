@@ -37,8 +37,9 @@ class Cumpleanio(models.Model):
 
 class Fraternidad(models.Model):
     nombre = models.CharField(max_length=100, default="", null=False)
-    color = models.CharField(max_length=7, default="", null=True)
-    direccion = models.CharField(max_length=300, default="", null=True)
+    color = models.CharField(max_length=7, default="", null=True, blank=True)
+    telefono = models.CharField(max_length=15, default="", null=True, blank=True)
+    direccion = models.CharField(max_length=300, default="", null=True, blank=True)
     mensualidad = models.DecimalField(
         max_digits=10, decimal_places=2, default=0, null=False
     )
@@ -49,22 +50,23 @@ class Fraternidad(models.Model):
         max_digits=10, decimal_places=2, default=0, null=False
     )
     turno_semanal = models.CharField(max_length=50, default="", null=False)
-    banco = models.CharField(max_length=150, default="", null=True)
-    nro_cuenta = models.CharField(max_length=150, default="", null=True)
+    url = models.URLField(max_length=700, default="")
+    latitud = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
+    longitud = models.DecimalField(
+        max_digits=9, decimal_places=6, null=True, blank=True
+    )
+    banco = models.CharField(max_length=150, default="", null=True, blank=True)
+    nro_cuenta = models.CharField(max_length=150, default="", null=True, blank=True)
 
     def __str__(self) -> str:
         return f"Fraternidad : {self.nombre}"
 
 
-class Medio(models.Model):
-    MEDIA_TYPES = (
-        ("image", "Image"),
-        ("video", "Video"),
-    )
-
-    tipo = models.CharField(max_length=10, choices=MEDIA_TYPES)
+class MediaImage(models.Model):
     url = models.URLField(max_length=700)
     descripcion = models.TextField(blank=True, null=True)
+    secuencia = models.IntegerField(default=0, blank=True)
+    mostrar = models.BooleanField(default=False)
     upload_date = models.DateTimeField(auto_now_add=True)
     fraternidad = models.ForeignKey(Fraternidad, on_delete=models.CASCADE)
 
@@ -72,11 +74,34 @@ class Medio(models.Model):
         return f"Medio : {self.descripcion},  Tipo:  {self.tipo} "
 
     def image_tag(self):
-        if self.tipo == "Image":
-            return mark_safe(
-                f"<div style='width: 200px; height: 200px; display: flex; justify-content: center; align-items: center; overflow: hidden;'><img src='{self.url}' alt='Mi imagen' style='width: 100%; height: auto;'></div>"
-            )
-        else:
-            return mark_safe(
-                f"<iframe width='200' height='200' src='{self.url}' ></iframe>"
-            )
+        return mark_safe(
+            f"<div style='width: 200px; height: 200px; display: flex; justify-content: center; align-items: center; overflow: hidden;'><img src='{self.url}' alt='Mi imagen' style='width: 100%; height: auto;'></div>"
+        )
+
+
+class MediaVideo(models.Model):
+    url = models.URLField(max_length=700)
+    video_id = models.CharField(max_length=15, default="", null=True, blank=True)
+    descripcion = models.TextField(blank=True, null=True)
+    mostrar = models.BooleanField(default=False)
+    upload_date = models.DateTimeField(auto_now_add=True)
+    fraternidad = models.ForeignKey(Fraternidad, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"MediaVideo : {self.descripcion}"
+
+    def video_tag(self):
+        return mark_safe(
+            f"<iframe width='200' height='200' src='{self.url}' ></iframe>"
+        )
+
+
+class Articulo(models.Model):
+    titulo = models.CharField(max_length=256, default="")
+    descripcion = models.TextField(blank=True, null=True)
+    mostrar = models.BooleanField(default=False)
+    upload_date = models.DateTimeField(auto_now_add=True)
+    fraternidad = models.ForeignKey(Fraternidad, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"Articulo : {self.titulo}"

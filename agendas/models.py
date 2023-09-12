@@ -65,17 +65,19 @@ class Gestion(models.Model):
     anio = models.IntegerField(null=False, default=-1)
     en_curso = models.BooleanField()
 
+    def __str__(self):
+        return f"Gestion : {self.anio}"
+
 
 class Mensualidad(models.Model):
     costo = models.DecimalField(max_digits=10, decimal_places=2, null=False)
-    pagado = models.BooleanField(default=False)
     fecha = models.DateField(null=False)
+    mes = models.IntegerField(null=True, blank=True)
     gestion = models.ForeignKey(Gestion, on_delete=models.CASCADE)
-    # deuda = models.ForeignKey(Deuda, on_delete=models.CASCADE)
-    created_date = models.DateTimeField(auto_now_add=True, null=True)
+    # created_date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self) -> str:
-        return f"Deuda : {self.costo}, {self.fecha}"
+        return f"Mensualidad : {self.costo}, {self.fecha}"
 
 
 class Extraordinaria(models.Model):
@@ -84,7 +86,7 @@ class Extraordinaria(models.Model):
     created_date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self) -> str:
-        return f"Deuda : {self.monto}, {self.concepto}"
+        return f"Extraordinaria : {self.monto}, {self.concepto}"
 
 
 class DeudaExtraordinaria(models.Model):
@@ -118,19 +120,17 @@ class Qr(models.Model):
     tipo_evento = models.ForeignKey(TipoEvento, on_delete=models.CASCADE)
 
     def __str__(self) -> str:
-        return f"QR : {self.qr_valor}, {self.deuda.mes}"
+        return f"QR : {self.qr_valor}, {self.descripcion}"
 
 
 class Pago(models.Model):
     fecha_pago = models.DateField(null=True, blank=True)
     monto_pagado = models.DecimalField(max_digits=10, decimal_places=2, null=False)
-    # deuda = models.ForeignKey(Deuda, on_delete=models.CASCADE)
-    # evento = models.ForeignKey(Agenda, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     created_date = models.DateTimeField(auto_now_add=True, null=True)
 
     def __str__(self) -> str:
-        return f"Pago : {self.fecha_pago}, {self.monto_pagado} - user = {self.user.username}"
+        return f"Pago : {self.id} - {self.monto_pagado} Bs. - Usuario = {self.user.full_name}"
 
 
 class GrupoTurno(models.Model):
@@ -138,12 +138,15 @@ class GrupoTurno(models.Model):
     dia = models.IntegerField(default=0, blank=True)
 
     def __str__(self) -> str:
-        return f"Turno : {self.nro_semana}, {self.fecha}"
+        return f"GrupoTurno : {self.nombre}, {self.dia}"
 
 
 class Turno(models.Model):
     fecha = models.DateField(null=True, blank=True)
     grupo_turno = models.ForeignKey(GrupoTurno, on_delete=models.CASCADE)
+
+    def __str__(self) -> str:
+        return f"Turno : {self.fecha}, {self.grupo_turno}"
 
 
 class UserTurno(models.Model):
@@ -151,15 +154,16 @@ class UserTurno(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self) -> str:
-        return f"UserTurno : {self.turno.nro_semana}, {self.turno.dia_default}- {self.user.username}"
+        return f"UserTurno : {self.grupo_turno}- {self.user.full_name}"
 
 
 class DetallePagoMensualidad(models.Model):
     pago = models.ForeignKey(Pago, on_delete=models.CASCADE)
     mensualidad = models.ForeignKey(Mensualidad, on_delete=models.CASCADE)
+    created_date = models.DateTimeField(auto_now_add=True, null=True)
 
     def __str__(self):
-        return self.pago.evento
+        return f"DetallePagoMensualidad : {self.pago.id} ,{self.mensualidad}"
 
 
 class DetallePagoExtraordianria(models.Model):
@@ -167,17 +171,21 @@ class DetallePagoExtraordianria(models.Model):
     deuda_extraordinaria = models.ForeignKey(
         DeudaExtraordinaria, on_delete=models.CASCADE
     )
+    created_date = models.DateTimeField(auto_now_add=True, null=True)
 
     def __str__(self):
-        return self.pago.evento
+        return (
+            f"DetallePagoExtraordianria : {self.pago.id} ,{self.deuda_extraordinaria}"
+        )
 
 
 class DetallePagoEvento(models.Model):
     pago = models.ForeignKey(Pago, on_delete=models.CASCADE)
     evento = models.ForeignKey(Agenda, on_delete=models.CASCADE)
+    created_date = models.DateTimeField(auto_now_add=True, null=True)
 
     def __str__(self):
-        return self.pago.evento
+        return f"DetallePagoEvento : {self.pago.id} ,{self.evento}"
 
 
 class TurnoPl(models.Model):

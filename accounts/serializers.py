@@ -33,7 +33,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         token["phone"] = user.phone
         token["avatar"] = user.avatar
         token["suspend"] = user.suspend
-        token["active"] = user.active
+        token["active"] = user.is_active
         # token['name'] = user.id
         return token
 
@@ -93,7 +93,7 @@ class UpdateUserSerializer(serializers.ModelSerializer):
         return value
 
     def update(self, instance, validated_data):
-        instance.first_name = validated_data["full_name"]
+        instance.full_name = validated_data["full_name"]
         instance.email = validated_data["email"]
         instance.username = validated_data["username"]
         instance.phone = validated_data["phone"]

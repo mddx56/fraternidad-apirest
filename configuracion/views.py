@@ -1,17 +1,20 @@
 from rest_framework import viewsets
-from .models import Cumpleanio, Fraternidad, Medio
+from .models import Cumpleanio, Fraternidad, MediaImage, MediaVideo, Articulo
 from .serializers import (
     CumpleanioSerializer,
     FraternidadSerializer,
-    MedioSerializer,
-    #NotificacionSerializer,
-    #TokenSerializer,
+    MediaImageSerializer,
+    MediaVideoSerializer,
+    ArticuloSerializer,
+    # NotificacionSerializer,
+    # TokenSerializer,
 )
 
 
 class CumpleanioView(viewsets.ModelViewSet):
     serializer_class = CumpleanioSerializer
     queryset = Cumpleanio.objects.all()
+
 
 """
 class TokenView(viewsets.ModelViewSet):
@@ -23,11 +26,22 @@ class NotificacionView(viewsets.ModelViewSet):
     queryset = Notificacion.objects.all()
 """
 
+
 class FraternidadView(viewsets.ModelViewSet):
     serializer_class = FraternidadSerializer
     queryset = Fraternidad.objects.all()
 
 
-class MedioView(viewsets.ModelViewSet):
-    serializer_class = MedioSerializer
-    queryset = Medio.objects.all()
+class MediaImageView(viewsets.ModelViewSet):
+    serializer_class = MediaImageSerializer
+    queryset = MediaImage.objects.all()
+
+
+class MediaVideoView(viewsets.ModelViewSet):
+    serializer_class = MediaVideoSerializer
+    queryset = MediaVideo.objects.all()
+
+
+class ArticuloView(viewsets.ModelViewSet):
+    serializer_class = ArticuloSerializer
+    queryset = Articulo.objects.all()
