@@ -24,7 +24,7 @@ class TipoEvento(models.Model):
     )
 
     def __str__(self) -> str:
-        return f"TipoEvento : {self.nombre}"
+        return f"Tipo Evento : {self.id} - {self.nombre} ({self.costo_entresemana} Bs. ,{self.costo_finsemana} Bs.)"
 
 
 class Agenda(models.Model):

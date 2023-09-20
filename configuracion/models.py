@@ -71,7 +71,7 @@ class MediaImage(models.Model):
     fraternidad = models.ForeignKey(Fraternidad, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f"Medio : {self.descripcion},  Tipo:  {self.tipo} "
+        return f"Media Imagen : {self.descripcion},  Fecha subido:  {self.upload_date} "
 
     def image_tag(self):
         return mark_safe(

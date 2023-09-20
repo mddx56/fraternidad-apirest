@@ -1,7 +1,7 @@
 import graphene
 from graphene_django import DjangoObjectType
 
-from agendas.models import Agenda, EstadoReserva, TipoEvento
+from agendas.models import Agenda, Qr, TipoEvento
 
 # from models.
 
@@ -16,35 +16,44 @@ class EventoType(DjangoObjectType):
             "hora_fin",
             "descripcion",
             "tipo_evento",
+            "es_entresemana",
             "estado_reserva",
             "user",
             "created_date",
         )
 
 
-class EstadoReservaType(DjangoObjectType):
-    class Meta:
-        model = EstadoReserva
-        fields = ("id", "nombre")
-
-
 class TipoEventoType(DjangoObjectType):
     class Meta:
         model = TipoEvento
-        fields = ("id", "nombre", "descripcion", "precio")
+        fields = ("id", "nombre", "descripcion", "costo_entresemana", "costo_finsemana")
+
+
+class QrType(DjangoObjectType):
+    class Meta:
+        model = Qr
+        fields = ("id", "qr_valor", "url", "descripcion", "tipo_evento")
 
 
 class Query(graphene.ObjectType):
-    hello = graphene.String(default_value="Niolia poto ediondo!!")
+
+    all_eventos = graphene.List(EventoType)
+    count_eventos = graphene.Int()
 
     all_tipo_eventos = graphene.List(TipoEventoType)
-    all_estado_eventos = graphene.List(EstadoReservaType)
+    all_qrs = graphene.List(QrType)
+
+    def resolve_count_eventos(root, info) -> int:
+        return Agenda.objects.all().count()
+
+    def resolve_all_eventos(root, info):
+        return Agenda.objects.all()
 
     def resolve_all_tipo_eventos(root, info):
         return TipoEvento.objects.all()
 
-    def resolve_all_estado_eventos(root, info):
-        return EstadoReserva.objects.all()
+    def resolve_all_qrs(root, info):
+        return Qr.objects.all()
 
 
 schema = graphene.Schema(query=Query)

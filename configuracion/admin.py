@@ -24,10 +24,11 @@ admin.site.register(Fraternidad, FraternidadAdmin)
 
 
 class MediaImageAdmin(admin.ModelAdmin):
-    list_display = ("id", "image_tag", "descripcion", "upload_date")
+    list_display = ("id", "image_tag", "secuencia", "mostrar", "upload_date")
     list_display_links = ("id",)
     search_fields = ("id", "descripcion")
     list_filter = ("mostrar",)
+    list_editable = ("mostrar", "secuencia")
     ordering = ["secuencia"]
     list_per_page = 25
 

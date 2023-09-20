@@ -70,7 +70,7 @@ class ObtainTokenPairView(TokenObtainPairView):
 
 class ChangePasswordView(generics.UpdateAPIView):
     queryset = User.objects.all()
-    permission_classes = (IsAuthenticated,)
+    #permission_classes = (IsAuthenticated,)
     serializer_class = ChangePasswordSerializer
 
 
