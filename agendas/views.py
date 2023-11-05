@@ -127,8 +127,17 @@ class DeudasPorClienteListView(generics.ListAPIView):
 """
 
 
-class CalcularDeudaView(APIView):
-    def get(self, request, pk):
-        queryset = Mensualidad.objects.all()
-        serializer = AgendaSerializer(queryset, many=True)
-        return Response(serializer.data)
+class VerPagosView(APIView):
+    # def get(self, request, pk):
+    def get(self, request, *args, **kwargs):
+        pass
+        #pagos = Pago.objects.filte(user=request.user.id)
+        #serializer = PagoSerializer(pagos, many=True)
+        #return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+# Usamos select_related() y prefetch_related() para optimizar la consulta
+# resultado = ModeloA.objects.select_related('modelo_b').prefetch_related('modelo_b__modelo_c').get(pk=1)
+
+# Ahora podemos acceder a los objetos relacionados de ModeloC
+#  objetos_modelo_c = resultado.modelo_b.all()[0].modelo_c.all()

@@ -1,0 +1,101 @@
+[
+  {
+    "model": "configuracion.cumpleanio",
+    "pk": "36997c79-f691-433c-abb4-061e2cefa319",
+    "fields": { "disponible": false, "fecha": "1977-11-13T19:11:17Z" }
+  },
+  {
+    "model": "configuracion.cumpleanio",
+    "pk": "9143273f-c550-421b-9c69-6c3e1f78b191",
+    "fields": { "disponible": true, "fecha": "2023-09-08T02:55:47Z" }
+  },
+  {
+    "model": "configuracion.cumpleanio",
+    "pk": "c370f3fb-b640-4ab1-a8cf-f8951b38deef",
+    "fields": { "disponible": false, "fecha": "1979-05-14T19:11:05Z" }
+  },
+  {
+    "model": "configuracion.cumpleanio",
+    "pk": "dc410bb0-f184-4642-8c2d-69c36f55b6ae",
+    "fields": { "disponible": false, "fecha": "1980-08-19T19:10:44Z" }
+  },
+  {
+    "model": "configuracion.fraternidad",
+    "pk": 1,
+    "fields": {
+      "nombre": "Flojonazos",
+      "color": "ffffff",
+      "telefono": "",
+      "direccion": "barrio equipetrol",
+      "mensualidad": "200.00",
+      "monto_suspendido": "600.00",
+      "monto_no_reserva": "100.00",
+      "turno_semanal": "Jueves",
+      "url": "",
+      "latitud": null,
+      "longitud": null,
+      "banco": "bnb",
+      "nro_cuenta": "0"
+    }
+  },
+  {
+    "model": "configuracion.mediaimage",
+    "pk": 2,
+    "fields": {
+      "url": "https://scontent.fsrz1-2.fna.fbcdn.net/v/t1.6435-9/53563777_2341016892801080_5010402624382435328_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=730e14&_nc_ohc=nBkIKp84L5sAX95Ut1Z&_nc_ht=scontent.fsrz1-2.fna&oh=00_AfCNIJQd9fL952uDrgnzZYbmx5W6KC9naCtVpxOMCoEFmA&oe=652A20BD",
+      "descripcion": "face",
+      "secuencia": 2,
+      "mostrar": true,
+      "upload_date": "2023-09-14T06:04:08.350Z",
+      "fraternidad": 1
+    }
+  },
+  {
+    "model": "configuracion.mediaimage",
+    "pk": 3,
+    "fields": {
+      "url": "https://scontent.fsrz1-2.fna.fbcdn.net/v/t1.6435-9/53873341_2339926299576806_883423276129320960_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=cdbe9c&_nc_ohc=wq4UfawXqZoAX95cOcF&_nc_ht=scontent.fsrz1-2.fna&oh=00_AfAJZe0tse-8qkgJk2q-vvy3NhqvEWCETSLo__RBPy47IQ&oe=652A00B4",
+      "descripcion": "fff",
+      "secuencia": 3,
+      "mostrar": true,
+      "upload_date": "2023-09-14T06:04:44.305Z",
+      "fraternidad": 1
+    }
+  },
+  {
+    "model": "configuracion.mediaimage",
+    "pk": 4,
+    "fields": {
+      "url": "https://res.cloudinary.com/dci37dfd7/image/upload/v1693799045/frater/13669149_1809814429254665_1545630039757485347_n_nrll98.jpg",
+      "descripcion": "logo",
+      "secuencia": 1,
+      "mostrar": true,
+      "upload_date": "2023-09-14T08:35:04.008Z",
+      "fraternidad": 1
+    }
+  },
+  {
+    "model": "configuracion.mediaimage",
+    "pk": 5,
+    "fields": {
+      "url": "https://res.cloudinary.com/dci37dfd7/image/upload/v1693798556/frater/21270836_438324899895783_7194334772154656598_n_ukkomj.jpg",
+      "descripcion": "sede",
+      "secuencia": 4,
+      "mostrar": true,
+      "upload_date": "2023-09-14T08:39:28.812Z",
+      "fraternidad": 1
+    }
+  },
+  {
+    "model": "configuracion.mediavideo",
+    "pk": 1,
+    "fields": {
+      "url": "https://youtu.be/Pm4i1URWnVQ",
+      "video_id": "Pm4i1URWnVQ",
+      "descripcion": "video de youtube",
+      "mostrar": true,
+      "upload_date": "2023-09-14T05:55:16.116Z",
+      "fraternidad": 1
+    }
+  }
+]

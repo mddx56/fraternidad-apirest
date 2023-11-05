@@ -1,0 +1,127 @@
+[
+  {
+    "model": "agendas.gestion",
+    "pk": 2,
+    "fields": { "anio": 2024, "en_curso": false }
+  },
+  {
+    "model": "agendas.mensualidad",
+    "pk": 13,
+    "fields": {
+      "costo": "200.00",
+      "fecha": "2024-01-01",
+      "mes": 1,
+      "gestion": 2
+    }
+  },
+  {
+    "model": "agendas.mensualidad",
+    "pk": 14,
+    "fields": {
+      "costo": "200.00",
+      "fecha": "2024-02-01",
+      "mes": 2,
+      "gestion": 2
+    }
+  },
+  {
+    "model": "agendas.mensualidad",
+    "pk": 15,
+    "fields": {
+      "costo": "200.00",
+      "fecha": "2024-03-01",
+      "mes": 3,
+      "gestion": 2
+    }
+  },
+  {
+    "model": "agendas.mensualidad",
+    "pk": 16,
+    "fields": {
+      "costo": "200.00",
+      "fecha": "2024-04-01",
+      "mes": 4,
+      "gestion": 2
+    }
+  },
+  {
+    "model": "agendas.mensualidad",
+    "pk": 17,
+    "fields": {
+      "costo": "200.00",
+      "fecha": "2024-05-01",
+      "mes": 5,
+      "gestion": 2
+    }
+  },
+  {
+    "model": "agendas.mensualidad",
+    "pk": 18,
+    "fields": {
+      "costo": "200.00",
+      "fecha": "2024-06-01",
+      "mes": 6,
+      "gestion": 2
+    }
+  },
+  {
+    "model": "agendas.mensualidad",
+    "pk": 19,
+    "fields": {
+      "costo": "200.00",
+      "fecha": "2024-07-01",
+      "mes": 7,
+      "gestion": 2
+    }
+  },
+  {
+    "model": "agendas.mensualidad",
+    "pk": 20,
+    "fields": {
+      "costo": "200.00",
+      "fecha": "2024-08-01",
+      "mes": 8,
+      "gestion": 2
+    }
+  },
+  {
+    "model": "agendas.mensualidad",
+    "pk": 21,
+    "fields": {
+      "costo": "200.00",
+      "fecha": "2024-09-01",
+      "mes": 9,
+      "gestion": 2
+    }
+  },
+  {
+    "model": "agendas.mensualidad",
+    "pk": 22,
+    "fields": {
+      "costo": "200.00",
+      "fecha": "2024-10-01",
+      "mes": 10,
+      "gestion": 2
+    }
+  },
+  {
+    "model": "agendas.mensualidad",
+    "pk": 23,
+    "fields": {
+      "costo": "200.00",
+      "fecha": "2024-11-07",
+      "mes": 11,
+      "gestion": 2
+    }
+  },
+  {
+    "model": "agendas.mensualidad",
+    "pk": 24,
+    "fields": {
+      "costo": "200.00",
+      "fecha": "2024-12-01",
+      "mes": 12,
+      "gestion": 2
+    }
+  }
+]

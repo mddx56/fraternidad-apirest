@@ -23,6 +23,7 @@ class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
+
 class CreateUserView(APIView):
     permission_classes(
         AllowAny,
@@ -61,16 +62,18 @@ class GetUserDetailsView(APIView):
 
 
 class ObtainTokenPairView(TokenObtainPairView):
-    permission_classes(
+    """permission_classes(
         AllowAny,
-    )
+    )"""
+
+    permission_classes = [AllowAny]
 
     serializer_class = MyTokenObtainPairSerializer
 
 
 class ChangePasswordView(generics.UpdateAPIView):
     queryset = User.objects.all()
-    #permission_classes = (IsAuthenticated,)
+    # permission_classes = (IsAuthenticated,)
     serializer_class = ChangePasswordSerializer
 
 

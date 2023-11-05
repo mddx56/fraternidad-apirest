@@ -18,7 +18,9 @@ router.register("grupoturnos", views.GrupoTurnoView)
 router.register("turnos", views.TurnoView)
 router.register("userturnos", views.UserTurnoView)
 router.register("turnopl", views.TurnoPlView)
+#router.register("pagos/user", views.VerPagosView.as_view())
 
 urlpatterns = [
     path("/", include(router.urls)),
+    # path("/pagos/user/", views.VerPagosView.as_view()),
 ]
