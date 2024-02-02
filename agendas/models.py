@@ -182,6 +182,7 @@ class DetallePagoExtraordianria(models.Model):
 class DetallePagoEvento(models.Model):
     pago = models.ForeignKey(Pago, on_delete=models.CASCADE)
     evento = models.ForeignKey(Agenda, on_delete=models.CASCADE)
+    canselado = models.BooleanField(default=False)
     created_date = models.DateTimeField(auto_now_add=True, null=True)
 
     def __str__(self):
