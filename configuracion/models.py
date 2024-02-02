@@ -32,7 +32,7 @@ class Cumpleanio(models.Model):
     )
 
     def __str__(self) -> str:
-        return f"Cumpleanio : {self.fecha}"
+        return f"Cumpleanio : {self.fecha}, {self.disponible}"
 
 
 class Fraternidad(models.Model):

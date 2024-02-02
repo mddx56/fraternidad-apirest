@@ -73,7 +73,7 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
     id = models.UUIDField(default=uuid.uuid4, unique=True, primary_key=True)
     ci = models.BooleanField(default=False)
     full_name = models.CharField(max_length=355, null=False, default="")
-    email = models.EmailField(max_length=150, unique=True, blank=True, null=True)
+    email = models.EmailField(max_length=150, blank=True, null=True)
     phone = models.CharField(max_length=15, blank=True, null=True, default="")
     financial_condition = models.CharField(
         max_length=17, choices=FINANCIAL, default=NORMAL
@@ -102,4 +102,4 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
         return True
 
     def __str__(self) -> str:
-        return f"User : {self.full_name}, {self.ci}, {self.username}, {self.email}, {self.password}"
+        return f"User : {self.full_name}, {self.ci}, {self.username}, {self.email}, {self.password}, copy ci {self.copy_ci}, {self.suspend},{self.financial_condition}"
