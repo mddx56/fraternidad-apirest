@@ -19,5 +19,6 @@ db.sqlite3
 .vscode/
 
 # Ignorar archivos de entorno virtual
-envfraternidad
-static-cdn
+/static-cdn
+/admin-interface
+/envfraternidad
