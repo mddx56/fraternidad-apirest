@@ -1,5 +1,15 @@
 from rest_framework import serializers
-from .models import Cumpleanio, Fraternidad, MediaImage, MediaVideo, Articulo
+from .models import (
+    Cumpleanio,
+    Fraternidad,
+    MediaImage,
+    MediaVideo,
+    Articulo,
+    Cronograma,
+    Actividad,
+    DiaSemana,
+    Horario,
+)
 
 
 class CumpleanioSerializer(serializers.ModelSerializer):
@@ -43,4 +53,28 @@ class MediaVideoSerializer(serializers.ModelSerializer):
 class ArticuloSerializer(serializers.ModelSerializer):
     class Meta:
         model = Articulo
+        fields = "__all__"
+
+
+class CronogramaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Cronograma
+        fields = "__all__"
+
+
+class ActividadSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Actividad
+        fields = "__all__"
+
+
+class DiaSemanaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DiaSemana
+        fields = "__all__"
+
+
+class HorarioSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Horario
         fields = "__all__"

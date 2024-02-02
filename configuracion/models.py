@@ -105,3 +105,39 @@ class Articulo(models.Model):
 
     def __str__(self):
         return f"Articulo : {self.titulo}"
+
+
+class Cronograma(models.Model):
+    nombre = models.CharField(max_length=256)
+    descripcion = models.TextField(null=True, blank=True)
+    created_date = models.DateTimeField(auto_now_add=True, null=True)
+
+    def __str__(self):
+        return f"Cronograma : {self.nombre}"
+
+
+class DiaSemana(models.Model):
+    nombre = models.CharField(max_length=256)
+
+    def __str__(self):
+        return f"Dia Semana : {self.nombre}"
+
+
+class Horario(models.Model):
+    hora_inicio = models.TimeField()
+    hora_fin = models.TimeField()
+
+    def __str__(self):
+        return f"{self.hora_inicio} - {self.hora_fin}"
+
+
+class Actividad(models.Model):
+    nombre = models.CharField(max_length=255)
+    lugar = models.CharField(max_length=255, null=True, blank=True)
+    descripcion = models.TextField(null=True, blank=True)
+    horario = models.ForeignKey(Horario, on_delete=models.CASCADE)
+    dia_semana = models.ForeignKey(DiaSemana, on_delete=models.CASCADE)
+    cronograma = models.ForeignKey(Cronograma, on_delete=models.CASCADE)
+
+    def __str__(self) -> str:
+        return f"Actividad {self.nombre}"

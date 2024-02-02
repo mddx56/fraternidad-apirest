@@ -17,9 +17,7 @@ db.sqlite3
 # Ignorar archivos generados por IDEs y editores de texto
 *.idea/
 .vscode/
-*.pyc
-*.pyo
-*.pyd
 
 # Ignorar archivos de entorno virtual
-venvagenda/
+envfraternidad
+static-cdn

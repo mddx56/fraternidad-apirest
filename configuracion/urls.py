@@ -9,7 +9,12 @@ router.register("cumples", views.CumpleanioView)
 router.register("fraternidad", views.FraternidadView)
 router.register("mediaimages", views.MediaImageView)
 router.register("mediavideos", views.MediaVideoView)
-router.register("articuloss", views.ArticuloView)
+router.register("articulos", views.ArticuloView)
+
+router.register("horarios", views.HorarioView)
+router.register("diasemanas", views.DiaSemanaView)
+router.register("cronogramas", views.CronogramaView)
+router.register("actividades", views.ActividadView)
 
 
 urlpatterns = [

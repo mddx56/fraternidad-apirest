@@ -1,5 +1,15 @@
 from rest_framework import viewsets
-from .models import Cumpleanio, Fraternidad, MediaImage, MediaVideo, Articulo
+from .models import (
+    Cumpleanio,
+    Fraternidad,
+    MediaImage,
+    MediaVideo,
+    Articulo,
+    Horario,
+    Actividad,
+    DiaSemana,
+    Cronograma,
+)
 from .serializers import (
     CumpleanioSerializer,
     FraternidadSerializer,
@@ -8,6 +18,10 @@ from .serializers import (
     ArticuloSerializer,
     # NotificacionSerializer,
     # TokenSerializer,
+    ActividadSerializer,
+    HorarioSerializer,
+    CronogramaSerializer,
+    DiaSemanaSerializer,
 )
 
 
@@ -45,3 +59,38 @@ class MediaVideoView(viewsets.ModelViewSet):
 class ArticuloView(viewsets.ModelViewSet):
     serializer_class = ArticuloSerializer
     queryset = Articulo.objects.all()
+
+
+class ArticuloView(viewsets.ModelViewSet):
+    serializer_class = ArticuloSerializer
+    queryset = Articulo.objects.all()
+
+
+class ArticuloView(viewsets.ModelViewSet):
+    serializer_class = ArticuloSerializer
+    queryset = Articulo.objects.all()
+
+
+class ArticuloView(viewsets.ModelViewSet):
+    serializer_class = ArticuloSerializer
+    queryset = Articulo.objects.all()
+
+
+class ActividadView(viewsets.ModelViewSet):
+    serializer_class = ActividadSerializer
+    queryset = Actividad.objects.all()
+
+
+class DiaSemanaView(viewsets.ModelViewSet):
+    serializer_class = DiaSemanaSerializer
+    queryset = DiaSemana.objects.all()
+
+
+class HorarioView(viewsets.ModelViewSet):
+    serializer_class = HorarioSerializer
+    queryset = Horario.objects.all()
+
+
+class CronogramaView(viewsets.ModelViewSet):
+    serializer_class = CronogramaSerializer
+    queryset = Cronograma.objects.all()

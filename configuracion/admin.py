@@ -1,6 +1,16 @@
 from django.contrib import admin
 
-from .models import Fraternidad, MediaImage, MediaVideo, Articulo, Cumpleanio
+from .models import (
+    Fraternidad,
+    MediaImage,
+    MediaVideo,
+    Articulo,
+    Cumpleanio,
+    Horario,
+    Actividad,
+    DiaSemana,
+    Cronograma,
+)
 
 
 class CumpleanioAdmin(admin.ModelAdmin):
@@ -57,4 +67,8 @@ class ArticuloAdmin(admin.ModelAdmin):
     list_per_page = 25
 
 
-admin.site.register(Articulo, ArticuloAdmin)
+admin.site.register(Horario)
+
+admin.site.register(Actividad)
+admin.site.register(DiaSemana)
+admin.site.register(Cronograma)
