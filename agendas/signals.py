@@ -1,22 +1,31 @@
-from django.contrib.auth import get_user_model
-
 # Signals import
 from django.dispatch import receiver
 from django.db.models.signals import post_save
-#from agendas.models import Extraordinaria,Deuda
+from agendas.models import Gestion, Mensualidad
+from configuracion.models import Fraternidad
+import datetime
 
-User = get_user_model()
 
-"""
-@receiver(post_save, sender=Extraordinaria)
-def user_post_save_receiver(sender, instance, created, *args, **kwargs):
+def get_date(numero_mes, year):
+    try:
+        return datetime.date(year, numero_mes, 1)
+    except ValueError:
+        return None
+
+
+@receiver(post_save, sender=Gestion)
+def gestion_post_save_receiver(sender, instance, created, *args, **kwargs):
     if created:
-        #users = User.objects.all()
-        extraord = instance
-        deudas = Deuda.objects.all()
-        
-        #deuda.save()
-        print(f"user {instance.username}")
+        mensu = 200
+        flojonasos = Fraternidad.objects.all().first()
+        if flojonasos:
+            mensu = flojonasos.mensualidad
+
+        for i in range(1, 13):
+            mens = Mensualidad(
+                costo=mensu, fecha=get_date(i, instance.anio), mes=i, gestion=instance
+            )
+            mens.save()
+        print("SIGNAL Gestion : Mensualidades creadas")
     else:
-        print("algo salio mal..")
-"""
+        print("SIGNAL Gestion :", "algo salio mal gestio..")

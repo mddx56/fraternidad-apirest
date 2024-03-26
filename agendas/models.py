@@ -77,7 +77,7 @@ class Mensualidad(models.Model):
     # created_date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self) -> str:
-        return f"Mensualidad : {self.costo}, {self.fecha}"
+        return f"Mensualidad : {self.costo}, mes :{self.mes}"
 
 
 class Extraordinaria(models.Model):

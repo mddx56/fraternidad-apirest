@@ -82,13 +82,14 @@ class MediaImage(models.Model):
 class MediaVideo(models.Model):
     url = models.URLField(max_length=700)
     video_id = models.CharField(max_length=15, default="", null=True, blank=True)
+    titulo = models.CharField(max_length=250, default="", null=True, blank=True)
     descripcion = models.TextField(blank=True, null=True)
     mostrar = models.BooleanField(default=False)
     upload_date = models.DateTimeField(auto_now_add=True)
     fraternidad = models.ForeignKey(Fraternidad, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f"MediaVideo : {self.descripcion}"
+        return f"MediaVideo : {self.titulo}"
 
     def video_tag(self):
         return mark_safe(

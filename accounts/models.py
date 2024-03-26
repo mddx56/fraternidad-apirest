@@ -102,4 +102,4 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
         return True
 
     def __str__(self) -> str:
-        return f"User : {self.full_name}, {self.ci}, {self.username}, {self.email}, {self.password}, copy ci {self.copy_ci}, {self.suspend},{self.financial_condition}"
+        return f"User : {self.full_name}, {self.ci}, {self.username}"
