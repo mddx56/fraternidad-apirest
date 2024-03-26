@@ -54,13 +54,14 @@ class CustomUserManager(BaseUserManager):
 class UserAccount(AbstractBaseUser, PermissionsMixin):
     FRATERNO = "Fraterno"
     TESORERO = "Tesorero"
+    ENCARGADO = "Encargado"
     ADMIN = "Admin"
     username_validator = UnicodeUsernameValidator()
 
     NORMAL = "Normal"
     PLANPAGOS = "Plan de Pagos"
     FINANCIAL = [(NORMAL, "normal"), (PLANPAGOS, "plan")]
-    USER_ROLE = [(FRATERNO, "fraterno"), (ADMIN, "admin"), (TESORERO, "tesorero")]
+    USER_ROLE = [(FRATERNO, "fraterno"), (ADMIN, "admin"), (TESORERO, "tesorero"),(ENCARGADO,"encargado")]
     username = models.CharField(
         max_length=255,
         validators=[username_validator],
