@@ -61,7 +61,12 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
     NORMAL = "Normal"
     PLANPAGOS = "Plan de Pagos"
     FINANCIAL = [(NORMAL, "normal"), (PLANPAGOS, "plan")]
-    USER_ROLE = [(FRATERNO, "fraterno"), (ADMIN, "admin"), (TESORERO, "tesorero"),(ENCARGADO,"encargado")]
+    USER_ROLE = [
+        (FRATERNO, "fraterno"),
+        (ADMIN, "admin"),
+        (TESORERO, "tesorero"),
+        (ENCARGADO, "encargado"),
+    ]
     username = models.CharField(
         max_length=255,
         validators=[username_validator],
