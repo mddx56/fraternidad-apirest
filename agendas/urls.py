@@ -22,6 +22,6 @@ router.register("turnopl", views.TurnoPlView)
 
 urlpatterns = [
     path("/", include(router.urls)),
-    path('/pagos/<ci>',views.ListPagosView.as_view()),
+    path('/pagos/m/<ci>',views.ListPagosView.as_view()),
     # path("/pagos/user/", views.VerPagosView.as_view()),
 ]
