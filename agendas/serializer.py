@@ -1,5 +1,5 @@
 from rest_framework import serializers
-
+import calendar
 
 from .models import (
     TipoEvento,
@@ -107,4 +107,50 @@ class DeudaExtraordinariaSerializer(serializers.ModelSerializer):
 class TurnoPlSerializer(serializers.ModelSerializer):
     class Meta:
         model = TurnoPl
+        fields = "__all__"
+
+
+def dato_to_moth(number_moth):
+    meses_en_espanol = [
+        "",
+        "Enero",
+        "Febrero",
+        "Marzo",
+        "Abril",
+        "Mayo",
+        "Junio",
+        "Julio",
+        "Agosto",
+        "Septiembre",
+        "Octubre",
+        "Noviembre",
+        "Diciembre",
+    ]
+    calendar.month_name = meses_en_espanol
+    return calendar.month_name[number_moth]
+
+
+class ListDetallePagoMensualidadSerializer(serializers.ModelSerializer):
+    mes = serializers.SerializerMethodField()
+    gestion = serializers.SerializerMethodField()
+    monto = serializers.SerializerMethodField()
+    
+    class Meta:
+        model = DetallePagoMensualidad
+        fields = "__all__"
+
+    def get_mes(self, object):
+        return dato_to_moth(object.mensualidad.mes)
+    
+    def get_gestion(self, object):
+        return object.mensualidad.gestion.anio
+    
+    def get_monto(self, object):
+        return object.mensualidad.costo
+
+
+class ListPagoSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Pago
         fields = "__all__"

@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     "rest_framework_simplejwt",
     "drf_yasg",
     "graphene_django",
+    "import_export",
     "accounts",
     "configuracion",
     "agendas",
@@ -127,7 +128,10 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 
-STATICFILES_DIRS = [os.path.join(BASE_DIR, "templates")]
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "templates"),
+    os.path.join(BASE_DIR, "admin-interface"),
+]
 
 STATIC_ROOT = os.path.join(BASE_DIR, "static-cdn")
 

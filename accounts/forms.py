@@ -1,15 +1,15 @@
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
-
+from django import forms
 from .models import UserAccount
 
 
 class UserAccountCreationForm(UserCreationForm):
     class Meta:
         model = UserAccount
-        fields = ("__all__")
+        fields = ("full_name", "suspend", "role")
 
 
 class UserAccountChangeForm(UserChangeForm):
     class Meta:
         model = UserAccount
-        fields = ("__all__")
+        fields = "__all__"

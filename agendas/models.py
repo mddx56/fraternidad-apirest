@@ -163,7 +163,7 @@ class DetallePagoMensualidad(models.Model):
     created_date = models.DateTimeField(auto_now_add=True, null=True)
 
     def __str__(self):
-        return f"DetallePagoMensualidad : {self.pago.id} ,{self.mensualidad}"
+        return f"DetallePagoMensualidad : {self.pago.id} ,{self.mensualidad.mes}"
 
 
 class DetallePagoExtraordianria(models.Model):

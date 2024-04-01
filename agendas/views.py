@@ -3,6 +3,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 
+
 from .models import (
     TipoEvento,
     Agenda,
@@ -20,6 +21,7 @@ from .models import (
     DetallePagoExtraordianria,
     DetallePagoMensualidad,
 )
+from accounts.models import UserAccount
 
 from .serializer import (
     TipoEventoSerializer,
@@ -37,6 +39,8 @@ from .serializer import (
     DetallePagoExtraordianriaSerializer,
     DetallePagoMensualidadSerializer,
     GrupoTurnoSerializer,
+    ListPagoSerializer,
+    ListDetallePagoMensualidadSerializer,
 )
 
 
@@ -115,29 +119,18 @@ class TurnoPlView(viewsets.ModelViewSet):
     queryset = TurnoPl.objects.all()
 
 
-"""
-from rest_framework import generics
+class ListPagosView(APIView):
 
-class DeudasPorClienteListView(generics.ListAPIView):
-    serializer_class = DeudaSerializer
-
-    def get_queryset(self):
-        user_id = self.kwargs["id"]
-        return Deuda.objects.filter(user=user_id).order_by("estado_deuda")
-"""
-
-
-class VerPagosView(APIView):
-    # def get(self, request, pk):
-    def get(self, request, *args, **kwargs):
-        pass
-        #pagos = Pago.objects.filte(user=request.user.id)
-        #serializer = PagoSerializer(pagos, many=True)
-        #return Response(serializer.data, status=status.HTTP_200_OK)
-
-
-# Usamos select_related() y prefetch_related() para optimizar la consulta
-# resultado = ModeloA.objects.select_related('modelo_b').prefetch_related('modelo_b__modelo_c').get(pk=1)
-
-# Ahora podemos acceder a los objetos relacionados de ModeloC
-#  objetos_modelo_c = resultado.modelo_b.all()[0].modelo_c.all()
+    def get(self, request, ci, format=None):
+        try:
+            frater = UserAccount.objects.filter(username=ci).first()
+            pagos_det = []
+            if frater:
+                pagos = Pago.objects.filter(user=frater)
+                detallalles = DetallePagoMensualidad.objects.filter(pago__user=frater)
+                serializer = ListDetallePagoMensualidadSerializer(
+                    detallalles, many=True
+                )
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({"error": e}, status=status.HTTP_404_NOT_FOUND)

@@ -1,31 +1,51 @@
 from django.contrib import admin
 from django.contrib.auth import get_user_model
 from django.contrib.auth.admin import UserAdmin
-from django.contrib import admin
-from django.contrib.auth.admin import UserAdmin
-
-from django.contrib import admin
 
 from .models import UserAccount
 from .forms import UserAccountChangeForm, UserAccountCreationForm
+
+
+@admin.action(description="Suspender Fraterno")
+def suspend_user(modeladmin, request, queryset):
+    queryset.update(suspend=False)
+
+
+@admin.action(description="Activar Fraterno")
+def activated_user(modeladmin, request, queryset):
+    queryset.update(suspend=True)
 
 
 class UserAcountAdmin(admin.ModelAdmin):
     add_form = UserAccountCreationForm
     form = UserAccountChangeForm
     model = UserAccount
+
+    def username_ci(self, obj):
+        return obj.username
+
+    username_ci.short_description = "Ci"
+
+    def get_actions(self, request):
+        actions = super().get_actions(request)
+        if "delete_selected" in actions:
+            del actions["delete_selected"]
+        return actions
+
+    actions = [suspend_user, activated_user]
+
     list_display = (
-        "id",
-        "username",
-        "role",
+        "username_ci",
+        #"username",
         "full_name",
-        "is_staff",
-        "is_active",
+        "role",
+        "suspend",
+        # "is_active",
     )
     list_filter = (
-        "username",
-        "is_staff",
-        "is_active",
+        "role",
+        "suspend",
+        # "is_active",
     )
     """fieldsets = (        (None, {"fields": ("username", "password")}),        (            "Permissions",            {"fields": ("is_staff", "is_active", "groups", "user_permissions")},        ),    )
     add_fieldsets = (
@@ -45,8 +65,11 @@ class UserAcountAdmin(admin.ModelAdmin):
             },
         ),
     )"""
-    search_fields = ("username",)
-    ordering = ("username",)
+    search_fields = (
+        "username",
+        "full_name",
+    )
+    ordering = ("full_name",)
     list_per_page = 25
 
 
