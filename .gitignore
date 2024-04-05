@@ -5,6 +5,8 @@
 /migrations/
 __pycache__
 
+
+
 db.sqlite3
 
 # Ignorar el archivo de secretos generado automáticamente
@@ -19,6 +21,6 @@ db.sqlite3
 .vscode/
 
 # Ignorar archivos de entorno virtual
-/static-cdn
 /admin-interface
 /envfraternidad
+/staticfiles/
