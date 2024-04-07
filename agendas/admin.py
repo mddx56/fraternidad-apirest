@@ -15,7 +15,6 @@ from .models import (
     DetallePagoExtraordianria,
     DetallePagoMensualidad,
     GrupoTurno,
-    TurnoPl,
 )
 
 admin.site.site_header = "Sistema de Gestión para Fraternidad ⛺"
@@ -87,6 +86,7 @@ class DetallePagoEventoAdmin(admin.ModelAdmin):
 
 admin.site.register(DetallePagoEvento, DetallePagoEventoAdmin)
 
+
 class DetallePagoExtraordianriaAdmin(admin.ModelAdmin):
     list_display = (
         "id",
@@ -94,13 +94,14 @@ class DetallePagoExtraordianriaAdmin(admin.ModelAdmin):
         "deuda_extraordinaria",
     )
     list_display_links = ("id",)
- 
+
     # list_editable = ("precio", "nombre")
     search_fields = ("id", "pago")
     list_per_page = 25
 
 
 admin.site.register(DetallePagoExtraordianria, DetallePagoExtraordianriaAdmin)
+
 
 class DetallePagoMensualidadAdmin(admin.ModelAdmin):
     list_display = (
@@ -109,14 +110,13 @@ class DetallePagoMensualidadAdmin(admin.ModelAdmin):
         "mensualidad",
     )
     list_display_links = ("id",)
-    
+
     # list_editable = ("precio", "nombre")
     search_fields = ("id", "pago")
     list_per_page = 25
 
 
 admin.site.register(DetallePagoMensualidad, DetallePagoMensualidadAdmin)
-
 
 
 class TipoEventoAdmin(admin.ModelAdmin):
@@ -156,20 +156,6 @@ class AgendaAdmin(admin.ModelAdmin):
 admin.site.register(Agenda, AgendaAdmin)
 
 
-"""
-class DeudaAdmin(admin.ModelAdmin):
-    list_display = ("id", "deuda_total", "estado_deuda", "user", "created_date")
-    list_display_links = ("id", "user")
-    list_filter = ("estado_deuda",)
-    list_editable = ("deuda_total", "estado_deuda")
-    search_fields = ("id", "user")
-    list_per_page = 25
-
-
-admin.site.register(Deuda, DeudaAdmin)
-"""
-
-
 class PagoAdmin(admin.ModelAdmin):
     list_display = ("id", "fecha_pago", "monto_pagado", "user", "created_date")
     list_display_links = ("id", "user")
@@ -201,9 +187,9 @@ admin.site.register(UserTurno, UserTurnoAdmin)
 
 
 class MensualidadAdmin(admin.ModelAdmin):
-    list_display = ("id", "fecha", "costo",  "gestion")
+    list_display = ("id", "fecha", "costo", "gestion")
     list_display_links = ("id", "fecha")
-    #list_filter = ( "gestion")
+    # list_filter = ( "gestion")
     search_fields = ("fecha",)
     list_per_page = 25
 

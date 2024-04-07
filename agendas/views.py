@@ -10,7 +10,6 @@ from .models import (
     Pago,
     Qr,
     Turno,
-    TurnoPl,
     UserTurno,
     Mensualidad,
     Extraordinaria,
@@ -28,7 +27,6 @@ from .serializer import (
     AgendaSerializer,
     PagoSerializer,
     QrSerializer,
-    TurnoPlSerializer,
     TurnoSerializer,
     UserTurnoSerializer,
     MensualidadSerializer,
@@ -114,17 +112,27 @@ class DeudaExtraordinariaView(viewsets.ModelViewSet):
     queryset = DeudaExtraordinaria.objects.all()
 
 
-class TurnoPlView(viewsets.ModelViewSet):
-    serializer_class = TurnoPlSerializer
-    queryset = TurnoPl.objects.all()
-
-
 class ListPagosView(APIView):
 
     def get(self, request, ci, format=None):
         try:
             frater = UserAccount.objects.filter(username=ci).first()
-            pagos_det = []
+            if frater:
+                detallalles = DetallePagoMensualidad.objects.filter(pago__user=frater)
+                serializer = ListDetallePagoMensualidadSerializer(
+                    detallalles, many=True
+                )
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({"error": e}, status=status.HTTP_404_NOT_FOUND)
+
+
+class ListExtraordinariaView(APIView):
+
+    def get(self, request, id_extra, ci, format=None):
+        try:
+            frater = UserAccount.objects.filter(username=ci).first()
+            extraodinaria = Extraordinaria.objects.get(id=id_extra)
             if frater:
                 pagos = Pago.objects.filter(user=frater)
                 detallalles = DetallePagoMensualidad.objects.filter(pago__user=frater)

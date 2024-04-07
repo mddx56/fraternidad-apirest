@@ -15,7 +15,7 @@ from rest_framework_simplejwt.views import (
     TokenVerifyView,
 )
 from accounts.views import ChangePasswordView, ObtainTokenPairView, UpdateProfileView
-from fraternidad import views
+from core import views
 from accounts.views import CreateUserView
 from graphene_django.views import GraphQLView
 
@@ -59,4 +59,4 @@ urlpatterns = [
     ),
     path("redoc/", schema_view.with_ui("redoc", cache_timeout=0), name="schema-redoc"),
     path("graphql", GraphQLView.as_view(graphiql=True)),
-] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+]  # + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

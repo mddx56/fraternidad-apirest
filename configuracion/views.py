@@ -1,4 +1,13 @@
 from rest_framework import viewsets
+from rest_framework.views import APIView
+from rest_framework.decorators import permission_classes
+from rest_framework.permissions import AllowAny
+
+from rest_framework import authentication, permissions
+from rest_framework.response import Response
+from rest_framework import status
+
+
 from .models import (
     Cumpleanio,
     Fraternidad,
@@ -10,6 +19,7 @@ from .models import (
     DiaSemana,
     Cronograma,
 )
+
 from .serializers import (
     CumpleanioSerializer,
     FraternidadSerializer,
@@ -94,3 +104,17 @@ class HorarioView(viewsets.ModelViewSet):
 class CronogramaView(viewsets.ModelViewSet):
     serializer_class = CronogramaSerializer
     queryset = Cronograma.objects.all()
+
+
+class ListMediaImageView(APIView):
+
+    # authentication_classes = [authentication.]
+    # permission_classes = [permissions.IsAdminUser]
+    permission_classes = [
+        AllowAny,
+    ]
+
+    def get(self, request, format=None):
+        images = MediaImage.objects.all()
+        serializer = MediaImageSerializer(images, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)

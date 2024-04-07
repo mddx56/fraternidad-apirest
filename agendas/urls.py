@@ -17,9 +17,8 @@ router.register("qrs", views.QrView)
 router.register("grupoturnos", views.GrupoTurnoView)
 router.register("turnos", views.TurnoView)
 router.register("userturnos", views.UserTurnoView)
-router.register("turnopl", views.TurnoPlView)
 
 urlpatterns = [
     path("/", include(router.urls)),
-    path('/pagos/m/<ci>',views.ListPagosView.as_view()),
+    path("/pagos/m/<ci>", views.ListPagosView.as_view()),
 ]

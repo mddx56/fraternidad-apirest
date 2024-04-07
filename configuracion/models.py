@@ -37,9 +37,11 @@ class Cumpleanio(models.Model):
 
 class Fraternidad(models.Model):
     nombre = models.CharField(max_length=100, default="", null=False)
-    color = models.CharField(max_length=7, default="", null=True, blank=True)
+    descripcion = models.TextField(null=True, default="")
     telefono = models.CharField(max_length=15, default="", null=True, blank=True)
+    email = models.EmailField(max_length=200, default="", null=True, blank=True)
     direccion = models.CharField(max_length=300, default="", null=True, blank=True)
+    color = models.CharField(max_length=7, default="", null=True, blank=True)
     mensualidad = models.DecimalField(
         max_digits=10, decimal_places=2, default=0, null=False
     )
@@ -50,7 +52,7 @@ class Fraternidad(models.Model):
         max_digits=10, decimal_places=2, default=0, null=False
     )
     turno_semanal = models.CharField(max_length=50, default="", null=False)
-    url = models.URLField(max_length=700, default="")
+    link_whatsapp = models.URLField(max_length=700, default="")
     latitud = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
     longitud = models.DecimalField(
         max_digits=9, decimal_places=6, null=True, blank=True
@@ -67,6 +69,7 @@ class MediaImage(models.Model):
     descripcion = models.TextField(blank=True, null=True)
     secuencia = models.IntegerField(default=0, blank=True)
     mostrar = models.BooleanField(default=False)
+    tag = models.CharField(default="", null=True)
     upload_date = models.DateTimeField(auto_now_add=True)
     fraternidad = models.ForeignKey(Fraternidad, on_delete=models.CASCADE)
 
