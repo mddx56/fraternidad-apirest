@@ -10,7 +10,6 @@ from .models import (
     UserTurno,
     Mensualidad,
     Extraordinaria,
-    DeudaExtraordinaria,
     DetallePagoEvento,
     DetallePagoExtraordianria,
     DetallePagoMensualidad,
@@ -91,7 +90,7 @@ class DetallePagoExtraordianriaAdmin(admin.ModelAdmin):
     list_display = (
         "id",
         "pago",
-        "deuda_extraordinaria",
+        # "deuda_extraordinaria",
     )
     list_display_links = ("id",)
 
@@ -206,15 +205,3 @@ class ExtraordinariaAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Extraordinaria, ExtraordinariaAdmin)
-
-
-class DeudaExtraordinariaAdmin(admin.ModelAdmin):
-    list_display = (
-        "extraordinaria",
-        "pagado",
-        "detalle",
-        "created_date",
-    )
-
-
-admin.site.register(DeudaExtraordinaria, DeudaExtraordinariaAdmin)

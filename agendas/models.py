@@ -88,29 +88,12 @@ class Extraordinaria(models.Model):
     def __str__(self) -> str:
         return f"Extraordinaria : {self.monto}, {self.concepto}"
 
-
-class DeudaExtraordinaria(models.Model):
-    # deuda = models.ForeignKey(Deuda, on_delete=models.CASCADE)
-    extraordinaria = models.ForeignKey(Extraordinaria, on_delete=models.CASCADE)
-    pagado = models.BooleanField(default=False)
-    detalle = models.TextField(default="")
-    created_date = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self) -> str:
-        return f"DeudaExtraordinaria : {self.id}, {self.extraordinaria.concepto}"
-
-
-"""
-class DetalleDeuda(models.Model):
-    monto_cargo = models.DecimalField(max_digits=10, decimal_places=2, null=False)
-    monto_abono = models.DecimalField(max_digits=10, decimal_places=2, null=False)
-    fecha_detalle = models.DateField(auto_now_add=True)
-    concepto = models.CharField(max_length=300, default="", null=False)
-    deuda = models.ForeignKey(Deuda, on_delete=models.CASCADE)
-
-    def __str__(self) -> str:
-        return f"Deuda : {self.fecha_detalle}, {self.concepto}"
-"""
+    def to_json(self):
+        return {
+            "monto": self.monto,
+            "concepto": self.concepto,
+            "create_date": self.created_date,
+        }
 
 
 class Qr(models.Model):
@@ -131,6 +114,14 @@ class Pago(models.Model):
 
     def __str__(self) -> str:
         return f"Pago : {self.id} - {self.monto_pagado} Bs. - Usuario = {self.user.full_name}"
+
+    def to_json(self):
+        return {
+            "fecha_pago": self.fecha_pago,
+            "monto_pagado": self.monto_pagado,
+            # "user": self.user.to_json(),
+            "created_date": self.created_date,
+        }
 
 
 class GrupoTurno(models.Model):
@@ -168,15 +159,19 @@ class DetallePagoMensualidad(models.Model):
 
 class DetallePagoExtraordianria(models.Model):
     pago = models.ForeignKey(Pago, on_delete=models.CASCADE)
-    deuda_extraordinaria = models.ForeignKey(
-        DeudaExtraordinaria, on_delete=models.CASCADE
-    )
+    extraordinaria = models.ForeignKey(Extraordinaria, on_delete=models.CASCADE)
+    saldo = models.DecimalField(max_digits=10, decimal_places=2)
     created_date = models.DateTimeField(auto_now_add=True, null=True)
 
     def __str__(self):
-        return (
-            f"DetallePagoExtraordianria : {self.pago.id} ,{self.deuda_extraordinaria}"
-        )
+        return f"DetallePagoExtraordianria : {self.pago.id} ,{self.extraordinaria.concepto}"
+
+    def to_json(self):
+        return {
+            "pago": self.pago.to_json(),
+            "extraordinaria": self.extraordinaria.to_json(),
+            "created_date": self.created_date,
+        }
 
 
 class DetallePagoEvento(models.Model):

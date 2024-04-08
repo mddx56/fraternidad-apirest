@@ -52,7 +52,7 @@ class Fraternidad(models.Model):
         max_digits=10, decimal_places=2, default=0, null=False
     )
     turno_semanal = models.CharField(max_length=50, default="", null=False)
-    link_whatsapp = models.URLField(max_length=700, default="")
+    link_whatsapp = models.URLField(max_length=700, default="", null=True, blank=True)
     latitud = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
     longitud = models.DecimalField(
         max_digits=9, decimal_places=6, null=True, blank=True

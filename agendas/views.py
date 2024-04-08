@@ -2,7 +2,8 @@ from rest_framework import viewsets
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-
+from accounts.models import UserAccount
+import json
 
 from .models import (
     TipoEvento,
@@ -13,14 +14,12 @@ from .models import (
     UserTurno,
     Mensualidad,
     Extraordinaria,
-    DeudaExtraordinaria,
     GrupoTurno,
     Gestion,
     DetallePagoEvento,
     DetallePagoExtraordianria,
     DetallePagoMensualidad,
 )
-from accounts.models import UserAccount
 
 from .serializer import (
     TipoEventoSerializer,
@@ -31,7 +30,6 @@ from .serializer import (
     UserTurnoSerializer,
     MensualidadSerializer,
     ExtraordinariaSerializer,
-    DeudaExtraordinariaSerializer,
     GestionSerializer,
     DetallePagoEventoSerializer,
     DetallePagoExtraordianriaSerializer,
@@ -107,11 +105,6 @@ class ExtraordinariaView(viewsets.ModelViewSet):
     queryset = Extraordinaria.objects.all()
 
 
-class DeudaExtraordinariaView(viewsets.ModelViewSet):
-    serializer_class = DeudaExtraordinariaSerializer
-    queryset = DeudaExtraordinaria.objects.all()
-
-
 class ListPagosView(APIView):
 
     def get(self, request, ci, format=None):
@@ -142,3 +135,32 @@ class ListExtraordinariaView(APIView):
             return Response(serializer.data, status=status.HTTP_200_OK)
         except Exception as e:
             return Response({"error": e}, status=status.HTTP_404_NOT_FOUND)
+
+
+from rest_framework.decorators import api_view
+
+# from rest_framework.response import Response
+
+
+@api_view(["GET"])
+def ListDeudaExtraordinaria(request, ci):
+    frater = UserAccount.objects.filter(username=ci).first()
+    extraordinarias = Extraordinaria.objects.all()
+
+    deudax = []
+
+    sum_saldo = 0
+
+    for extra in extraordinarias:
+        sum_saldo = 0
+        detalles = DetallePagoExtraordianria.objects.filter(
+            pago__user=frater, extraordinaria=extra
+        )
+        total_extra = extra.monto
+        extra = extra.to_json()
+        for detalle in detalles:
+            sum_saldo = sum_saldo + detalle.pago.monto_pagado
+        deuda = total_extra - sum_saldo
+        deudax.append({"extraordinaria": extra, "saldo": sum_saldo, "deuda": deuda})
+
+    return Response(deudax, status=status.HTTP_200_OK)

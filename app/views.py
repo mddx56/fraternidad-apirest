@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from agendas.models import TipoEvento
 from configuracion.models import Fraternidad, MediaImage
+from django.http import Http404
 
 
 def index(request):

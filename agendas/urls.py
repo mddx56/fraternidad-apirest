@@ -10,7 +10,6 @@ router.register("gestions", views.GestionView)
 router.register("mensualidads", views.MensualidadView)
 router.register("pagomensualidades", views.DetallePagoMensualidadView)
 router.register("extraordinarias", views.ExtraordinariaView)
-router.register("deudaextraordinarias", views.DeudaExtraordinariaView)
 router.register("pagoextraordinarias", views.DetallePagoExtraordianriaView)
 router.register("pagos", views.PagoView)
 router.register("qrs", views.QrView)
@@ -20,5 +19,6 @@ router.register("userturnos", views.UserTurnoView)
 
 urlpatterns = [
     path("/", include(router.urls)),
-    path("/pagos/m/<ci>", views.ListPagosView.as_view()),
+    path("/pagos/m/<ci>", views.ListPagosView.as_view(), name="pagos"),
+    path("/deudas/m/<ci>", views.ListDeudaExtraordinaria, name="deudas"),
 ]

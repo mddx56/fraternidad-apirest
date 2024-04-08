@@ -107,5 +107,21 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
     def has_module_perms(self, app_label):
         return True
 
+    def to_json(self):
+        return {
+            "username": self.username,
+            "id": self.id,
+            "full_name": self.full_name,
+            "ci": self.ci,
+            "email": self.email,
+            "phone": self.phone,
+            "financial_condition": self.financial_condition,
+            "role": self.role,
+            "copy_ci": self.copy_ci,
+            "suspend": self.suspend,
+            "avatar": self.avatar,
+            "is_admin": self.is_admin,
+        }
+
     def __str__(self) -> str:
         return f"User : {self.full_name}, {self.ci}, {self.username}"

@@ -10,7 +10,6 @@ from .models import (
     UserTurno,
     Mensualidad,
     Extraordinaria,
-    DeudaExtraordinaria,
     GrupoTurno,
     Gestion,
     DetallePagoEvento,
@@ -41,6 +40,19 @@ class DetallePagoExtraordianriaSerializer(serializers.ModelSerializer):
     class Meta:
         model = DetallePagoExtraordianria
         fields = "__all__"
+
+    def create(self, validated_data):
+        # Perform object-level validation
+        if (
+            validated_data["pago__monto_pagado"]
+            <= validated_data["extraordinaria__monto"]
+        ):
+            raise serializers.ValidationError(
+                "No puede exeder a el precio de la extraordinaria."
+            )
+
+        # Save the object
+        return DetallePagoEventoSerializer.objects.create(**validated_data)
 
 
 class DetallePagoMensualidadSerializer(serializers.ModelSerializer):
@@ -94,12 +106,6 @@ class MensualidadSerializer(serializers.ModelSerializer):
 class ExtraordinariaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Extraordinaria
-        fields = "__all__"
-
-
-class DeudaExtraordinariaSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = DeudaExtraordinaria
         fields = "__all__"
 
 
