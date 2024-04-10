@@ -129,6 +129,8 @@ def is_valido_date(mes, anio):
 
 def frater_pay_date(ci, mes, anio):
     frater = UserAccount.objects.filter(username=ci).first()
+    if not frater:
+        return True
     detalle = DetallePagoMensualidad.objects.filter(
         pago__user=frater, mensualidad__gestion__anio=anio
     )
@@ -173,7 +175,7 @@ def ListMensualidadDeudaView(request, ci):
 
 @api_view(["GET"])
 def ListDeudaExtraordinaria(request, ci):
-    frater = UserAccount.objects.filter(username=ci).first()
+    frater = UserAccount.objects.get(username=ci)
     extraordinarias = Extraordinaria.objects.all()
 
     deudax = []
