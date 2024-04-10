@@ -3,7 +3,9 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from accounts.models import UserAccount
-import json
+from rest_framework.decorators import api_view
+import datetime
+from .serializer import dato_to_moth
 
 from .models import (
     TipoEvento,
@@ -35,7 +37,6 @@ from .serializer import (
     DetallePagoExtraordianriaSerializer,
     DetallePagoMensualidadSerializer,
     GrupoTurnoSerializer,
-    ListPagoSerializer,
     ListDetallePagoMensualidadSerializer,
 )
 
@@ -106,7 +107,6 @@ class ExtraordinariaView(viewsets.ModelViewSet):
 
 
 class ListPagosView(APIView):
-
     def get(self, request, ci, format=None):
         try:
             frater = UserAccount.objects.filter(username=ci).first()
@@ -120,26 +120,55 @@ class ListPagosView(APIView):
             return Response({"error": e}, status=status.HTTP_404_NOT_FOUND)
 
 
-class ListExtraordinariaView(APIView):
-
-    def get(self, request, id_extra, ci, format=None):
-        try:
-            frater = UserAccount.objects.filter(username=ci).first()
-            extraodinaria = Extraordinaria.objects.get(id=id_extra)
-            if frater:
-                pagos = Pago.objects.filter(user=frater)
-                detallalles = DetallePagoMensualidad.objects.filter(pago__user=frater)
-                serializer = ListDetallePagoMensualidadSerializer(
-                    detallalles, many=True
-                )
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        except Exception as e:
-            return Response({"error": e}, status=status.HTTP_404_NOT_FOUND)
+def is_valido_date(mes, anio):
+    fecha_actual = datetime.datetime.now()
+    anio_actual = fecha_actual.year
+    mes_actual = fecha_actual.month
+    return anio < anio_actual or (anio == anio_actual and mes <= mes_actual)
 
 
-from rest_framework.decorators import api_view
+def frater_pay_date(ci, mes, anio):
+    frater = UserAccount.objects.filter(username=ci).first()
+    detalle = DetallePagoMensualidad.objects.filter(
+        pago__user=frater, mensualidad__gestion__anio=anio
+    )
 
-# from rest_framework.response import Response
+    result = detalle.filter(mensualidad__mes=mes).first()
+
+    ok = True if result else False
+    return ok
+
+
+@api_view(["GET"])
+def ListMensualidadDeudaView(request, ci):
+    try:
+        # frater = UserAccount.objects.filter(username=ci).first()
+
+        gestions = Gestion.objects.all().order_by("anio")
+
+        deudas = []
+
+        for gg in gestions:
+            anio = gg.anio
+
+            mensualidades = Mensualidad.objects.filter(gestion=gg).order_by("mes")
+            for mensu in mensualidades:
+                mes = mensu.mes
+                if not frater_pay_date(ci, mes, anio) and is_valido_date(mes, anio):
+                    deudas.append(
+                        {
+                            "mes": dato_to_moth(mensu.mes),
+                            "costo": mensu.costo,
+                            "gestion": gg.anio,
+                        }
+                    )
+
+        mensualidades
+        suma = sum([num["costo"] for num in deudas])
+
+        return Response({"deudas": deudas, "total": suma}, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({"error": e}, status=status.HTTP_404_NOT_FOUND)
 
 
 @api_view(["GET"])

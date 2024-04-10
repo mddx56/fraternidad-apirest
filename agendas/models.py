@@ -68,6 +68,9 @@ class Gestion(models.Model):
     def __str__(self):
         return f"Gestion : {self.anio}"
 
+    def to_json(self):
+        return {"anio": self.anio, "en_curso": self.en_curso}
+
 
 class Mensualidad(models.Model):
     costo = models.DecimalField(max_digits=10, decimal_places=2, null=False)
@@ -78,6 +81,14 @@ class Mensualidad(models.Model):
 
     def __str__(self) -> str:
         return f"Mensualidad : {self.costo}, mes :{self.mes}"
+
+    def to_json(self):
+        return {
+            "costo": self.costo,
+            "fecha": self.fecha,
+            "mes": self.mes,
+            "gestion": self.gestion.anio,
+        }
 
 
 class Extraordinaria(models.Model):
@@ -154,7 +165,14 @@ class DetallePagoMensualidad(models.Model):
     created_date = models.DateTimeField(auto_now_add=True, null=True)
 
     def __str__(self):
-        return f"DetallePagoMensualidad : {self.pago.id} ,{self.mensualidad.mes}"
+        return f"DetallePagoMensualidad: {self.pago.id} ,Mes: {self.mensualidad.mes}, Gestion: {self.mensualidad.gestion.anio}"
+
+    def to_json(self):
+        return {
+            "pago": self.pago.to_json(),
+            "mensualidad": self.mensualidad.to_json(),
+            "created_date": self.created_date,
+        }
 
 
 class DetallePagoExtraordianria(models.Model):
