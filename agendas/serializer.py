@@ -41,6 +41,8 @@ class DetallePagoExtraordianriaSerializer(serializers.ModelSerializer):
         model = DetallePagoExtraordianria
         fields = "__all__"
 
+
+"""
     def create(self, validated_data):
         # Perform object-level validation
         if (
@@ -53,6 +55,7 @@ class DetallePagoExtraordianriaSerializer(serializers.ModelSerializer):
 
         # Save the object
         return DetallePagoEventoSerializer.objects.create(**validated_data)
+"""
 
 
 class DetallePagoMensualidadSerializer(serializers.ModelSerializer):
