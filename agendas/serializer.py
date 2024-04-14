@@ -136,6 +136,7 @@ class ListDetallePagoMensualidadSerializer(serializers.ModelSerializer):
     mes = serializers.SerializerMethodField()
     gestion = serializers.SerializerMethodField()
     monto = serializers.SerializerMethodField()
+    fecha = serializers.SerializerMethodField()
 
     class Meta:
         model = DetallePagoMensualidad
@@ -149,6 +150,9 @@ class ListDetallePagoMensualidadSerializer(serializers.ModelSerializer):
 
     def get_monto(self, object):
         return object.mensualidad.costo
+
+    def get_fecha(self, object):
+        return object.mensualidad.fecha
 
 
 class ListPagoSerializer(serializers.ModelSerializer):

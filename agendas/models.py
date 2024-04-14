@@ -101,6 +101,7 @@ class Extraordinaria(models.Model):
 
     def to_json(self):
         return {
+            "id": self.pk,
             "monto": self.monto,
             "concepto": self.concepto,
             "create_date": self.created_date,

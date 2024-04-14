@@ -160,8 +160,10 @@ def ListMensualidadDeudaView(request, ci):
                     deudas.append(
                         {
                             "mes": dato_to_moth(mensu.mes),
-                            "costo": mensu.costo,
                             "gestion": gg.anio,
+                            "costo": mensu.costo,
+                            "fecha": mensu.fecha,
+                            "mensualidad": mensu.pk,
                         }
                     )
 
