@@ -9,6 +9,16 @@ from accounts.models import UserAccount
 from agendas.models import Mensualidad, DetallePagoMensualidad, Gestion, Pago
 
 
+def limpiarPagos():
+    try:
+        Pago.objects.all().delete()
+        DetallePagoMensualidad.objects.all().delete()
+    except TypeError as e:
+        print(f"Error: Tipo de dato incorrecto - {e}")
+    finally:
+        print("se limpio los datos correctamente")
+
+
 def detectar_repetidos(array):
     elementos_repetidos = []
     for elemento in array:
@@ -66,10 +76,11 @@ class Command(BaseCommand):
             22: {"mes": 11, "anio": 2024},
             23: {"mes": 12, "anio": 2024},
         }
-        
-        create_gestion()
 
-        with open("pays.csv", newline="", encoding="utf-8") as File:
+        create_gestion()
+        limpiarPagos()
+
+        with open("paysmayo.csv", newline="", encoding="utf-8") as File:
 
             reader2 = csv.reader(File)
             index = 0
@@ -81,28 +92,32 @@ class Command(BaseCommand):
                     if len(ele.strip()) > 3 and not switch:
                         ci = ele.strip()
                         user_frater = UserAccount.objects.filter(username=ci).first()
-                       
-                        print("CI :", user_frater.username)
+
+                        # print("CI :", user_frater.username)
                         switch = True
                     elif ele.strip() == "200" and switch:
                         mes_pago = datos_meses[index - 1]["mes"]
                         anio_pago = datos_meses[index - 1]["anio"]
-                        gestion_pago=Gestion.objects.filter(anio=anio_pago).first()
-                        mensualidad_pago=Mensualidad.objects.filter(mes=mes_pago,gestion=gestion_pago).first()
+                        gestion_pago = Gestion.objects.filter(anio=anio_pago).first()
+                        mensualidad_pago = Mensualidad.objects.filter(
+                            mes=mes_pago, gestion=gestion_pago
+                        ).first()
                         pago_pago = Pago(
                             fecha_pago=datetime.datetime.now(),
                             monto_pagado=mensualidad_pago.costo,
                             user=user_frater,
                         )
                         pago_pago.save()
-                        detalle=DetallePagoMensualidad(pago = pago_pago,mensualidad=mensualidad_pago)
+                        detalle = DetallePagoMensualidad(
+                            pago=pago_pago, mensualidad=mensualidad_pago
+                        )
                         detalle.save()
-                        print(detalle)
-                        print(mensualidad_pago)
-                        #print("pagado ", f"{mes}, {anio}")
+                        # print(detalle)
+                        # print(mensualidad_pago)
+                        # print("pagado ", f"{mes}, {anio}")
                     else:
                         mes = datos_meses[index - 1]["mes"]
                         anio = datos_meses[index - 1]["anio"]
-                        print("No pagado ", f"{mes}, {anio}")
+                        # print("No pagado ", f"{mes}, {anio}")
                     index = index + 1
         print("Fin....")
