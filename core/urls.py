@@ -1,19 +1,9 @@
 from django.contrib import admin
-from django.urls import path, include, re_path
-
-from django.conf import settings
-from django.conf.urls.static import static
-
+from django.urls import path, include
 from drf_yasg.views import get_schema_view
-
 from drf_yasg import openapi
 from rest_framework import permissions
-
-from rest_framework_simplejwt.views import (
-    TokenRefreshView,
-    TokenObtainPairView,
-    TokenVerifyView,
-)
+from rest_framework_simplejwt.views import TokenRefreshView
 from accounts.views import ChangePasswordView, ObtainTokenPairView, UpdateProfileView
 from core import views
 from accounts.views import CreateUserView
@@ -24,8 +14,7 @@ schema_view = get_schema_view(
         title="Frater",
         default_version="v1",
         description="Fraternidad Agenda",
-        terms_of_service="https://example.com/terms/",
-        contact=openapi.Contact(email="wmjanco@gmail.com"),
+        contact=openapi.Contact(email="mddx56@gmail.com"),
         license=openapi.License(name="MIT License"),
     ),
     public=True,
@@ -34,8 +23,8 @@ schema_view = get_schema_view(
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("", views.index, name="index"),
-    path("home", include("app.urls")),
+    path("", views.index, name="inicio"),
+    path("home/", include("app.urls")),
     path("api/login", ObtainTokenPairView.as_view(), name="login_user"),
     path("api/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
     path("api/signup", CreateUserView.as_view(), name="create_user"),
@@ -49,9 +38,10 @@ urlpatterns = [
         UpdateProfileView.as_view(),
         name="auth_update_profile",
     ),
-    path("api/agenda", include("agendas.urls")),
-    path("api/frater", include("configuracion.urls")),
-    path("api/auth", include("accounts.urls")),
+    path("api/agenda/", include("agendas.urls")),
+    path("api/frater/", include("configuracion.urls")),
+    path("api/auth/", include("accounts.urls")),
+    path("api/notif/", include("notifications.urls")),
     path(
         "swagger/",
         schema_view.with_ui("swagger", cache_timeout=0),

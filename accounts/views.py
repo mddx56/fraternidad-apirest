@@ -4,6 +4,7 @@ from rest_framework.decorators import permission_classes
 from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny
 from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import generics
 from rest_framework import viewsets
@@ -12,8 +13,11 @@ from .serializers import (
     MyTokenObtainPairSerializer,
     UpdateUserSerializer,
     UserSerializer,
+    UserFraterSerializer,
 )
+from rest_framework.decorators import api_view
 import rest_framework.status as status
+from django.db.models import Q
 
 
 User = get_user_model()
@@ -81,3 +85,65 @@ class UpdateProfileView(generics.UpdateAPIView):
     queryset = User.objects.all()
     permission_classes = (IsAuthenticated,)
     serializer_class = UpdateUserSerializer
+
+
+class CheckStatus(APIView):
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+        token = request.auth
+        claims = token.payload if token else {}
+
+        return Response(
+            {
+                "token": "valid",
+                "claims": {
+                    "token_type": claims.get("token_type"),
+                    "exp": claims.get("exp"),
+                    "iat": claims.get("iat"),
+                    "jti": claims.get("jti"),
+                },
+                "user_id": user.id,
+                "username": user.username,
+                "full_name": user.full_name,
+                "email": user.email,
+                "role": user.role,
+                "phone": user.phone,
+                "suspend": user.suspend,
+            },
+            status=status.HTTP_200_OK,
+        )
+
+
+fraternos = Q(role="Fraterno") | Q(role="Tesorero")
+
+
+class ListFraternosActivos(generics.ListAPIView):
+    queryset = User.objects.filter(fraternos).filter(suspend=True)
+    serializer_class = UserFraterSerializer
+
+
+class ListFraternos(generics.ListAPIView):
+    queryset = User.objects.filter(fraternos)
+    serializer_class = UserFraterSerializer
+
+
+class ListFraternosInActivos(generics.ListAPIView):
+    queryset = User.objects.filter(fraternos).filter(suspend=False)
+    serializer_class = UserFraterSerializer
+
+
+@api_view(["GET"])
+def CountFraternos(request):
+    try:
+        count = User.objects.filter(fraternos).count()
+        activos = User.objects.filter(fraternos).filter(suspend=False).count()
+        suspendidos = User.objects.filter(fraternos).filter(suspend=True).count()
+        return Response(
+            {"fraternos": count, "activos": activos, "suspend": suspendidos},
+            status=status.HTTP_200_OK,
+        )
+    except Exception as e:
+        return Response({"error": e}, status=status.HTTP_404_NOT_FOUND)

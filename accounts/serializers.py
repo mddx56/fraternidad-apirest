@@ -1,18 +1,21 @@
 from django.conf import settings
 from rest_framework import serializers
-from django.contrib.auth import get_user_model, password_validation
-from rest_framework_simplejwt.tokens import RefreshToken
+from django.contrib.auth import get_user_model
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 User = get_user_model()
-# User = settings.AUTH_USER_MODEL
+
+class UserFraterSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ("id","username", "full_name", "email", "phone")
 
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = (
-            "__all__"  # ("username", "password", "email", "first_name", "last_name")
+            "__all__"
         )
         extra_kwargs = {"password": {"write_only": True}}
 

@@ -18,6 +18,5 @@ router.register("actividades", views.ActividadView)
 
 
 urlpatterns = [
-    path("/", include(router.urls)),
-    path("/fotos/ss", views.ListMediaImageView.as_view()),
+    path("", include(router.urls)),
 ]

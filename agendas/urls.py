@@ -18,8 +18,8 @@ router.register("turnos", views.TurnoView)
 router.register("userturnos", views.UserTurnoView)
 
 urlpatterns = [
-    path("/", include(router.urls)),
-    path("/pagos/m/<ci>", views.ListPagosView.as_view(), name="pagos"),
-    path("/deudas/m/<ci>", views.ListMensualidadDeudaView, name="deudas_mensualidad"),
-    path("/deudas/e/<ci>", views.ListDeudaExtraordinaria, name="deudas_extraordinaria"),
+    path("", include(router.urls)),
+    path("pagos/m/<ci>", views.ListPagosView.as_view(), name="pagos"),
+    path("deudas/m/<ci>", views.ListMensualidadDeudaView, name="deudas_mensualidad"),
+    path("deudas/e/<ci>", views.ListDeudaExtraordinaria, name="deudas_extraordinaria"),
 ]

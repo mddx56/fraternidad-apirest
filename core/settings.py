@@ -14,7 +14,7 @@ BASE_DIR = Path(__file__).resolve().parent  # .parent
 SECRET_KEY = config("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config("DEBUG")
+DEBUG = False  # config("DEBUG")
 
 ALLOWED_HOSTS = ["3.14.207.16", "127.0.0.1", "0.0.0.0"]
 
@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     "accounts",
     "configuracion",
     "agendas",
+    "notifications",
     "app",
 ]
 
@@ -54,6 +55,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "core.middleware.JSONErrorMiddleware",
 ]
 
 CORS_ALLOW_ALL_ORIGINS = True
@@ -131,7 +133,7 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 
-STATICFILES_DIRS = [BASE_DIR / "static"]
+# STATICFILES_DIRS = [BASE_DIR / "static"]
 
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
