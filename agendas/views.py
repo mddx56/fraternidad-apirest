@@ -144,8 +144,6 @@ def frater_pay_date(ci, mes, anio):
 @api_view(["GET"])
 def ListMensualidadDeudaView(request, ci):
     try:
-        # frater = UserAccount.objects.filter(username=ci).first()
-
         gestions = Gestion.objects.all().order_by("anio")
 
         deudas = []
@@ -159,6 +157,7 @@ def ListMensualidadDeudaView(request, ci):
                 if not frater_pay_date(ci, mes, anio) and is_valido_date(mes, anio):
                     deudas.append(
                         {
+                            "id": mensu.id,
                             "mes": dato_to_moth(mensu.mes),
                             "gestion": gg.anio,
                             "costo": mensu.costo,
@@ -197,3 +196,28 @@ def ListDeudaExtraordinaria(request, ci):
         deudax.append({"extraordinaria": extra, "saldo": sum_saldo, "deuda": deuda})
 
     return Response(deudax, status=status.HTTP_200_OK)
+
+
+@api_view(["GET"])
+def ListFratersGroup(request, id):
+    grupo = GrupoTurno.objects.get(pk=id)
+    user_turno = UserTurno.objects.filter(grupo_turno=grupo).order_by("user__full_name")
+    res = []
+    for us in user_turno:
+        res.append(us.user.to_json())
+    return Response(res, status=status.HTTP_200_OK)
+
+@api_view(["GET"])
+def ListGroups(request):
+    grupos = GrupoTurno.objects.all().order_by("nombre")
+    res = []
+    for gr in grupos:
+        res_groups = []
+        user_turno = UserTurno.objects.filter(grupo_turno=gr).order_by(
+            "user__full_name"
+        )
+        for us in user_turno:
+            res_groups.append(us.user.to_json())
+        res.append({"nombre": gr.nombre, "fraternos": res_groups})
+
+    return Response(data=res, status=status.HTTP_200_OK)

@@ -21,6 +21,7 @@ from django.db.models import Q
 
 
 User = get_user_model()
+fraternos = Q(role="Fraterno") | Q(role="Tesorero")
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -115,9 +116,6 @@ class CheckStatus(APIView):
             },
             status=status.HTTP_200_OK,
         )
-
-
-fraternos = Q(role="Fraterno") | Q(role="Tesorero")
 
 
 class ListFraternosActivos(generics.ListAPIView):

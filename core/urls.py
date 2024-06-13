@@ -1,5 +1,7 @@
 from django.contrib import admin
 from django.urls import path, include
+from django.conf import settings
+from django.conf.urls.static import static
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 from rest_framework import permissions
@@ -24,29 +26,37 @@ schema_view = get_schema_view(
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", views.index, name="inicio"),
-    path("home/", include("app.urls")),
+    path("home/", views.home, name="home.."),
     path("api/login", ObtainTokenPairView.as_view(), name="login_user"),
     path("api/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
     path("api/signup", CreateUserView.as_view(), name="create_user"),
     path(
         "api/change_password/<str:pk>/",
         ChangePasswordView.as_view(),
-        name="auth_change_password",
+        name="change_password",
     ),
     path(
         "api/update_profile/<str:pk>/",
         UpdateProfileView.as_view(),
-        name="auth_update_profile",
+        name="update_profile",
     ),
     path("api/agenda/", include("agendas.urls")),
     path("api/frater/", include("configuracion.urls")),
     path("api/auth/", include("accounts.urls")),
     path("api/notif/", include("notifications.urls")),
-    path(
-        "swagger/",
-        schema_view.with_ui("swagger", cache_timeout=0),
-        name="schema-swagger-ui",
-    ),
-    path("redoc/", schema_view.with_ui("redoc", cache_timeout=0), name="schema-redoc"),
     path("graphql", GraphQLView.as_view(graphiql=True)),
-]  # + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+]
+
+#urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
+if settings.DEBUG:
+    urlpatterns = [
+        path(
+            "swagger/",
+            schema_view.with_ui("swagger", cache_timeout=0),
+            name="schema-swagger-ui",
+        ),
+        path(
+            "redoc/", schema_view.with_ui("redoc", cache_timeout=0), name="schema-redoc"
+        ),
+    ] + urlpatterns

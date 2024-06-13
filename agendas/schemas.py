@@ -1,9 +1,6 @@
 import graphene
 from graphene_django import DjangoObjectType
-
 from agendas.models import Agenda, Qr, TipoEvento
-
-# from models.
 
 
 class EventoType(DjangoObjectType):
@@ -38,9 +35,11 @@ class QrType(DjangoObjectType):
 class Query(graphene.ObjectType):
 
     all_eventos = graphene.List(EventoType)
+
     count_eventos = graphene.Int()
 
     all_tipo_eventos = graphene.List(TipoEventoType)
+
     all_qrs = graphene.List(QrType)
 
     def resolve_count_eventos(root, info) -> int:
