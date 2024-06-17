@@ -1,0 +1,13 @@
+{% extends "admin_interface:admin/base_site.html" %} {% load static %}
+{% block branding %}
+<h1 id="site-name" style="display: flex; align-items: center">
+  <object
+    type="image/webp"
+    data="{% static 'assets/img/favicon.webp' %}"
+    width="65"
+    height="55"
+    style="margin-right: 10px"
+  ></object>
+  Administración de los Flojonazos
+</h1>
+{% endblock %}

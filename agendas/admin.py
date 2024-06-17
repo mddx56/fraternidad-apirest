@@ -1,4 +1,5 @@
 from django.contrib import admin
+from import_export.admin import ImportExportModelAdmin
 
 from .models import (
     Agenda,
@@ -27,7 +28,7 @@ class GestionAdmin(admin.ModelAdmin):
         "anio",
         "en_curso",
     )
-    list_display_links = ("id",)
+    list_display_links = ("id","anio")
     # list_editable = ("precio", "nombre")
     search_fields = ("id", "anio")
     list_per_page = 25
@@ -50,7 +51,8 @@ class QrAdmin(admin.ModelAdmin):
     list_per_page = 25
 
 
-admin.site.register(Qr, QrAdmin)
+admin.site.register(Qr, ImportExportModelAdmin)
+# admin.site.register(Qr, QrAdmin)
 
 
 class TurnoAdmin(admin.ModelAdmin):
