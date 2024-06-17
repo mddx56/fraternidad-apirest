@@ -16,7 +16,7 @@ SECRET_KEY = config("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ["3.14.207.16", "127.0.0.1", "0.0.0.0", "flojonazos.net"]
+ALLOWED_HOSTS = ["3.14.207.16", "127.0.0.1", "flojonazos.net"]
 
 
 # Application definition
@@ -34,10 +34,10 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "rest_framework",
     "rest_framework_simplejwt",
-    "drf_yasg",
-    "graphene_django",
-    "import_export",
     "channels",
+    "graphene_django",
+    "drf_yasg",
+    "import_export",
     "accounts",
     "configuracion",
     "agendas",
@@ -90,7 +90,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "core.wsgi.application"
-# ASGI_APPLICATION = "core.asgi.application"
+ASGI_APPLICATION = "core.asgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases

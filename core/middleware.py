@@ -17,13 +17,5 @@ class JSONErrorMiddleware(MiddlewareMixin):
                 },
                 status=status_code,
             )
-        if status_code == HTTPStatus.INTERNAL_SERVER_ERROR:
-            return JsonResponse(
-                {
-                    "detail": "☠☠☠",
-                    "code": reason_phrase,
-                },
-                status=status_code,
-            )
         
         return response
