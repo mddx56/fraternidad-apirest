@@ -1,5 +1,10 @@
 from django.contrib import admin
+from django.contrib.auth.models import Group
 from import_export.admin import ImportExportModelAdmin
+from admin_interface.admin import Theme
+
+admin.site.unregister(Group)
+admin.site.unregister(Theme)
 
 from .models import (
     Agenda,
@@ -15,11 +20,20 @@ from .models import (
     DetallePagoExtraordianria,
     DetallePagoMensualidad,
     GrupoTurno,
+    Extraord,
+    Cuota,
+    DetallePagoExtraord,
+    FraterExtraord
 )
 
 admin.site.site_header = "Sistema de Gestión para Fraternidad ⛺"
 admin.site.site_title = "Flojonazos"
 admin.site.index_title = "Bienvenidos al portal de administración"
+
+admin.site.register(Extraord)
+admin.site.register(Cuota)
+admin.site.register(DetallePagoExtraord)
+admin.site.register(FraterExtraord)
 
 
 class GestionAdmin(admin.ModelAdmin):
@@ -28,7 +42,7 @@ class GestionAdmin(admin.ModelAdmin):
         "anio",
         "en_curso",
     )
-    list_display_links = ("id","anio")
+    list_display_links = ("id", "anio")
     # list_editable = ("precio", "nombre")
     search_fields = ("id", "anio")
     list_per_page = 25
@@ -45,7 +59,10 @@ class QrAdmin(admin.ModelAdmin):
         "descripcion",
         "tipo_evento",
     )
-    list_display_links = ("id",)
+    list_display_links = (
+        "id",
+        "qr_valor",
+    )
     # list_editable = ("precio", "nombre")
     search_fields = ("id", "descripcion")
     list_per_page = 25
@@ -61,7 +78,10 @@ class TurnoAdmin(admin.ModelAdmin):
         "fecha",
         "grupo_turno",
     )
-    list_display_links = ("id",)
+    list_display_links = (
+        "id",
+        "fecha",
+    )
     list_filter = (
         "grupo_turno",
         "fecha",
@@ -80,7 +100,10 @@ class DetallePagoEventoAdmin(admin.ModelAdmin):
         "pago",
         "evento",
     )
-    list_display_links = ("id",)
+    list_display_links = (
+        "id",
+        "pago",
+    )
     search_fields = ("id", "pago")
     list_per_page = 25
 
@@ -94,7 +117,10 @@ class DetallePagoExtraordianriaAdmin(admin.ModelAdmin):
         "pago",
         # "deuda_extraordinaria",
     )
-    list_display_links = ("id",)
+    list_display_links = (
+        "id",
+        "pago",
+    )
 
     # list_editable = ("precio", "nombre")
     search_fields = ("id", "pago")
@@ -110,7 +136,10 @@ class DetallePagoMensualidadAdmin(admin.ModelAdmin):
         "pago",
         "mensualidad",
     )
-    list_display_links = ("id",)
+    list_display_links = (
+        "id",
+        "pago",
+    )
 
     # list_editable = ("precio", "nombre")
     search_fields = ("id", "pago")
@@ -128,7 +157,10 @@ class TipoEventoAdmin(admin.ModelAdmin):
         "costo_entresemana",
         "costo_finsemana",
     )
-    list_display_links = ("id",)
+    list_display_links = (
+        "id",
+        "nombre",
+    )
     # list_editable = ("precio", "nombre")
     search_fields = ("id", "nombre")
     list_per_page = 25
@@ -147,7 +179,11 @@ class AgendaAdmin(admin.ModelAdmin):
         "tipo_evento",
         "user",
     )
-    list_display_links = ("id", "user")
+    list_display_links = (
+        "id",
+        "user",
+        "fecha",
+    )
     list_filter = ("tipo_evento",)
     # list_editable = ("deuda_total", "estado_deuda")
     search_fields = ("id", "user", "fecha")

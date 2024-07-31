@@ -1,4 +1,5 @@
 from django.contrib.auth import get_user_model
+from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
 from rest_framework.decorators import permission_classes
 from rest_framework.views import APIView
@@ -14,6 +15,7 @@ from .serializers import (
     UpdateUserSerializer,
     UserSerializer,
     UserFraterSerializer,
+    UuIdSerializer,
 )
 from rest_framework.decorators import api_view
 import rest_framework.status as status
@@ -131,6 +133,33 @@ class ListFraternos(generics.ListAPIView):
 class ListFraternosInActivos(generics.ListAPIView):
     queryset = User.objects.filter(fraternos).filter(suspend=False)
     serializer_class = UserFraterSerializer
+
+
+@api_view(["GET"])
+def SuspendFraterno(request, id):
+    user = request.user
+    role = user.role
+    serializer = UuIdSerializer(data={"id": id})
+
+    if not serializer.is_valid():
+        return Response(
+            {"detail": "Uuid no valido o vacio"}, status=status.HTTP_400_BAD_REQUEST
+        )
+
+    update_user = get_object_or_404(User, pk=id)
+
+    if role == "Admin" or role == "Tesorero":
+        sw = not update_user.suspend
+        update_user.suspend = sw
+        update_user.save()
+        return Response(
+            {"detail": "estado de supend cambiado"},
+            status=status.HTTP_200_OK,
+        )
+    else:
+        return Response(
+            {"detail": "no autorizado"}, status=status.HTTP_401_UNAUTHORIZED
+        )
 
 
 @api_view(["GET"])

@@ -1,3 +1,4 @@
+from django.db import transaction
 from rest_framework import viewsets
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -6,6 +7,8 @@ from accounts.models import UserAccount
 from rest_framework.decorators import api_view
 import datetime
 from .serializer import dato_to_moth
+
+from accounts.serializers import UserSerializer
 
 from .models import (
     TipoEvento,
@@ -21,6 +24,10 @@ from .models import (
     DetallePagoEvento,
     DetallePagoExtraordianria,
     DetallePagoMensualidad,
+    Cuota,
+    DetallePagoExtraord,
+    Extraord,
+    FraterExtraord,
 )
 
 from .serializer import (
@@ -38,6 +45,12 @@ from .serializer import (
     DetallePagoMensualidadSerializer,
     GrupoTurnoSerializer,
     ListDetallePagoMensualidadSerializer,
+    CuotaInputSerializer,
+    CuotaArraySerializer,
+    CuotaSerializer,
+    DetallePagoExtraord,
+    FraterExtraord,
+    Extraord,
 )
 
 
@@ -207,6 +220,7 @@ def ListFratersGroup(request, id):
         res.append(us.user.to_json())
     return Response(res, status=status.HTTP_200_OK)
 
+
 @api_view(["GET"])
 def ListGroups(request):
     grupos = GrupoTurno.objects.all().order_by("nombre")
@@ -221,3 +235,42 @@ def ListGroups(request):
         res.append({"nombre": gr.nombre, "fraternos": res_groups})
 
     return Response(data=res, status=status.HTTP_200_OK)
+
+
+@api_view(["GET"])
+def ListCuotas(request, ci):
+    return Response({"ci": ci}, status=status.HTTP_200_OK)
+
+
+@api_view(["POST"])
+def PayExtraord(request, ci):
+    user = UserAccount.objects.filter(username=ci).first()
+    if not user:
+        return Response(
+            {"detail": "no se encontro ci"}, status=status.HTTP_404_NOT_FOUND
+        )
+
+    serializer = CuotaArraySerializer(data=request.data)
+
+    if serializer.is_valid():
+        cuotas = serializer.validated_data["cuotas"]
+        resultados = Cuota.objects.filter(id__in=cuotas)
+        serializer_cu = CuotaSerializer(resultados, many=True)
+        serializer_us = UserSerializer(user)
+        return Response(
+            {"user": serializer_us.data, "cuotas": serializer_cu.data},
+            status=status.HTTP_200_OK,
+        )
+    else:
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(["POST"])
+def GenerarCuotas(request, ci):
+    serializer = CuotaInputSerializer(data=request.data)
+    if serializer.is_valid():
+        amount = serializer.validated_data["amount"]
+        term = serializer.validated_data["term"]
+        return Response({"ci": ci, "cuotas": {}}, status=status.HTTP_200_OK)
+    else:
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

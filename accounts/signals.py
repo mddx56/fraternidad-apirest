@@ -13,6 +13,6 @@ def user_post_save_receiver(sender, instance, created, *args, **kwargs):
         # deuda = Deuda.objects.create(deuda_total=0, user=instance)
         # deuda.save()
         # print(f"user {instance.username}")
-        print("SIGNAL ACCOUNT :", "aqui andamos..")
+        print("SIGNAL ACCOUNT :", "crated..")
     else:
-        print("SIGNAL ACCOUNT :", "algo salio mal..")
+        print("SIGNAL ACCOUNT :", "update..")

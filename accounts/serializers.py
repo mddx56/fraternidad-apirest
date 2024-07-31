@@ -5,18 +5,17 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 User = get_user_model()
 
+
 class UserFraterSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ("id","username", "full_name", "email", "phone")
+        fields = ("id", "username", "full_name", "email", "phone")
 
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = (
-            "__all__"
-        )
+        fields = "__all__"
         extra_kwargs = {"password": {"write_only": True}}
 
     def create(self, validated_data):
@@ -104,3 +103,12 @@ class UpdateUserSerializer(serializers.ModelSerializer):
         instance.save()
 
         return instance
+
+
+class UuIdSerializer(serializers.Serializer):
+    id = serializers.UUIDField()
+
+    def validate_id(self, value):
+        if not value:
+            raise serializers.ValidationError("No valido..")
+        return value

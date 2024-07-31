@@ -67,8 +67,9 @@ class ArticuloAdmin(admin.ModelAdmin):
     list_per_page = 25
 
 
+"""
 admin.site.register(Horario)
-
 admin.site.register(Actividad)
 admin.site.register(DiaSemana)
 admin.site.register(Cronograma)
+"""

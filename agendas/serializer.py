@@ -15,6 +15,10 @@ from .models import (
     DetallePagoEvento,
     DetallePagoExtraordianria,
     DetallePagoMensualidad,
+    Extraord,
+    FraterExtraord,
+    Cuota,
+    DetallePagoExtraord,
 )
 
 
@@ -159,4 +163,48 @@ class ListPagoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Pago
+        fields = "__all__"
+
+
+class ExtraordSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Extraord
+        fields = "__all__"
+        
+
+class CuotaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Cuota
+        fields = "__all__"
+        #depth = 1
+
+class CuotaInputSerializer(serializers.Serializer):
+    amount = serializers.DecimalField(max_digits=10, decimal_places=2)
+    user_frater = serializers.UUIDField()
+    fecha_inicio = serializers.DateField()
+
+    def validate_amount(self, value):
+        if value <= 0:
+            raise serializers.ValidationError("Amount deve ser mayor a cero.")
+        return value
+
+class CuotaArraySerializer(serializers.Serializer):
+    cuotas = serializers.ListField(
+        child=serializers.UUIDField()
+    )
+
+    def validate_cuotas(self, value):
+        if not value:
+            raise serializers.ValidationError("La lista no puede estar vacia")
+        return value
+
+class DetallePagoExtraordSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DetallePagoExtraord
+        fields = "__all__"
+        #depth = 1
+
+class FraterExtraordSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FraterExtraord
         fields = "__all__"

@@ -11,4 +11,5 @@ urlpatterns = [
     path("fraternos-inactivos/", views.ListFraternosInActivos.as_view()),
     path("check-status/", views.CheckStatus.as_view()),
     path("fraternos-count/", views.CountFraternos),
+    path("suspend/<str:id>/", views.SuspendFraterno),
 ]

@@ -24,4 +24,7 @@ urlpatterns = [
     path("deudas/e/<ci>", views.ListDeudaExtraordinaria, name="deudas_extraordinaria"),
     path("grupo-view/<id>", views.ListFratersGroup, name="fraternos_por_grupo"),
     path("grupo-all/", views.ListGroups, name="fraternos_grupo"),
+    path("generar-cuotas/<str:ci>/", views.GenerarCuotas, name="Generar cuotas"),
+    path("cuotas-all/<str:ci>/", views.ListCuotas, name="Listar cuotas"),
+    path("pagar-cuotas/<str:ci>/", views.PayExtraord, name="Pagar cuotas"),
 ]

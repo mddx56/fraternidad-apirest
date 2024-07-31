@@ -1,16 +1,8 @@
+import uuid
 from django.db import models
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
-
-
-"""# Create your models here.
-class EstadoReserva(models.Model):
-    nombre = models.CharField(max_length=100, default="", null=False)
-
-    def __str__(self) -> str:
-        return f"EstadoReserva : {self.nombre}"
-"""
 
 
 class TipoEvento(models.Model):
@@ -24,7 +16,7 @@ class TipoEvento(models.Model):
     )
 
     def __str__(self) -> str:
-        return f"Tipo Evento : {self.id} - {self.nombre} ({self.costo_entresemana} Bs. ,{self.costo_finsemana} Bs.)"
+        return f"{self.id} - {self.nombre} ({self.costo_entresemana} Bs. ,{self.costo_finsemana} Bs.)"
 
 
 class Agenda(models.Model):
@@ -43,22 +35,7 @@ class Agenda(models.Model):
     created_date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self) -> str:
-        return f"Agenda : {self.fecha}, {self.descripcion}"
-
-
-"""
-class Deuda(models.Model):
-    PENDIENTE = "pendiente"
-    PAGADA = "pagada"
-    ESTADOS = [(PENDIENTE, "Pendiente"), (PAGADA, "Pagada")]
-    deuda_total = models.DecimalField(max_digits=10, decimal_places=2, default=0)
-    estado_deuda = models.CharField(max_length=15, choices=ESTADOS, default=PENDIENTE)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    created_date = models.DateTimeField(auto_now_add=True, null=True)
-
-    def __str__(self) -> str:
-        return f"Deuda : {self.user}, {self.estado_deuda}"
-"""
+        return f"{self.fecha}, {self.descripcion}"
 
 
 class Gestion(models.Model):
@@ -66,7 +43,7 @@ class Gestion(models.Model):
     en_curso = models.BooleanField()
 
     def __str__(self):
-        return f"Gestion : {self.anio}"
+        return f"{self.anio}"
 
     def to_json(self):
         return {"anio": self.anio, "en_curso": self.en_curso}
@@ -76,11 +53,11 @@ class Mensualidad(models.Model):
     costo = models.DecimalField(max_digits=10, decimal_places=2, null=False)
     fecha = models.DateField(null=False)
     mes = models.IntegerField(null=True, blank=True)
-    gestion = models.ForeignKey(Gestion, on_delete=models.CASCADE)
+    gestion = models.ForeignKey(Gestion, on_delete=models.DO_NOTHING)
     # created_date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self) -> str:
-        return f"Mensualidad : {self.costo}, mes :{self.mes}"
+        return f"mes: {self.mes}, costo: {self.costo}"
 
     def to_json(self):
         return {
@@ -97,7 +74,7 @@ class Extraordinaria(models.Model):
     created_date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self) -> str:
-        return f"Extraordinaria : {self.monto}, {self.concepto}"
+        return f"Concepto: {self.concepto}, monto: {self.monto}, "
 
     def to_json(self):
         return {
@@ -125,7 +102,7 @@ class Pago(models.Model):
     created_date = models.DateTimeField(auto_now_add=True, null=True)
 
     def __str__(self) -> str:
-        return f"Pago : {self.id} - {self.monto_pagado} Bs. - Usuario = {self.user.full_name}"
+        return f"Pago: {self.monto_pagado} Bs, User {self.user.full_name}"
 
     def to_json(self):
         return {
@@ -141,7 +118,7 @@ class GrupoTurno(models.Model):
     dia = models.IntegerField(default=0, blank=True)
 
     def __str__(self) -> str:
-        return f"GrupoTurno : {self.nombre}, {self.dia}"
+        return f"{self.nombre}, {self.dia}"
 
 
 class Turno(models.Model):
@@ -149,7 +126,7 @@ class Turno(models.Model):
     grupo_turno = models.ForeignKey(GrupoTurno, on_delete=models.CASCADE)
 
     def __str__(self) -> str:
-        return f"Turno : {self.fecha}, {self.grupo_turno}"
+        return f"{self.fecha}, {self.grupo_turno}"
 
 
 class UserTurno(models.Model):
@@ -157,7 +134,7 @@ class UserTurno(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self) -> str:
-        return f"UserTurno : {self.grupo_turno}- {self.user.full_name}"
+        return f"{self.grupo_turno}- {self.user.full_name}"
 
 
 class DetallePagoMensualidad(models.Model):
@@ -166,7 +143,7 @@ class DetallePagoMensualidad(models.Model):
     created_date = models.DateTimeField(auto_now_add=True, null=True)
 
     def __str__(self):
-        return f"DetallePagoMensualidad: {self.pago.id} ,Mes: {self.mensualidad.mes}, Gestion: {self.mensualidad.gestion.anio}"
+        return f"{self.pago.id} ,Mes: {self.mensualidad.mes}, Gestion: {self.mensualidad.gestion.anio}"
 
     def to_json(self):
         return {
@@ -183,7 +160,7 @@ class DetallePagoExtraordianria(models.Model):
     created_date = models.DateTimeField(auto_now_add=True, null=True)
 
     def __str__(self):
-        return f"DetallePagoExtraordianria : {self.pago.id} ,{self.extraordinaria.concepto}"
+        return f"{self.pago.id} ,{self.extraordinaria.concepto}"
 
     def to_json(self):
         return {
@@ -200,4 +177,52 @@ class DetallePagoEvento(models.Model):
     created_date = models.DateTimeField(auto_now_add=True, null=True)
 
     def __str__(self):
-        return f"DetallePagoEvento : {self.pago.id} ,{self.evento}"
+        return f"{self.pago.id} ,{self.evento}"
+
+
+class TimeStampedBaseModel(models.Model):
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        abstract = True
+
+
+class Extraord(TimeStampedBaseModel):
+    id = models.UUIDField(default=uuid.uuid4, unique=True, primary_key=True)
+    total = models.DecimalField(max_digits=10, decimal_places=2, null=False)
+    concepto = models.TextField(default="")
+
+    def __str__(self) -> str:
+        return f"{self.concepto}, monto: {self.total}, "
+
+
+class FraterExtraord(TimeStampedBaseModel):
+    id = models.UUIDField(default=uuid.uuid4, unique=True, primary_key=True)
+    user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
+    extraord = models.ForeignKey(Extraord, on_delete=models.DO_NOTHING)
+    cuota_mensual = models.DecimalField(max_digits=10, decimal_places=2, null=False)
+
+    def __str__(self) -> str:
+        return f"{self.user.pk}, {self.extraord.pk}, "
+
+
+class Cuota(TimeStampedBaseModel):
+    id = models.UUIDField(default=uuid.uuid4, unique=True, primary_key=True)
+    costo = models.DecimalField(max_digits=10, decimal_places=2, null=False)
+    mes = models.SmallIntegerField(null=True)
+    pagado = models.BooleanField(default=False)
+    frater_extraord = models.ForeignKey(FraterExtraord, on_delete=models.DO_NOTHING)
+    gestion = models.ForeignKey(Gestion, on_delete=models.DO_NOTHING)
+
+    def __str__(self) -> str:
+        return f"costo: {self.costo}, cuota: {self.mes}-{self.gestion.anio}"
+
+
+class DetallePagoExtraord(TimeStampedBaseModel):
+    id = models.UUIDField(default=uuid.uuid4, unique=True, primary_key=True)
+    pago = models.ForeignKey(Pago, on_delete=models.CASCADE)
+    cuota = models.ForeignKey(Cuota, on_delete=models.DO_NOTHING)
+
+    def __str__(self) -> str:
+        return f"{self.id}, "
