@@ -1,0 +1,189 @@
+{% extends "base.html" %} 
+{% load static %}
+<!-- ======= Hero Section ======= -->
+{% block content %}
+<header
+  id="header"
+  class="fixed-top d-flex align-items-center header-transparent"
+>
+  <div class="container d-flex align-items-center justify-content-between">
+    <div class="logo">
+      <h1>
+        <a href="/home"><span>{{frater.nombre}}</span></a>
+      </h1>
+      <!-- Uncomment_below if you prefer to use an image logo -->
+      <!-- <a href="index.html"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
+    </div>
+
+    <nav id="navbar" class="navbar">
+      <ul>
+        <li><a class="nav-link scrollto active" href="/home">Inicio</a></li>
+      
+        <li>
+          <a
+            class="nav-link scrollto"
+            target="_blank"
+            href="https://fraternidad.flojonazos.net/"
+            >Inicia sesión</a
+          >
+        </li>
+      </ul>
+      <i class="bi bi-list mobile-nav-toggle"></i>
+    </nav>
+    <!-- .navbar -->
+  </div>
+</header>
+<!-- End Header -->
+
+<section id="hero">
+  <div class="container">
+    <div class="row justify-content-between">
+
+    </div>
+  </div>
+</section>
+<main id="main">
+  <section>
+    <div class="container">
+      <div class="row">
+      <div class="mx-4">
+      <h2>Política de Privacidad</h2>
+      <h4>1. Introducción FlojonazosApp</h4>
+      <p> ("nosotros", "nuestro", o "nos") está comprometida con proteger la privacidad de sus
+      usuarios ("tú" o "usuario").</p> 
+      <p> Esta Política de Privacidad describe cómo
+      recopilamos, usamos, y compartimos la información que se recopila a través
+      de nuestra aplicación disponible en iOS.</p>
+      <h4>2. Información que Recopilamos</h4>
+      <h5>2.1 Información Personal</h5>
+      <p>Podemos recopilar la siguiente información personal, que tú nos proporcionas directamente cuando utilizas la
+      aplicación: Nombre y apellidos Dirección de correo electrónico Número de
+      teléfono Información de pago (cuando corresponda)</p> 
+      <h5>2.2 Información de Uso</h5>
+      <p>Recopilamos información sobre cómo utilizas la aplicación, incluyendo:
+      Datos de interacción, como las páginas que visitas y las acciones que
+      realizas dentro de la aplicación. Información del dispositivo, como el
+      modelo del dispositivo, sistema operativo, identificadores únicos del
+      dispositivo (UDID, IMEI), y la dirección IP.</p>
+      <h5>2.3 Cookies y Tecnologías</h5>
+      <p>Similares Utilizamos cookies y tecnologías similares para recopilar
+      información sobre tu uso de la aplicación y para mejorar tu experiencia.</p>
+      <h4>3. Cómo Utilizamos tu Información</h4>
+      <p>Utilizamos la información recopilada
+      para: Proveer y mejorar nuestros servicios. Personalizar tu experiencia
+      dentro de la aplicación. Comunicarnos contigo para notificaciones
+      importantes, promociones, y actualizaciones. Cumplir con nuestras
+      obligaciones legales y resolver disputas.</p>
+      <h4>4. Compartir tu Información</h4>
+      <p>No vendemos, alquilamos, ni compartimos tu información personal con terceros
+      sin tu consentimiento, excepto en los siguientes casos: Proveedores de
+      servicios: Compartimos información con terceros que nos ayudan a operar la
+      aplicación, como servicios de alojamiento, análisis y procesamiento de
+      pagos. Obligaciones legales: Podemos divulgar tu información cuando sea
+      necesario para cumplir con la ley, responder a procesos legales, o
+      proteger nuestros derechos.</p>
+      <h4>5. Seguridad de los Datos</h4>
+      <p>Nos comprometemos a proteger tu información mediante la implementación de medidas de seguridad
+      adecuadas. Sin embargo, ten en cuenta que ningún sistema de seguridad es
+      completamente infalible.</p>
+      <h4>6. Retención de Datos</h4>
+      <p>Conservaremos tu información personal solo durante el tiempo necesario para cumplir con los
+      propósitos descritos en esta Política de Privacidad, a menos que se
+      requiera o permita por la ley un período de retención más largo.</p>
+      <h4>7. Tus Derechos</h4>
+      <p>Tienes derecho a: Acceder, corregir o eliminar tu información
+      personal. Retirar tu consentimiento para el procesamiento de datos.
+      Oponerte al procesamiento de tu información personal. Para ejercer estos
+      derechos, contáctanos a [dirección de correo electrónico de soporte].</p>
+      <h4>8. Cambios a esta Política de Privacidad</h4>
+      <p>Nos reservamos el derecho de actualizar esta Política de Privacidad en cualquier momento. Notificaremos
+      cualquier cambio publicando la nueva política en esta página. Te
+      recomendamos revisar esta política periódicamente para estar informado
+      sobre cómo protegemos tu información.</p>
+      <h4>9. Contacto Si tienes alguna</h4>
+      <p>pregunta o inquietud sobre esta Política de Privacidad, por favor</p>
+      contáctanos a: <p><b>JWP Labs <a href="mailto:soporte@flojonazos.net">soporte@flojonazos.net</a></b></p><p> <b>703-7126190</b></p>
+      
+      </div>
+    </div>
+  </section>
+</main>
+
+  <!-- ======= Footer ======= -->
+  <footer id="footer">
+    <div class="footer-top">
+      <div class="container">
+        <div class="row">
+
+          <div class="col-lg-4 col-md-6">
+            <div class="footer-info">
+              <h3>{{ frater.nombre }}</h3>
+              <p class="pb-3"><em>{{frater.descripcion}}</em></p>
+              <p>
+                {{ frater.direccion }}<br>
+                <strong>Telefono:</strong> {{frater.telefono}}<br>
+                <strong>Email:</strong> {{frater.email}}<br>
+              </p>
+              <div class="social-links mt-3">
+                <a href="#" class="facebook"><i class="bx bxl-facebook"></i></a>
+                <a href="#" class="instagram"><i class="bx bxl-whatsapp"></i></a>
+                <a href="#" class="instagram"><i class="bx bxl-instagram"></i></a>
+                <a href="#" class="twitter"><i class="bx bxl-tiktok"></i></a>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-2 col-md-6 footer-links">
+            <h4>Menu</h4>
+            <ul>
+              <li><i class="bx bx-chevron-right"></i> <a href="#">Inicio</a></li>
+             
+              <li><i class="bx bx-chevron-right"></i> <a href="/privacy">Política de privacidad</a></li>
+         
+            </ul>
+          </div>
+
+          <div class="col-lg-2 col-md-6 footer-links">
+            <h4>Nuestros Servicios</h4>
+            <ul>
+              <li><i class="bx bx-chevron-right"></i> <a href="#gallery">Galeria</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="#pricing">Paquetes</a></li>
+            </ul>
+          </div>
+
+          <div class="col-lg-4 col-md-6 footer-newsletter">
+            <h4>Noticias</h4>
+            <p>..</p>
+            <form action="" method="post">
+              <input type="email" name="email"><input type="submit" value="Subscrirse">
+            </form>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="copyright">
+        &copy; Copyright <strong><span>jwplabs</span></strong>
+      </div>
+      <div class="credits">
+        Developer by <a href="https://jwplabs.vercel.app/" target="_blank">@jwp</a>
+      </div>
+    </div>
+  </footer><!-- End Footer -->
+
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+  <div id="preloader"></div>
+
+<!-- Vendor JS Files -->
+<script src="{% static 'assets/vendor/purecounter/purecounter_vanilla.js' %}"></script>
+<script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/glightbox@3.3.0/dist/js/glightbox.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+<!-- Template Main JS File -->
+<script src="{% static 'assets/js/main.js' %}"></script>
+{% endblock %}

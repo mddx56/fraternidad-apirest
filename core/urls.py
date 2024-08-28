@@ -26,6 +26,7 @@ schema_view = get_schema_view(
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", views.index, name="inicio"),
+    path("privacy/", views.privacy, name="politicas"),
     path("home/", views.home, name="home.."),
     path("api/login", ObtainTokenPairView.as_view(), name="login_user"),
     path("api/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
@@ -47,7 +48,7 @@ urlpatterns = [
     path("graphql", GraphQLView.as_view(graphiql=True)),
 ]
 
-#urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+# urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 if settings.DEBUG:
     urlpatterns = [

@@ -57,7 +57,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    #"core.middleware.JSONErrorMiddleware",
+    # "core.middleware.JSONErrorMiddleware",
 ]
 
 CORS_ALLOW_ALL_ORIGINS = True
@@ -72,7 +72,7 @@ TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
         "DIRS": [TEMPLATES_DIR],
-        #"APP_DIRS": True,
+        # "APP_DIRS": True,
         "OPTIONS": {
             "loaders": [
                 "apptemplates.Loader",

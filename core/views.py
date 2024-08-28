@@ -8,6 +8,12 @@ def index(request):
     return redirect("/home")
 
 
+def privacy(request):
+    frater = Fraternidad.objects.all().first()
+    template = "privacy.html"
+    return render(request, template, {"frater": frater})
+
+
 def home(request):
     frater = Fraternidad.objects.all().first()
     fotos = MediaImage.objects.all()
