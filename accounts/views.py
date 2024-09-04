@@ -162,14 +162,43 @@ def SuspendFraterno(request, id):
         )
 
 
+def calcular_porcentaje(activos, total):
+    if total == 0:
+        return 0
+    return (activos / total) * 100
+
+
 @api_view(["GET"])
 def CountFraternos(request):
     try:
-        count = User.objects.filter(fraternos).count()
+        total = User.objects.filter(fraternos).count()
         activos = User.objects.filter(fraternos).filter(suspend=False).count()
         suspendidos = User.objects.filter(fraternos).filter(suspend=True).count()
+
+        activos_porcent = calcular_porcentaje(activos, total)
+        suspendidos_porcent = calcular_porcentaje(suspendidos, total)
+
         return Response(
-            {"fraternos": count, "activos": activos, "suspend": suspendidos},
+            [
+                {
+                    "title": "Total Fraternos",
+                    "value": total,
+                    "icon": "total",
+                    "description": "100%",
+                },
+                {
+                    "title": "Activos",
+                    "value": activos,
+                    "icon": "act",
+                    "description": f"↗︎{activos_porcent:.2f}%",
+                },
+                {
+                    "title": "Suspendidos",
+                    "value": suspendidos,
+                    "icon": "sus",
+                    "description": f"↙{suspendidos_porcent:.2f}%",
+                },
+            ],
             status=status.HTTP_200_OK,
         )
     except Exception as e:
