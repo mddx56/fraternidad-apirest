@@ -10,7 +10,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         self.stdout.write(self.style.MIGRATE_LABEL("Cargando...."))
-        new_password = "1122334455"
+        new_password = "11223344"
         User = get_user_model()
         fraters = User.objects.filter(fraternos).order_by("full_name")
 
