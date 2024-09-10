@@ -99,6 +99,8 @@ class CheckStatus(APIView):
         token = request.auth
         claims = token.payload if token else {}
 
+        print(user.role)
+
         return Response(
             {
                 "token": "valid",

@@ -27,4 +27,5 @@ urlpatterns = [
     path("generar-cuotas/<str:ci>/", views.GenerarCuotas, name="Generar cuotas"),
     path("cuotas-all/<str:ci>/", views.ListCuotas, name="Listar cuotas"),
     path("pagar-cuotas/<str:ci>/", views.PayExtraord, name="Pagar cuotas"),
+    path("pagar-mensuals/", views.PayMensualidades, name="Pagar mensualidades"),
 ]

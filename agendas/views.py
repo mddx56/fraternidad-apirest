@@ -5,7 +5,9 @@ from rest_framework.response import Response
 from rest_framework import status
 from accounts.models import UserAccount
 from rest_framework.decorators import api_view
-import datetime
+from django.db.models import Sum
+
+from datetime import datetime
 from .serializer import dato_to_moth
 
 from accounts.serializers import UserSerializer
@@ -51,6 +53,7 @@ from .serializer import (
     DetallePagoExtraord,
     FraterExtraord,
     Extraord,
+    MensualidadPaySerializer,
 )
 
 
@@ -134,7 +137,7 @@ class ListPagosView(APIView):
 
 
 def is_valido_date(mes, anio):
-    fecha_actual = datetime.datetime.now()
+    fecha_actual = datetime.now()
     anio_actual = fecha_actual.year
     mes_actual = fecha_actual.month
     return anio < anio_actual or (anio == anio_actual and mes <= mes_actual)
@@ -274,3 +277,49 @@ def GenerarCuotas(request, ci):
         return Response({"ci": ci, "cuotas": {}}, status=status.HTTP_200_OK)
     else:
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+from django.db import transaction
+
+
+@api_view(["POST"])
+def PayMensualidades(request):
+    serializer = MensualidadPaySerializer(data=request.data)
+
+    if serializer.is_valid():
+        frater_id = serializer.validated_data["frater_id"]
+        mensualidades = serializer.validated_data["mensualidades"]
+    else:
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    try:
+        with transaction.atomic():
+            sum_total = Mensualidad.objects.filter(id__in=mensualidades).aggregate(
+                total=Sum("costo")
+            )
+            total = sum_total["total"]
+
+            pago = Pago.objects.create(
+                fecha_pago=datetime.now().date(),
+                monto_pagado=total,
+                user_id=frater_id,
+            )
+            for ms_id in mensualidades:
+                mns = Mensualidad.objects.get(id=ms_id)
+                detalle = DetallePagoMensualidad.objects.create(
+                    mensualidad=mns, pago=pago
+                )
+            serializer_pago = PagoSerializer(pago)
+            return Response(
+                {
+                    "status": "success",
+                    "pago": serializer_pago.data,
+                    "cantidad": len(mensualidades),
+                    "total": total,
+                },
+                status=status.HTTP_200_OK,
+            )
+    except Exception as e:
+        return Response(
+            {"error": f"Error al crear pagos: {str(e)}"},
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+        )

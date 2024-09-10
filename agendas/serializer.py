@@ -170,13 +170,14 @@ class ExtraordSerializer(serializers.ModelSerializer):
     class Meta:
         model = Extraord
         fields = "__all__"
-        
+
 
 class CuotaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Cuota
         fields = "__all__"
-        #depth = 1
+        # depth = 1
+
 
 class CuotaInputSerializer(serializers.Serializer):
     amount = serializers.DecimalField(max_digits=10, decimal_places=2)
@@ -188,23 +189,34 @@ class CuotaInputSerializer(serializers.Serializer):
             raise serializers.ValidationError("Amount deve ser mayor a cero.")
         return value
 
+
 class CuotaArraySerializer(serializers.Serializer):
-    cuotas = serializers.ListField(
-        child=serializers.UUIDField()
-    )
+    cuotas = serializers.ListField(child=serializers.UUIDField())
 
     def validate_cuotas(self, value):
         if not value:
             raise serializers.ValidationError("La lista no puede estar vacia")
         return value
 
+
 class DetallePagoExtraordSerializer(serializers.ModelSerializer):
     class Meta:
         model = DetallePagoExtraord
         fields = "__all__"
-        #depth = 1
+        # depth = 1
+
 
 class FraterExtraordSerializer(serializers.ModelSerializer):
     class Meta:
         model = FraterExtraord
         fields = "__all__"
+
+
+class MensualidadPaySerializer(serializers.Serializer):
+    frater_id = serializers.UUIDField()
+    mensualidades = serializers.ListField(child=serializers.IntegerField())
+
+    def validate_mensualidades(self, value):
+        if not value:
+            raise serializers.ValidationError("La lista no puede estar vacia")
+        return value
