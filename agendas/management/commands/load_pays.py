@@ -45,7 +45,7 @@ def create_gestion():
 
 
 class Command(BaseCommand):
-    # Show this when the user types help
+
     help = "Loads data from pays.csv"
 
     def handle(self, *args, **options):
