@@ -6,7 +6,7 @@ import datetime
 
 from django.core.management import BaseCommand
 from accounts.models import UserAccount
-from agendas.models import Mensualidad, DetallePagoMensualidad, Gestion, Pago
+from agendas.models import Mensualidad, DetallePagoMensualidad, Gestion, Pago, Cuota
 
 
 def limpiarPagos():
@@ -27,15 +27,22 @@ def detectar_repetidos(array):
     return elementos_repetidos
 
 
+def limpiar_mensualidades():
+    Cuota.objects.all().delete()
+    Mensualidad.objects.all().delete()
+    Gestion.objects.all().delete()
+
+
 def create_gestion():
-    gestion_23 = Gestion.objects.filter(anio=2023)
+    limpiar_mensualidades()
+    # gestion_23 = Gestion.objects.filter(anio=2023)
     gestion_24 = Gestion.objects.filter(anio=2024)
-    if not gestion_23.exists():
-        gestion23 = Gestion(anio=2023, en_curso=False)
-        gestion23.save()
-        print("gestion 2023 creada")
-    else:
-        print("gestion 2023 ya existe")
+    # if not gestion_23.exists():
+    #    gestion23 = Gestion(anio=2023, en_curso=False)
+    #    gestion23.save()
+    #    print("gestion 2023 creada")
+    # else:
+    #    print("gestion 2023 ya existe")
     if not gestion_24.exists():
         gestion24 = Gestion(anio=2024, en_curso=True)
         gestion24.save()
@@ -51,18 +58,20 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         print("Cargando pagos....")
         datos_meses = {
-            0: {"mes": 1, "anio": 2023},
-            1: {"mes": 2, "anio": 2023},
-            2: {"mes": 3, "anio": 2023},
-            3: {"mes": 4, "anio": 2023},
-            4: {"mes": 5, "anio": 2023},
-            5: {"mes": 6, "anio": 2023},
-            6: {"mes": 7, "anio": 2023},
-            7: {"mes": 8, "anio": 2023},
-            8: {"mes": 9, "anio": 2023},
-            9: {"mes": 10, "anio": 2023},
-            10: {"mes": 11, "anio": 2023},
-            11: {"mes": 12, "anio": 2023},
+            0: {"mes": 1, "anio": 2024},
+            1: {"mes": 2, "anio": 2024},
+            2: {"mes": 3, "anio": 2024},
+            3: {"mes": 4, "anio": 2024},
+            4: {"mes": 5, "anio": 2024},
+            5: {"mes": 6, "anio": 2024},
+            6: {"mes": 7, "anio": 2024},
+            7: {"mes": 8, "anio": 2024},
+            8: {"mes": 9, "anio": 2024},
+            9: {"mes": 10, "anio": 2024},
+            10: {"mes": 11, "anio": 2024},
+            11: {"mes": 12, "anio": 2024},
+        }
+        """
             12: {"mes": 1, "anio": 2024},
             13: {"mes": 2, "anio": 2024},
             14: {"mes": 3, "anio": 2024},
@@ -75,7 +84,7 @@ class Command(BaseCommand):
             21: {"mes": 10, "anio": 2024},
             22: {"mes": 11, "anio": 2024},
             23: {"mes": 12, "anio": 2024},
-        }
+        """
 
         create_gestion()
         limpiarPagos()
