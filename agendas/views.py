@@ -197,19 +197,19 @@ def ListDeudaExtraordinaria(request, ci):
 
     deudax = []
 
-    sum_saldo = 0
+    sum = 0
 
     for extra in extraordinarias:
-        sum_saldo = 0
+        sum = 0
         detalles = DetallePagoExtraordianria.objects.filter(
             pago__user=frater, extraordinaria=extra
         )
         total_extra = extra.monto
         extra = extra.to_json()
         for detalle in detalles:
-            sum_saldo = sum_saldo + detalle.pago.monto_pagado
-        deuda = total_extra - sum_saldo
-        deudax.append({"extraordinaria": extra, "saldo": sum_saldo, "deuda": deuda})
+            sum = sum + detalle.pago.monto_pagado
+        deuda = total_extra - sum
+        deudax.append({"extraordinaria": extra, "saldo": deuda, "deuda": total_extra})
 
     return Response(deudax, status=status.HTTP_200_OK)
 
