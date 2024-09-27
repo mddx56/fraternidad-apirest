@@ -6,7 +6,7 @@ from django.core.management import BaseCommand
 from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
 
-from accounts.models import UserAccount
+from apps.accounts.models import UserAccount
 from apps.config.models import Cumpleanio
 
 
