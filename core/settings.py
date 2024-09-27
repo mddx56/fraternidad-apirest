@@ -3,23 +3,15 @@ from datetime import timedelta
 from pathlib import Path
 from decouple import config
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+
 BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = config("SECRET_KEY")
 
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
 ALLOWED_HOSTS = ["3.14.207.16", "127.0.0.1", "0.0.0.0", "flojonazos.net"]
 
-
-# Application definition
 
 INSTALLED_APPS = [
     "daphne",
@@ -35,13 +27,12 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "rest_framework",
     "rest_framework_simplejwt",
-    "graphene_django",
     "drf_yasg",
     "import_export",
-    "accounts",
-    "configuracion",
-    "agendas",
-    "notifications",
+    "apps.accounts",
+    "apps.config",
+    "apps.agendas",
+    "apps.notifications",
 ]
 
 X_FRAME_OPTIONS = "SAMEORIGIN"

@@ -6,10 +6,13 @@ from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 from rest_framework import permissions
 from rest_framework_simplejwt.views import TokenRefreshView
-from accounts.views import ChangePasswordView, ObtainTokenPairView, UpdateProfileView
 from core import views
-from accounts.views import CreateUserView
-from graphene_django.views import GraphQLView
+from apps.accounts.views import (
+    ChangePasswordView,
+    ObtainTokenPairView,
+    UpdateProfileView,
+)
+from apps.accounts.views import CreateUserView
 
 schema_view = get_schema_view(
     openapi.Info(
@@ -41,14 +44,12 @@ urlpatterns = [
         UpdateProfileView.as_view(),
         name="update_profile",
     ),
-    path("api/agenda/", include("agendas.urls")),
-    path("api/frater/", include("configuracion.urls")),
-    path("api/auth/", include("accounts.urls")),
-    path("api/notif/", include("notifications.urls")),
-    path("graphql", GraphQLView.as_view(graphiql=True)),
+    path("api/agenda/", include("apps.agendas.urls")),
+    path("api/frater/", include("apps.config.urls")),
+    path("api/auth/", include("apps.accounts.urls")),
+    path("api/notif/", include("apps.notifications.urls")),
 ]
 
-# urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 if settings.DEBUG:
     urlpatterns = [

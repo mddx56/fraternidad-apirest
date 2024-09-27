@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
-from agendas.models import TipoEvento
-from configuracion.models import Fraternidad, MediaImage
+from apps.agendas.models import TipoEvento
+from apps.config.models import Fraternidad, MediaImage
 from django.http import Http404
 
 
