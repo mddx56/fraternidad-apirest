@@ -8,7 +8,7 @@ BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 
 SECRET_KEY = config("SECRET_KEY")
 
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ["3.14.207.16", "127.0.0.1", "0.0.0.0", "flojonazos.net"]
 
