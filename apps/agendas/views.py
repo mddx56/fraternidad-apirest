@@ -179,7 +179,7 @@ def ListMensualidadDeudaView(request, ci):
         detalle = DetallePagoMensualidad.objects.filter(
             pago__user=user, mensualidad__gestion__anio=anio
         )
-        detalle_ini = detalle.order_by("mensualidad__fecha").first()
+        detalle_ini = detalle.order_by("mensualidad__fecha").last()
         for mensu in mensualidades:
             mes = mensu.mes
             if mes > detalle_ini.mensualidad.mes and is_valido_date(mes, anio):
@@ -225,7 +225,7 @@ def ListMensualidadDeudaGestionView(request, ci):
         detalle = DetallePagoMensualidad.objects.filter(
             pago__user=user, mensualidad__gestion__anio=anio
         )
-        detalle_ini = detalle.order_by("mensualidad__fecha").first()
+        detalle_ini = detalle.order_by("mensualidad__fecha").last()
         for mensu in mensualidades:
             mes = mensu.mes
             if mes > detalle_ini.mensualidad.mes:
