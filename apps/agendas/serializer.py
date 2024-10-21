@@ -80,6 +80,13 @@ class AgendaSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
+class AgendaFraternoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Agenda
+        # fields = "__all__"
+        exclude = ["tipo_evento"]
+
+
 class PagoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Pago

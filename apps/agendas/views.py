@@ -5,7 +5,8 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import api_view
 from django.db.models import Sum
-from datetime import datetime
+from datetime import datetime, date, timedelta
+import calendar
 from apps.accounts.models import UserAccount
 from apps.accounts.serializers import UserSerializer
 from .serializer import dato_to_moth
@@ -24,9 +25,6 @@ from .models import (
     DetallePagoExtraordianria,
     DetallePagoMensualidad,
     Cuota,
-    DetallePagoExtraord,
-    Extraord,
-    FraterExtraord,
 )
 
 from .serializer import (
@@ -47,11 +45,9 @@ from .serializer import (
     CuotaInputSerializer,
     CuotaArraySerializer,
     CuotaSerializer,
-    DetallePagoExtraord,
-    FraterExtraord,
-    Extraord,
     MensualidadPaySerializer,
     ReservaPaySerializer,
+    AgendaFraternoSerializer,
 )
 
 
@@ -432,6 +428,62 @@ def ReservaEvento(request):
                 )
             reserva = Agenda.objects.create(**serializer.validated_data)
             reserva.es_entresemana = not es_finsemana(date_reserva)
+            reserva.save()
+            reserva_serializer = AgendaSerializer(reserva)
+            return Response(
+                data=reserva_serializer.data, status=status.HTTP_201_CREATED
+            )
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    except Exception as e:
+        return Response(
+            {"detail": f"Error al crear reserva: {str(e)}"},
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+        )
+
+
+def get_month_start_end(now_date: date):
+    start_day = now_date.replace(day=1)
+    last_day = calendar.monthrange(now_date.year, now_date.month)[1]
+    end_day = now_date.replace(day=last_day)
+    return start_day, end_day
+
+
+@api_view(["POST"])
+def ReservaEventoFraterno(request):
+    try:
+        serializer = AgendaFraternoSerializer(data=request.data)
+        if serializer.is_valid():
+            date_reserva = serializer.validated_data["fecha"]
+            data_user = serializer.validated_data["user"]
+            data_user_id = serializer.data["user"]
+
+            if not validate_fecha(date_reserva):
+                return Response(
+                    data={"detail": "La fecha debe ser mayor al día de hoy."},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+
+            inicio, fin = get_month_start_end(date_reserva)
+            eventos = Agenda.objects.filter(fecha__range=(inicio, fin))
+            evts = eventos.filter(user__id=data_user_id).filter(tipo_evento=None)
+            if evts.count() > 0:
+                return Response(
+                    data={
+                        "detail": f"{data_user} ya realizo una reserva solo para fraternos durante este mes."
+                    },
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+
+            dates = Agenda.objects.filter(fecha=date_reserva).filter(tipo_evento=None)
+            if dates.exists():
+                return Response(
+                    data={"detail": "La fecha ya está reservada."},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+
+            reserva = Agenda.objects.create(**serializer.validated_data)
+            reserva.es_entresemana = not es_finsemana(date_reserva)
+            reserva.save()
             reserva_serializer = AgendaSerializer(reserva)
             return Response(
                 data=reserva_serializer.data, status=status.HTTP_201_CREATED

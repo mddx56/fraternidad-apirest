@@ -128,4 +128,4 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
         }
 
     def __str__(self) -> str:
-        return f"User : {self.full_name}, {self.role}"
+        return f"{self.full_name}, {self.role}"

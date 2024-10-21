@@ -47,7 +47,10 @@ class Agenda(models.Model):
         verbose_name="Descripcion", default="", null=True, blank=True
     )
     tipo_evento = models.ForeignKey(
-        TipoEvento, verbose_name="Tipo de evento", on_delete=models.DO_NOTHING
+        TipoEvento,
+        verbose_name="Tipo de evento",
+        null=True,
+        on_delete=models.DO_NOTHING,
     )
     es_entresemana = models.BooleanField(verbose_name="Entre semana", default=False)
     estado_reserva = models.CharField(

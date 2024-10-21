@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     "rest_framework_simplejwt",
     "drf_yasg",
     "import_export",
+    "apps.shared",
     "apps.accounts",
     "apps.config",
     "apps.agendas",
@@ -180,10 +181,10 @@ CHANNEL_LAYERS = {
     },
 }
 
+
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-EMAIL_HOST = "sandbox.smtp.mailtrap.io"
+EMAIL_HOST = "smtp.googlemail.com"
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
 EMAIL_HOST_USER = config("EMAIL_USER")
 EMAIL_HOST_PASSWORD = config("EMAIL_PASSWORD")
-EMAIL_PORT = "2525"
-
-GRAPHENE = {"SCHEMA": "agendas.schemas.schema"}
