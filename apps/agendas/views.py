@@ -513,9 +513,9 @@ def EventoFraterno(request):
                     data={"detail": "La fecha debe ser mayor al día de hoy."},
                     status=status.HTTP_400_BAD_REQUEST,
                 )
-
+            print(EVENT_FREE)
             event_frater = TipoEvento.objects.filter(nombre=EVENT_FREE).first()
-            if not event_frater:
+            if event_frater is None:
                 event_frater = TipoEvento.objects.create(nombre=EVENT_FREE)
 
             inicio, fin = get_month_start_end(date_reserva)
@@ -523,13 +523,7 @@ def EventoFraterno(request):
             evts = eventos.filter(user__id=data_user_id).filter(
                 tipo_evento=event_frater
             )
-            for asd in eventos:
-                print("evento", asd)
-            print("evcoun", eventos.count())
-            print(event_frater)
-            print(inicio)
-            print(fin)
-            print(evts.count())
+
             if evts.count() > 0:
                 return Response(
                     data={
@@ -547,15 +541,11 @@ def EventoFraterno(request):
                     status=status.HTTP_400_BAD_REQUEST,
                 )
 
-            # reserva = Agenda.objects.create(**serializer.validated_data)
-            # reserva.es_entresemana = not es_finsemana(date_reserva)
-            # reserva.save()
-            # reserva_serializer = AgendaSerializer(reserva)
             return Response(data={"detail": "OK"}, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     except Exception as e:
         return Response(
-            {"detail": f"Error al crear reserva: {str(e)}"},
+            {"detail": f"Error reserva especial: {str(e)}"},
             status=status.HTTP_500_INTERNAL_SERVER_ERROR,
         )
 
