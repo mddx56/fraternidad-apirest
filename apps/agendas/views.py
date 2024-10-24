@@ -496,6 +496,70 @@ def ReservaEventoFraterno(request):
         )
 
 
+from apps.shared.constants import EVENT_FREE
+
+
+@api_view(["POST"])
+def EventoFraterno(request):
+    try:
+        serializer = AgendaFraternoSerializer(data=request.data)
+        if serializer.is_valid():
+            date_reserva = serializer.validated_data["fecha"]
+            data_user = serializer.validated_data["user"]
+            data_user_id = serializer.data["user"]
+
+            if not validate_fecha(date_reserva):
+                return Response(
+                    data={"detail": "La fecha debe ser mayor al día de hoy."},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+
+            event_frater = TipoEvento.objects.filter(nombre=EVENT_FREE).first()
+            if not event_frater:
+                event_frater = TipoEvento.objects.create(nombre=EVENT_FREE)
+
+            inicio, fin = get_month_start_end(date_reserva)
+            eventos = Agenda.objects.filter(fecha__range=(inicio, fin))
+            evts = eventos.filter(user__id=data_user_id).filter(
+                tipo_evento=event_frater
+            )
+            for asd in eventos:
+                print("evento", asd)
+            print("evcoun", eventos.count())
+            print(event_frater)
+            print(inicio)
+            print(fin)
+            print(evts.count())
+            if evts.count() > 0:
+                return Response(
+                    data={
+                        "detail": f"{data_user} ya realizo una reserva solo para fraternos durante este mes."
+                    },
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+
+            dates = Agenda.objects.filter(fecha=date_reserva).filter(
+                tipo_evento=event_frater
+            )
+            if dates.exists():
+                return Response(
+                    data={"detail": f"La fecha ya está reservada {EVENT_FREE}."},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+
+            # reserva = Agenda.objects.create(**serializer.validated_data)
+            # reserva.es_entresemana = not es_finsemana(date_reserva)
+            # reserva.save()
+            # reserva_serializer = AgendaSerializer(reserva)
+            return Response(data={"detail": "OK"}, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    except Exception as e:
+        return Response(
+            {"detail": f"Error al crear reserva: {str(e)}"},
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+        )
+
+
 @api_view(["POST"])
 def PagoReservaEvento(request):
     serializer = ReservaPaySerializer(data=request.data)

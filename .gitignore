@@ -23,4 +23,5 @@ db.sqlite3
 # Ignorar archivos de entorno virtual
 /admin-interface
 /envfraternidad
+/venv
 staticfiles

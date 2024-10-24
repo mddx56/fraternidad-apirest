@@ -35,7 +35,5 @@ urlpatterns = [
     path("pagar-mensuals/", views.PayMensualidades, name="Pagar mensualidades"),
     path("reserva/", views.ReservaEvento, name="Reserva evento"),
     path("pagar-reserva/", views.PagoReservaEvento, name="Pago reserva"),
-    path(
-        "reserva-especial/", views.ReservaEventoFraterno, name="Reserva solo fraternos"
-    ),
+    path("reserva-especial/", views.EventoFraterno, name="Reserva solo fraternos"),
 ]
