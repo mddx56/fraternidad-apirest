@@ -16,9 +16,7 @@ def privacy(request):
 
 def home(request):
     frater = Fraternidad.objects.all().first()
-    fotos = MediaImage.objects.all()
+    # fotos = MediaImage.objects.all()
     events = TipoEvento.objects.all()
     template = "index.html"
-    return render(
-        request, template, {"frater": frater, "fotos": fotos, "events": events}
-    )
+    return render(request, template, {"frater": frater, "events": events})

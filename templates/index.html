@@ -228,18 +228,32 @@
         </div>
 
         <div class="row g-0" data-aos="fade-left">
-          {% for fot in fotos %}
+
           <div class="col-lg-3 col-md-4">
             <div class="gallery-item" data-aos="zoom-in" data-aos-delay="100">
-              <a href="{{fot.url}}" class="gallery-lightbox">
-                <img src="{{fot.url}}" alt="{{fot.descripcion}}" class="img-fluid">
+              <a href="{% static 'assets/img/gallery/a27b02af.jpg' %}" class="gallery-lightbox">
+                <img src="{% static 'assets/img/gallery/a27b02af.jpg' %}" alt="galeria" class="img-fluid">
               </a>
             </div>
           </div>
-          {% endfor %}
+
+          <div class="col-lg-3 col-md-4">
+            <div class="gallery-item" data-aos="zoom-in" data-aos-delay="100">
+              <a href="{% static 'assets/img/gallery/a7ce77f9.jpg' %}" class="gallery-lightbox">
+                <img src="{% static 'assets/img/gallery/a7ce77f9.jpg' %}" alt="galeria" class="img-fluid">
+              </a>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-4">
+            <div class="gallery-item" data-aos="zoom-in" data-aos-delay="100">
+              <a href="{% static 'assets/img/gallery/eb5d4d65.jpg' %}" class="gallery-lightbox">
+                <img src="{% static 'assets/img/gallery/eb5d4d65.jpg' %}" alt="galeria" class="img-fluid">
+              </a>
+            </div>
+          </div>
 
         </div>
-
       </div>
     </section><!-- End Gallery Section -->
 
