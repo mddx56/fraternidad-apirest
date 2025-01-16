@@ -20,7 +20,7 @@ router.register("userturnos", views.UserTurnoView)
 urlpatterns = [
     path("", include(router.urls)),
     path("pagos/m/<ci>", views.ListPagosView.as_view(), name="pagos"),
-    path("deudas/m/<str:ci>", views.ListMensualidadDeudaView, name="deudas_mensual"),
+    path("deudas/m/<str:ci>", views.ListMensualidadDeudaAllGestionsView, name="deudas_mensual"),
     path(
         "deudas/mg/<str:ci>",
         views.ListMensualidadDeudaAllGestionsView,
