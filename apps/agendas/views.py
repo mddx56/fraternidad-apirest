@@ -329,7 +329,7 @@ def ListMensualidadDeudaAllGestionsView(request, ci):
 
     suma = sum([num["costo"] for num in deudas])
 
-    return Response({"deudas": deudas, "total": sum}, status=status.HTTP_200_OK)
+    return Response({"deudas": deudas, "total": suma}, status=status.HTTP_200_OK)
 
 
 @api_view(["GET"])
@@ -694,25 +694,24 @@ class ListCuponesUserView(APIView):
 @api_view(["POST"])
 def CuponEstadoView(request):
     serializer = CuponEstadoSerializer(data=request.data)
-    if serializer.is_valid():
-        cupon = serializer.validated_data["cupon"]
-        estado = serializer.validated_data["estado"]
-
-        cupon_data = Cupon.objects.get(pk=cupon)
-        if cupon_data is None:
-            return Response(
-                {"detail": "El cupon no existe."}, status=status.HTTP_404_NOT_FOUND
-            )
-        cupon_data.estado = estado
-        cupon_data.save()
-        return Response(
-            {"status": "success", "cupon": " Estado de cupon actualizado.."},
-            status=status.HTTP_200_OK,
-        )
-    else:
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     try:
-        pass
+        if serializer.is_valid():
+            cupon = serializer.validated_data["cupon"]
+            estado = serializer.validated_data["estado"]
+
+            cupon_data = Cupon.objects.get(pk=cupon)
+            if cupon_data is None:
+                return Response(
+                    {"detail": "El cupon no existe."}, status=status.HTTP_404_NOT_FOUND
+                )
+            cupon_data.estado = estado
+            cupon_data.save()
+            return Response(
+                {"status": "success", "cupon": " Estado de cupon actualizado.."},
+                status=status.HTTP_200_OK,
+            )
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     except Exception as e:
         return Response(
             {"detail": f"Error estado cupon: {str(e)}"},
