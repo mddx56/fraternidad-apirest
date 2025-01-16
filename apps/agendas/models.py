@@ -82,6 +82,22 @@ class Gestion(models.Model):
         return {"anio": self.anio, "en_curso": self.en_curso}
 
 
+class Cupon(models.Model):
+    fecha = models.DateField(verbose_name="Fecha", null=False)
+    estado = models.BooleanField(verbose_name="Estado", default=False)
+    user = models.ForeignKey(User, verbose_name="Fraterno", on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name = "Cupon"
+        verbose_name_plural = "Cupones"
+
+    def __str__(self):
+        return f"{self.fecha}, {self.user.full_name}"
+
+    def to_json(self):
+        return {"fecha": self.fecha, "estado": self.estado}
+
+
 class Mensualidad(models.Model):
     costo = models.DecimalField(max_digits=10, decimal_places=2, null=False)
     fecha = models.DateField(null=False)

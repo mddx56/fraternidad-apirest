@@ -19,6 +19,7 @@ from .models import (
     FraterExtraord,
     Cuota,
     DetallePagoExtraord,
+    Cupon,
 )
 
 
@@ -219,6 +220,12 @@ class FraterExtraordSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
+class CuponSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Cupon
+        fields = "__all__"
+
+
 class MensualidadPaySerializer(serializers.Serializer):
     frater_id = serializers.UUIDField()
     mensualidades = serializers.ListField(child=serializers.IntegerField())
@@ -232,3 +239,8 @@ class MensualidadPaySerializer(serializers.Serializer):
 class ReservaPaySerializer(serializers.Serializer):
     frater_id = serializers.UUIDField()
     evento = serializers.IntegerField()
+
+
+class CuponEstadoSerializer(serializers.Serializer):
+    cupon = serializers.IntegerField()
+    estado = serializers.BooleanField()

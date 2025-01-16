@@ -20,7 +20,7 @@ from .models import (
     DetallePagoExtraordianria,
     DetallePagoMensualidad,
     GrupoTurno,
-    # Extraord,
+    Cupon,
     # Cuota,
     # DetallePagoExtraord,
     # FraterExtraord,
@@ -241,3 +241,15 @@ class ExtraordinariaAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Extraordinaria, ExtraordinariaAdmin)
+
+
+class CuponAdmin(admin.ModelAdmin):
+    list_display = (
+        "id",
+        "fecha",
+        "estado",
+        "user",
+    )
+
+
+admin.site.register(Cupon, CuponAdmin)

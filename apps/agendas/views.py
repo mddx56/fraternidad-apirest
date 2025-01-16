@@ -25,6 +25,7 @@ from .models import (
     DetallePagoExtraordianria,
     DetallePagoMensualidad,
     Cuota,
+    Cupon,
 )
 
 from .serializer import (
@@ -48,6 +49,8 @@ from .serializer import (
     MensualidadPaySerializer,
     ReservaPaySerializer,
     AgendaFraternoSerializer,
+    CuponSerializer,
+    CuponEstadoSerializer,
 )
 
 
@@ -114,6 +117,11 @@ class MensualidadView(viewsets.ModelViewSet):
 class ExtraordinariaView(viewsets.ModelViewSet):
     serializer_class = ExtraordinariaSerializer
     queryset = Extraordinaria.objects.all()
+
+
+class CuponView(viewsets.ModelViewSet):
+    serializer_class = CuponSerializer
+    queryset = Cupon.objects.all()
 
 
 class ListPagosView(APIView):
@@ -280,19 +288,16 @@ def ListMensualidadDeudaAllGestionsView(request, ci):
             status=status.HTTP_404_NOT_FOUND,
         )
     deudas = []
-    print("Gestion -> ", gestion.anio)
 
     mensualidades = Mensualidad.objects.filter(gestion=gestion).order_by("mes")
     detalle = DetallePagoMensualidad.objects.filter(
         pago__user=user, mensualidad__gestion__anio=gestion.anio
     )
-    for det in detalle:
-        print("*    Detalle -> ", det)
+
     detalle_ini = detalle.order_by("mensualidad__fecha").last()
-    print("Detalle ini -> ", detalle_ini)
+
     for mensu in mensualidades:
         mes = mensu.mes
-        print("mes -> ", mes)
         if mes > detalle_ini.mensualidad.mes:
             deudas.append(
                 {
@@ -324,7 +329,7 @@ def ListMensualidadDeudaAllGestionsView(request, ci):
 
     suma = sum([num["costo"] for num in deudas])
 
-    return Response({"deudas": deudas, "total": 0}, status=status.HTTP_200_OK)
+    return Response({"deudas": deudas, "total": sum}, status=status.HTTP_200_OK)
 
 
 @api_view(["GET"])
@@ -670,5 +675,46 @@ def PagoReservaEvento(request):
     except Exception as e:
         return Response(
             {"detail": f"Error al crear reserva: {str(e)}"},
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+        )
+
+
+class ListCuponesUserView(APIView):
+    def get(self, request, ci, format=None):
+        try:
+            frater = UserAccount.objects.filter(username=ci).first()
+            if frater:
+                cupones = Cupon.objects.filter(user=frater).filter(estado=True)
+                serializer = CuponSerializer(cupones, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({"error": e}, status=status.HTTP_404_NOT_FOUND)
+
+
+@api_view(["POST"])
+def CuponEstadoView(request):
+    serializer = CuponEstadoSerializer(data=request.data)
+    if serializer.is_valid():
+        cupon = serializer.validated_data["cupon"]
+        estado = serializer.validated_data["estado"]
+
+        cupon_data = Cupon.objects.get(pk=cupon)
+        if cupon_data is None:
+            return Response(
+                {"detail": "El cupon no existe."}, status=status.HTTP_404_NOT_FOUND
+            )
+        cupon_data.estado = estado
+        cupon_data.save()
+        return Response(
+            {"status": "success", "cupon": " Estado de cupon actualizado.."},
+            status=status.HTTP_200_OK,
+        )
+    else:
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    try:
+        pass
+    except Exception as e:
+        return Response(
+            {"detail": f"Error estado cupon: {str(e)}"},
             status=status.HTTP_500_INTERNAL_SERVER_ERROR,
         )

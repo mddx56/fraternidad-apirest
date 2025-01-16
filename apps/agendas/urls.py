@@ -16,11 +16,16 @@ router.register("qrs", views.QrView)
 router.register("grupoturnos", views.GrupoTurnoView)
 router.register("turnos", views.TurnoView)
 router.register("userturnos", views.UserTurnoView)
+router.register("cupon", views.CuponView)
 
 urlpatterns = [
     path("", include(router.urls)),
     path("pagos/m/<ci>", views.ListPagosView.as_view(), name="pagos"),
-    path("deudas/m/<str:ci>", views.ListMensualidadDeudaAllGestionsView, name="deudas_mensual"),
+    path(
+        "deudas/m/<str:ci>",
+        views.ListMensualidadDeudaAllGestionsView,
+        name="deudas_mensual",
+    ),
     path(
         "deudas/mg/<str:ci>",
         views.ListMensualidadDeudaAllGestionsView,
@@ -36,4 +41,6 @@ urlpatterns = [
     path("reserva/", views.ReservaEvento, name="Reserva evento"),
     path("pagar-reserva/", views.PagoReservaEvento, name="Pago reserva"),
     path("reserva-especial/", views.EventoFraterno, name="Reserva solo fraternos"),
+    path("cupon-list-user/<ci>", views.ListCuponesUserView.as_view(), name=""),
+    path("cupon-estado/", views.CuponEstadoView, name=""),
 ]
