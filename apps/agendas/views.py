@@ -261,6 +261,73 @@ def ListMensualidadDeudaGestionView(request, ci):
 
 
 @api_view(["GET"])
+def ListMensualidadDeudaAllGestionsView(request, ci):
+    user = UserAccount.objects.filter(username=ci).first()
+
+    if user is None:
+        return Response(
+            {"detail": f"fraterno {ci} no encontrado"},
+            status=status.HTTP_404_NOT_FOUND,
+        )
+
+    # anio = datetime.today().year
+    gestiones = Gestion.objects.order_by("anio")
+    gestion = Gestion.objects.order_by("anio").first()
+
+    if not gestiones:
+        return Response(
+            {"detail": "no existe gestion actual en curso"},
+            status=status.HTTP_404_NOT_FOUND,
+        )
+    deudas = []
+    print("Gestion -> ", gestion.anio)
+
+    mensualidades = Mensualidad.objects.filter(gestion=gestion).order_by("mes")
+    detalle = DetallePagoMensualidad.objects.filter(
+        pago__user=user, mensualidad__gestion__anio=gestion.anio
+    )
+    for det in detalle:
+        print("*    Detalle -> ", det)
+    detalle_ini = detalle.order_by("mensualidad__fecha").last()
+    print("Detalle ini -> ", detalle_ini)
+    for mensu in mensualidades:
+        mes = mensu.mes
+        print("mes -> ", mes)
+        if mes > detalle_ini.mensualidad.mes:
+            deudas.append(
+                {
+                    "id": mensu.id,
+                    "mes": dato_to_moth(mensu.mes),
+                    "gestion": gestion.anio,
+                    "costo": mensu.costo,
+                    "fecha": mensu.fecha,
+                    "mensualidad": mensu.pk,
+                }
+            )
+
+    gestion2 = Gestion.objects.order_by("anio").last()
+
+    mensualidades = Mensualidad.objects.filter(gestion=gestion2).order_by("mes")
+    for me in mensualidades:
+        mes = me.mes
+        if is_valido_date(mes, gestion2.anio):
+            deudas.append(
+                {
+                    "id": me.id,
+                    "mes": dato_to_moth(me.mes),
+                    "gestion": gestion2.anio,
+                    "costo": me.costo,
+                    "fecha": me.fecha,
+                    "mensualidad": me.pk,
+                }
+            )
+
+    suma = sum([num["costo"] for num in deudas])
+
+    return Response({"deudas": deudas, "total": 0}, status=status.HTTP_200_OK)
+
+
+@api_view(["GET"])
 def ListDeudaExtraordinaria(request, ci):
     frater = UserAccount.objects.get(username=ci)
     extraordinarias = Extraordinaria.objects.all()

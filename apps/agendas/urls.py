@@ -23,8 +23,8 @@ urlpatterns = [
     path("deudas/m/<str:ci>", views.ListMensualidadDeudaView, name="deudas_mensual"),
     path(
         "deudas/mg/<str:ci>",
-        views.ListMensualidadDeudaGestionView,
-        name="deudas_mensual_gestion",
+        views.ListMensualidadDeudaAllGestionsView,
+        name="deudas_mensual_gestion_all",
     ),
     path("deudas/e/<ci>", views.ListDeudaExtraordinaria, name="deudas_extraordinaria"),
     path("grupo-view/<id>", views.ListFratersGroup, name="fraternos_por_grupo"),

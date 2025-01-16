@@ -5,8 +5,14 @@ import csv
 import datetime
 
 from django.core.management import BaseCommand
-from accounts.models import UserAccount
-from agendas.models import Mensualidad, DetallePagoMensualidad, Gestion, Pago, Cuota
+from apps.accounts.models import UserAccount
+from apps.agendas.models import (
+    Mensualidad,
+    DetallePagoMensualidad,
+    Gestion,
+    Pago,
+    Cuota,
+)
 
 
 def limpiarPagos():
