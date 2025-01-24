@@ -43,4 +43,5 @@ urlpatterns = [
     path("reserva-especial/", views.EventoFraterno, name="Reserva solo fraternos"),
     path("cupon-list-user/<ci>", views.ListCuponesUserView.as_view(), name=""),
     path("cupon-estado/", views.CuponEstadoView, name=""),
+    path("cupon-list/", views.ListCuponsValView, name=""),
 ]
