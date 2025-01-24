@@ -722,7 +722,7 @@ def CuponEstadoView(request):
 @api_view(["GET"])
 def ListCuponsValView(request):
     try:
-        cupons = Cupon.objects.filter(estado=True)
+        cupons = Cupon.objects.filter(estado=False)
         serializer = CuponSerializer(cupons, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
     except Exception as e:

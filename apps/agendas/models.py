@@ -84,7 +84,7 @@ class Gestion(models.Model):
 
 class Cupon(models.Model):
     fecha = models.DateField(verbose_name="Fecha", null=False)
-    estado = models.BooleanField(verbose_name="Estado", default=False)
+    estado = models.BooleanField(verbose_name="Estado", default=True)
     user = models.ForeignKey(User, verbose_name="Fraterno", on_delete=models.CASCADE)
 
     class Meta:
