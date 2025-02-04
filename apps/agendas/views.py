@@ -129,7 +129,9 @@ class ListPagosView(APIView):
         try:
             frater = UserAccount.objects.filter(username=ci).first()
             if frater:
-                detallalles = DetallePagoMensualidad.objects.filter(pago__user=frater)
+                detallalles = DetallePagoMensualidad.objects.filter(
+                    pago__user=frater
+                ).order_by("mensualidad__fecha")
                 serializer = ListDetallePagoMensualidadSerializer(
                     detallalles, many=True
                 )

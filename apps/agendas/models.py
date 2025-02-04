@@ -109,7 +109,7 @@ class Mensualidad(models.Model):
         verbose_name_plural = "Mensualidades"
 
     def __str__(self) -> str:
-        return f"mes: {self.mes}, costo: {self.costo}"
+        return f"mes: {self.mes}-{self.gestion.anio}, costo: {self.costo}"
 
     def to_json(self):
         return {
