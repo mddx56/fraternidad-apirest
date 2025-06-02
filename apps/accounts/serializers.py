@@ -36,7 +36,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         token["avatar"] = user.avatar
         token["suspend"] = user.suspend
         token["active"] = user.is_active
-        # token['name'] = user.id
+        # token["id"] = str(user.id)
         return token
 
 

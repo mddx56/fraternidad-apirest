@@ -110,7 +110,7 @@ class CheckStatus(APIView):
                     "iat": claims.get("iat"),
                     "jti": claims.get("jti"),
                 },
-                "user_id": user.id,
+                "id": user.id,
                 "username": user.username,
                 "full_name": user.full_name,
                 "email": user.email,

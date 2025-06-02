@@ -48,6 +48,7 @@ urlpatterns = [
     path("api/frater/", include("apps.config.urls")),
     path("api/auth/", include("apps.accounts.urls")),
     path("api/notif/", include("apps.notifications.urls")),
+    path("api/pays/", include("apps.bnbqr.urls")),
 ]
 
 

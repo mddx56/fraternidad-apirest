@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     "apps.config",
     "apps.agendas",
     "apps.notifications",
+    "apps.bnbqr",
 ]
 
 X_FRAME_OPTIONS = "SAMEORIGIN"
@@ -188,3 +189,7 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = config("EMAIL_USER")
 EMAIL_HOST_PASSWORD = config("EMAIL_PASSWORD")
+
+BNB_API_URL = config("BNB_API_URL")
+BNB_ACCOUNT_ID = config("BNB_ACCOUNT_ID")
+BNB_AUTHORIZATION_ID = config("BNB_AUTHORIZATION_ID")
