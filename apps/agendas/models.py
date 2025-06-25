@@ -102,6 +102,7 @@ class Mensualidad(models.Model):
     costo = models.DecimalField(max_digits=10, decimal_places=2, null=False)
     fecha = models.DateField(null=False)
     mes = models.IntegerField(null=True, blank=True)
+    estado = models.BooleanField(default=False, verbose_name="Estado")
     gestion = models.ForeignKey(Gestion, on_delete=models.CASCADE)
 
     class Meta:

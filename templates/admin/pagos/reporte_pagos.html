@@ -1,0 +1,27 @@
+{% extends "admin/base_site.html" %} {% block content %}
+<h1>Reporte de Pagos</h1>
+
+<h2>Pagos por Usuario</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Usuario</th>
+      <th>Total Pagado</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for pago in pagos_por_usuario %}
+    <tr>
+      <td>{{ pago.user__username }}</td>
+      <td>{{ pago.total_pagado }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+  <tfoot>
+    <tr>
+      <th>Total General:</th>
+      <th>{{ total_general }}</th>
+    </tr>
+  </tfoot>
+</table>
+{% endblock %}

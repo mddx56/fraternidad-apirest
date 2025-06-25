@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "rest_framework_simplejwt",
     "drf_yasg",
+    "cloudinary",
     "import_export",
     "apps.shared",
     "apps.accounts",

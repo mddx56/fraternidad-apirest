@@ -1,0 +1,62 @@
+{% extends "admin/base_site.html" %} {% load static %} {% block content %}
+<h1>Registrar Nuevo Pago</h1>
+<form method="post" id="pago-form">
+  {% csrf_token %} {{ form.as_p }}
+
+  <h3>Mensualidades Pendientes</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Seleccionar</th>
+        <th>Usuario</th>
+        <th>Concepto</th>
+        <th>Monto</th>
+        <th>Fecha Vencimiento</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for mensualidad in mensualidades_pendientes %}
+      <tr>
+        <td>
+          <input
+            type="checkbox"
+            name="mensualidades"
+            value="{{ mensualidad.id }}"
+          />
+        </td>
+        <td>{{ mensualidad.user.username }}</td>
+        <td>{{ mensualidad.concepto }}</td>
+        <td>{{ mensualidad.monto }}</td>
+        <td>{{ mensualidad.fecha_vencimiento }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <div class="submit-row">
+    <input type="submit" value="Registrar Pago" class="default" />
+  </div>
+</form>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    // Calcular monto total cuando se seleccionan mensualidades
+    const checkboxes = document.querySelectorAll('input[name="mensualidades"]');
+    const montoField = document.getElementById("id_monto_pagado");
+
+    checkboxes.forEach((checkbox) => {
+      checkbox.addEventListener("change", function () {
+        let total = 0;
+        checkboxes.forEach((cb) => {
+          if (cb.checked) {
+            const row = cb.closest("tr");
+            const monto = parseFloat(row.cells[3].textContent);
+            total += monto;
+          }
+        });
+        montoField.value = total.toFixed(2);
+      });
+    });
+  });
+</script>
+{% endblock %}
