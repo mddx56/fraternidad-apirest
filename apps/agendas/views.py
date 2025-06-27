@@ -162,7 +162,7 @@ def frater_pay_date(ci, mes, anio):
 
 
 @api_view(["GET"])
-def ListMensualidadDeudaAllGestionsView(request, ci):
+def ListMensualidadDeudaView(request, ci):
     try:
         user = UserAccount.objects.filter(username=ci).first()
 
@@ -184,15 +184,33 @@ def ListMensualidadDeudaAllGestionsView(request, ci):
             )
         )
 
-        for gestion in gestiones:
-            meses_gestion = Mensualidad.objects.filter(gestion=gestion).order_by("mes")
+        print("----------------------------")
+        print(f"Pagados: {pagos_usuario}")
+        print("----------------------------")
 
-            for mes in meses_gestion:
+        for gestion in gestiones:
+            meses_aviles = (
+                Mensualidad.objects.filter(gestion_id=gestion.id, estado=True)
+                .order_by("mes")
+                .select_related("gestion")
+            )
+
+            print("=== Debugging ===")
+            print(f"Total meses_aviles: {len(meses_aviles)}")
+            print(f"Current year: {current_year}, month: {current_month}")
+            print(f"Gestion año: {gestion.anio}")
+            print("Pagos usuario:", pagos_usuario)
+
+            for mes in meses_aviles:
+                print(f"\nProcesando mes: {mes.mes} (tipo: {type(mes.mes)})")
+
                 fue_pagado = (gestion.anio, mes.mes) in pagos_usuario
 
                 es_futuro = (gestion.anio > current_year) or (
                     gestion.anio == current_year and mes.mes > current_month
                 )
+
+                print(f"Fue pagado: {fue_pagado}, Es futuro: {es_futuro}")
 
                 if not fue_pagado and not es_futuro:
                     deudas.append(
@@ -291,57 +309,52 @@ def ListMensualidadDeudaGestionView(request, ci):
 @api_view(["GET"])
 def ListMensualidadDeudaAllGestionsView(request, ci):
     try:
-        user = request.user
+        # user = request.user
+        user = UserAccount.objects.filter(username=ci).first()
 
         gestiones = Gestion.objects.order_by("anio")
-        gestion = gestiones.first()
 
         if not gestiones.exists():
             return Response(
-                {"detail": "no existe gestion actual en curso"},
+                {"detail": "No existen gestiones registradas"},
                 status=status.HTTP_404_NOT_FOUND,
             )
 
         deudas = []
-        detalle = DetallePagoMensualidad.objects.filter(
-            pago__user=user, mensualidad__gestion__anio=gestion.anio
-        )
-        detalle_ini = detalle.order_by("mensualidad__fecha").last()
 
-        mensualidades = Mensualidad.objects.filter(gestion=gestion).order_by("mes")
-        for mensu in mensualidades:
-            if detalle_ini is None or mensu.mes > detalle_ini.mensualidad.mes:
+        pagos_usuario = DetallePagoMensualidad.objects.filter(
+            pago__user=user
+        ).select_related("mensualidad")
+
+        mensualidades_pagadas = set(p.mensualidad_id for p in pagos_usuario)
+
+        for gestion in gestiones:
+            mensualidades = Mensualidad.objects.filter(
+                gestion=gestion, estado=True
+            ).order_by("mes")
+
+            for mensualidad in mensualidades:
+                es_pagada = mensualidad.id in mensualidades_pagadas
+
                 deudas.append(
                     {
-                        "id": mensu.id,
-                        "mes": dato_to_moth(mensu.mes),
+                        "id": mensualidad.id,
+                        "mes": dato_to_moth(mensualidad.mes),
                         "gestion": gestion.anio,
-                        "costo": mensu.costo,
-                        "fecha": mensu.fecha,
-                        "mensualidad": mensu.pk,
+                        "costo": mensualidad.costo,
+                        "fecha": mensualidad.fecha,
+                        "mensualidad": mensualidad.pk,
+                        "pagada": es_pagada,
+                        "estado": mensualidad.estado,
                     }
                 )
 
-        # Última gestión (como en tu original)
-        gestion2 = gestiones.last()
-        mensualidades = Mensualidad.objects.filter(gestion=gestion2).order_by("mes")
-        for me in mensualidades:
-            if is_valido_date(me.mes, gestion2.anio):
-                deudas.append(
-                    {
-                        "id": me.id,
-                        "mes": dato_to_moth(me.mes),
-                        "gestion": gestion2.anio,
-                        "costo": me.costo,
-                        "fecha": me.fecha,
-                        "mensualidad": me.pk,
-                    }
-                )
+        suma_total = sum(item["costo"] for item in deudas if not item["pagada"])
 
-        suma = sum([num["costo"] for num in deudas])
-
-        # Respuesta IDÉNTICA a tu original
-        return Response({"deudas": deudas, "total": suma}, status=status.HTTP_200_OK)
+        return Response(
+            {"deudas": deudas, "total_deuda": suma_total, "count": len(deudas)},
+            status=status.HTTP_200_OK,
+        )
 
     except Exception as e:
         return Response(
@@ -446,13 +459,48 @@ from django.db import transaction
 def PayMensualidades(request):
     serializer = MensualidadPaySerializer(data=request.data)
 
-    if serializer.is_valid():
-        frater_id = serializer.validated_data["frater_id"]
-        mensualidades = serializer.validated_data["mensualidades"]
-    else:
+    if not serializer.is_valid():
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    frater_id = serializer.validated_data["frater_id"]
+    mensualidades = serializer.validated_data["mensualidades"]
+
+    print("====Debug====")
+    print(mensualidades)
+
     try:
         with transaction.atomic():
+
+            mensualidades_existentes = Mensualidad.objects.filter(id__in=mensualidades)
+
+            print("====Debug====")
+            print(mensualidades_existentes)
+
+            if len(mensualidades_existentes) != len(mensualidades):
+                faltantes = set(mensualidades) - set(
+                    mensualidades_existentes.values_list("id", flat=True)
+                )
+
+                return Response(
+                    {"error": f"Las siguientes mensualidades no existen: {faltantes}"},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+
+            mensualidades_pagadas = (
+                DetallePagoMensualidad.objects.filter(mensualidad_id__in=mensualidades)
+                .filter(pago__user_id=frater_id)
+                .values_list("mensualidad_id", flat=True)
+            )
+
+            if mensualidades_pagadas.exists():
+                return Response(
+                    {
+                        "error": "Algunas mensualidades ya fueron pagadas",
+                        "mensualidades_pagadas": list(mensualidades_pagadas),
+                    },
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+
             sum_total = Mensualidad.objects.filter(id__in=mensualidades).aggregate(
                 total=Sum("costo")
             )
@@ -463,6 +511,7 @@ def PayMensualidades(request):
                 monto_pagado=total,
                 user_id=frater_id,
             )
+
             for ms_id in mensualidades:
                 mns = Mensualidad.objects.get(id=ms_id)
                 detalle = DetallePagoMensualidad.objects.create(

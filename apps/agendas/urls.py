@@ -23,7 +23,7 @@ urlpatterns = [
     path("pagos/m/<ci>", views.ListPagosView.as_view(), name="pagos"),
     path(
         "deudas/m/<str:ci>",
-        views.ListMensualidadDeudaAllGestionsView,
+        views.ListMensualidadDeudaView,
         name="deudas_mensual",
     ),
     path(

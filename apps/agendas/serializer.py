@@ -232,7 +232,14 @@ class MensualidadPaySerializer(serializers.Serializer):
 
     def validate_mensualidades(self, value):
         if not value:
-            raise serializers.ValidationError("La lista no puede estar vacia")
+            raise serializers.ValidationError("La lista no puede estar vacía")
+
+        if len(value) != len(set(value)):
+            duplicados = [x for x in value if value.count(x) > 1]
+            raise serializers.ValidationError(
+                f"IDs duplicados encontrados: {list(set(duplicados))}"
+            )
+
         return value
 
 
